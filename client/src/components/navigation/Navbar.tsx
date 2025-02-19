@@ -70,11 +70,11 @@ export function Navbar() {
                     {/* Logo */}
                     <Link to="/" className="flex items-center space-x-2">
                         <img
-                            src="/pokemon-logo.png"
-                            alt="PokéApp"
+                            src="/pokemonIcon.png"
+                            alt={t('brand.logoAlt')}
                             className="h-8 w-auto"
                         />
-                        <span className="text-2xl font-bold">PokéApp</span>
+                        <span className="text-2xl font-bold">{t('brand.name')}</span>
                     </Link>
 
                     {/* Desktop Navigation */}
@@ -120,7 +120,7 @@ export function Navbar() {
                             className="inline-flex items-center justify-center p-2 rounded-md text-foreground/80 hover:text-foreground hover:bg-background/90"
                             onClick={() => setIsOpen(!isOpen)}
                         >
-                            <span className="sr-only">Open main menu</span>
+                            <span className="sr-only">{t('nav.openMenu')}</span>
                             {isOpen ? (
                                 <XMarkIcon className="block h-6 w-6" />
                             ) : (

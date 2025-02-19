@@ -1,10 +1,15 @@
 {
+  "brand": {
+    "name": "PokéApp",
+    "logoAlt": "PokéApp Logo"
+  },
   "nav": {
     "home": "Home",
     "myTeam": "My Team",
     "favorites": "Favorites",
     "compare": "Compare",
-    "profile": "Profile"
+    "profile": "Profile",
+    "openMenu": "Open main menu"
   },
   "auth": {
     "login": "Login",
