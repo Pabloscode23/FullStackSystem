@@ -1,28 +1,23 @@
-import { HTMLAttributes, forwardRef } from 'react';
-import { cn } from '@/utils/cn';
-
-interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {
-    // Add specific props for header
-    compact?: boolean;
-}
+import { type HTMLAttributes, type ForwardedRef, createElement, forwardRef } from 'react';
+import { clsx } from 'clsx';
 
 /**
  * Card Header component for containing title and description
  */
-const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
-    ({ className, compact, ...props }, ref) => (
-        <div
-            ref={ref}
-            className={cn(
-                'flex flex-col',
-                compact ? 'space-y-1 p-4' : 'space-y-1.5 p-6',
-                className
-            )}
-            {...props}
-        />
-    )
+const CardHeader = forwardRef<
+    HTMLDivElement,
+    HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref: ForwardedRef<HTMLDivElement>) =>
+    createElement('div', {
+        ref,
+        className: clsx(
+            "flex flex-col space-y-1.5 p-6",
+            className
+        ),
+        ...props
+    })
 );
 
-CardHeader.displayName = 'CardHeader';
+CardHeader.displayName = "CardHeader";
 
-export { CardHeader, type CardHeaderProps }; 
+export { CardHeader }; 

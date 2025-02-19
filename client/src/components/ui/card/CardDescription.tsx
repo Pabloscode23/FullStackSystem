@@ -1,21 +1,23 @@
-import { HTMLAttributes, forwardRef } from 'react';
-import { cn } from '@/utils/cn';
-
-interface CardDescriptionProps extends HTMLAttributes<HTMLParagraphElement> { }
+import { type HTMLAttributes, type ForwardedRef, createElement, forwardRef } from 'react';
+import { clsx } from 'clsx';
 
 /**
  * Card Description component for secondary text
  */
-const CardDescription = forwardRef<HTMLParagraphElement, CardDescriptionProps>(
-    ({ className, ...props }, ref) => (
-        <p
-            ref={ref}
-            className={cn('text-sm text-muted-foreground', className)}
-            {...props}
-        />
-    )
+const CardDescription = forwardRef<
+    HTMLParagraphElement,
+    HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref: ForwardedRef<HTMLParagraphElement>) =>
+    createElement('p', {
+        ref,
+        className: clsx(
+            "text-sm text-muted-foreground",
+            className
+        ),
+        ...props
+    })
 );
 
-CardDescription.displayName = 'CardDescription';
+CardDescription.displayName = "CardDescription";
 
-export { CardDescription, type CardDescriptionProps }; 
+export { CardDescription }; 
