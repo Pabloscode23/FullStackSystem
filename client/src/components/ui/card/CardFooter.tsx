@@ -1,32 +1,27 @@
-import { HTMLAttributes, forwardRef } from 'react';
-import { cn } from '@/utils/cn';
+import { type HTMLAttributes, type ForwardedRef, type CSSProperties, createElement, forwardRef } from 'react';
+import { clsx } from 'clsx';
 
 interface CardFooterProps extends HTMLAttributes<HTMLDivElement> {
-    // Add specific props for footer
-    align?: 'start' | 'center' | 'end';
+    style?: CSSProperties;
 }
 
 /**
  * Card Footer component for actions or additional information
  */
-const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
-    ({ className, align = 'start', ...props }, ref) => (
-        <div
-            ref={ref}
-            className={cn(
-                'flex items-center p-6 pt-0',
-                {
-                    'justify-start': align === 'start',
-                    'justify-center': align === 'center',
-                    'justify-end': align === 'end',
-                },
-                className
-            )}
-            {...props}
-        />
-    )
+const CardFooter = forwardRef<
+    HTMLDivElement,
+    CardFooterProps
+>(({ className, ...props }, ref: ForwardedRef<HTMLDivElement>) =>
+    createElement('div', {
+        ref,
+        className: clsx(
+            "flex items-center p-6 pt-0",
+            className
+        ),
+        ...props
+    })
 );
 
-CardFooter.displayName = 'CardFooter';
+CardFooter.displayName = "CardFooter";
 
-export { CardFooter, type CardFooterProps }; 
+export { CardFooter }; 
