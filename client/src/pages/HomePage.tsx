@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-export function Home() {
+export function HomePage() {
     const { t } = useTranslation();
 
     return (

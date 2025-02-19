@@ -1,59 +1,51 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { RootLayout } from '@/layouts/RootLayout';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Layout } from '@/components/layout';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 
-// Pages
-import { Home } from '@/pages/Home';
-import { PokemonDetail } from '@/pages/PokemonDetail';
-import { MyTeam } from '@/pages/MyTeam';
-import { Favorites } from '@/pages/Favorites';
-import { Profile } from '@/pages/Profile';
-import { Compare } from '@/pages/Compare';
-import { Login } from '@/pages/auth/Login';
-import { Register } from '@/pages/auth/Register';
-import { ResetPassword } from '@/pages/auth/ResetPassword';
-import { NotFound } from '@/pages/NotFound';
-
-const router = createBrowserRouter([
-    {
-        path: '/',
-        element: <RootLayout />,
-        children: [
-            { index: true, element: <Home /> },
-            { path: 'pokemon/:id', element: <PokemonDetail /> },
-            {
-                path: 'my-team',
-                element: (
-                    <ProtectedRoute>
-                        <MyTeam />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: 'favorites',
-                element: (
-                    <ProtectedRoute>
-                        <Favorites />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: 'profile',
-                element: (
-                    <ProtectedRoute>
-                        <Profile />
-                    </ProtectedRoute>
-                )
-            },
-            { path: 'compare', element: <Compare /> },
-            { path: 'login', element: <Login /> },
-            { path: 'register', element: <Register /> },
-            { path: 'reset-password', element: <ResetPassword /> },
-            { path: '*', element: <NotFound /> }
-        ]
-    }
-]);
+// Page imports with updated names
+import { HomePage } from '@/pages/HomePage';
+import { LoginPage } from '@/pages/auth/LoginPage';
+import { RegisterPage } from '@/pages/auth/RegisterPage';
+import { NotFoundPage } from '@/pages/NotFoundPage';
+import { MyTeamPage } from '@/pages/MyTeamPage';
+import { FavoritesPage } from '@/pages/FavoritesPage';
+import { ComparePage } from '@/pages/ComparePage';
+import { ProfilePage } from '@/pages/ProfilePage';
+import { ResetPasswordPage } from '@/pages/auth/ResetPasswordPage';
 
 export function AppRouter() {
-    return <RouterProvider router={router} />;
-} 
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Layout />}>
+                    {/* Public routes */}
+                    <Route index element={<HomePage />} />
+                    <Route path="login" element={<LoginPage />} />
+                    <Route path="register" element={<RegisterPage />} />
+                    <Route path="reset-password" element={<ResetPasswordPage />} />
+                    <Route path="compare" element={<ComparePage />} />
+
+                    {/* Protected routes */}
+                    <Route path="my-team" element={
+                        <ProtectedRoute>
+                            <MyTeamPage />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="favorites" element={
+                        <ProtectedRoute>
+                            <FavoritesPage />
+                        </ProtectedRoute>
+                    } />
+                    <Route path="profile" element={
+                        <ProtectedRoute>
+                            <ProfilePage />
+                        </ProtectedRoute>
+                    } />
+
+                    {/* 404 route */}
+                    <Route path="*" element={<NotFoundPage />} />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    );
+}

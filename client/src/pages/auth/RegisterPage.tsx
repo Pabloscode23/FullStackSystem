@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/Button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-export function Register() {
+export function RegisterPage() {
     const { t } = useTranslation();
 
     return (

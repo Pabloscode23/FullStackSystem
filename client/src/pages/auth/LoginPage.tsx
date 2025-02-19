@@ -21,7 +21,7 @@ const loginSchema = z.object({
 // Create a TypeScript type from our schema
 type LoginFormData = z.infer<typeof loginSchema>;
 
-export function Login() {
+export function LoginPage() {
     // Initialize hooks
     const { t } = useTranslation(); // For internationalization
     const { login } = useAuth(); // For authentication
