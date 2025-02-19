@@ -63,7 +63,7 @@ export function HomePage() {
     return (
         <div className="space-y-12 pb-12">
             {/* Hero Section with animated background */}
-            <section className="relative text-center space-y-6 py-24 overflow-hidden">
+            <section className="relative text-center space-y-6 py-24 overflow-hidden px-4">
                 <div className="absolute inset-0 -z-10">
                     <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 animate-gradient" />
                     <div className="absolute top-0 -right-4 w-96 h-96 bg-blue-500/30 rounded-full blur-3xl" />
@@ -80,23 +80,33 @@ export function HomePage() {
                     {t('pages.home.description')}
                 </p>
 
-                <div className="flex items-center justify-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto mx-auto">
                     {!isAuthenticated ? (
                         <>
-                            <Link to="/register">
-                                <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-500">
+                            <Link to="/register" className="w-full sm:w-auto min-w-[160px]">
+                                <Button
+                                    size="lg"
+                                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+                                >
                                     {t('pages.home.cta.start')}
                                 </Button>
                             </Link>
-                            <Link to="/login">
-                                <Button size="lg" variant="outline">
+                            <Link to="/login" className="w-full sm:w-auto min-w-[160px]">
+                                <Button
+                                    size="lg"
+                                    variant="outline"
+                                    className="w-full hover:bg-accent/10 transition-all duration-300"
+                                >
                                     {t('pages.home.cta.login')}
                                 </Button>
                             </Link>
                         </>
                     ) : (
-                        <Link to="/pokemon">
-                            <Button size="lg" className="bg-gradient-to-r from-blue-500 to-purple-500">
+                        <Link to="/pokemon" className="w-full sm:w-auto min-w-[200px]">
+                            <Button
+                                size="lg"
+                                className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-all duration-300"
+                            >
                                 {t('pages.home.cta.explore')}
                             </Button>
                         </Link>
