@@ -5,9 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/form/Input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/context/AuthContext';
 import { formStyles } from '@/constants/styles';
+import { AuthLayout } from '@/components/layout/AuthLayout';
 
 const schema = z.object({
     username: z.string()
@@ -56,25 +57,23 @@ export function RegisterPage() {
     };
 
     return (
-        <div className="flex items-center justify-center min-h-[80vh] relative">
-            {/* Background decorative elements */}
-            <div className="absolute inset-0 -z-10 overflow-hidden">
-                <div className="absolute top-0 -right-4 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
-                <div className="absolute -bottom-8 -left-4 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
-            </div>
-
-            <Card className={`
-        w-full max-w-md 
-        backdrop-blur-sm 
-        bg-card 
-        dark:bg-slate-900/90 
-        shadow-xl
-        dark:shadow-slate-900/10
-        border-2
-        dark:border-slate-800
-        light:border-slate-200
-        rounded-xl
-      `}>
+        <AuthLayout>
+            <Card className="
+                w-full max-w-md 
+                backdrop-blur-sm 
+                bg-card/95
+                dark:bg-slate-900/90 
+                shadow-[0_8px_30px_rgb(0,0,0,0.04)]
+                dark:shadow-[0_8px_30px_rgb(0,0,0,0.12)]
+                border
+                border-slate-200/50
+                dark:border-slate-800/50
+                rounded-xl
+                hover:shadow-[0_8px_35px_rgb(0,0,0,0.06)]
+                dark:hover:shadow-[0_8px_35px_rgb(0,0,0,0.16)]
+                transition-shadow
+                duration-300
+            ">
                 <CardHeader className="space-y-1 pb-6">
                     <CardTitle className="text-2xl font-bold text-center">
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
@@ -176,6 +175,6 @@ export function RegisterPage() {
                     </form>
                 </CardContent>
             </Card>
-        </div>
+        </AuthLayout>
     );
 } 

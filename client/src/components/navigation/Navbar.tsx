@@ -13,6 +13,7 @@ import {
     HeartIcon,
     ArrowsRightLeftIcon,
     UserCircleIcon,
+    BookOpenIcon,
 } from '@heroicons/react/24/outline';
 import { useAuth } from '@/context/AuthContext';
 
@@ -30,6 +31,12 @@ export function Navbar() {
             requiresAuth: false
         },
         {
+            name: t('nav.pokemon'),
+            href: '/pokemon',
+            icon: BookOpenIcon,
+            requiresAuth: true
+        },
+        {
             name: t('nav.myTeam'),
             href: '/my-team',
             icon: UserGroupIcon,
@@ -45,7 +52,7 @@ export function Navbar() {
             name: t('nav.compare'),
             href: '/compare',
             icon: ArrowsRightLeftIcon,
-            requiresAuth: false
+            requiresAuth: true
         },
         {
             name: t('nav.profile'),
