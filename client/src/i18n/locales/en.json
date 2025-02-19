@@ -1,0 +1,103 @@
+{
+  "nav": {
+    "home": "Home",
+    "myTeam": "My Team",
+    "favorites": "Favorites",
+    "compare": "Compare",
+    "profile": "Profile"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "resetPassword": "Reset Password",
+    "forgotPassword": "Forgot Password?",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "signUp": "Sign up",
+    "signIn": "Sign in",
+    "logout": "Logout",
+    "username": "Username",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "usernamePlaceholder": "Enter your username",
+    "passwordPlaceholder": "Enter your password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "rememberMe": "Remember me",
+    "or": "or",
+    "continueWith": "Continue with",
+    "demoCredentials": "Demo credentials",
+    "email": "Email",
+    "errors": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email",
+      "passwordRequired": "Password is required",
+      "invalidCredentials": "Invalid email or password"
+    }
+  },
+  "footer": {
+    "rights": "© 2024 PokéApp. All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "contact": "Contact"
+  },
+  "pages": {
+    "home": {
+      "welcome": "Welcome to PokéApp",
+      "search": "Search Pokémon",
+      "filter": "Filter by type",
+      "sort": "Sort by"
+    },
+    "pokemon": {
+      "stats": "Stats",
+      "types": "Types",
+      "abilities": "Abilities",
+      "moves": "Moves",
+      "addToTeam": "Add to Team",
+      "addToFavorites": "Add to Favorites",
+      "removeFromFavorites": "Remove from Favorites"
+    },
+    "myTeam": {
+      "title": "My Team",
+      "empty": "Your team is empty",
+      "addPokemon": "Add Pokémon",
+      "maxReached": "Maximum team size reached"
+    },
+    "favorites": {
+      "title": "Favorites",
+      "empty": "No favorites yet",
+      "addSome": "Add some Pokémon to favorites"
+    },
+    "compare": {
+      "title": "Compare Pokémon",
+      "selectFirst": "Select first Pokémon",
+      "selectSecond": "Select second Pokémon",
+      "compare": "Compare"
+    },
+    "profile": {
+      "title": "Profile",
+      "settings": "Settings",
+      "language": "Language",
+      "theme": "Theme",
+      "logout": "Logout"
+    },
+    "notFound": {
+      "title": "404",
+      "message": "Page not found",
+      "goHome": "Go Home"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "next": "Next",
+    "previous": "Previous"
+  }
+} 

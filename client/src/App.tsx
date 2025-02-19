@@ -1,11 +1,13 @@
+import { AppRouter } from '@/routes';
+import { AuthProvider } from '@/context/AuthContext';
+import '@/i18n';
+
 function App() {
   return (
-    <div className="min-h-screen bg-blue-500 flex items-center justify-center">
-      <h1 className="text-4xl font-bold text-white">
-        ¡Hola Tailwind!
-      </h1>
-    </div>
-  )
+    <AuthProvider>
+      <AppRouter />
+    </AuthProvider>
+  );
 }
 
-export default App
+export default App;
