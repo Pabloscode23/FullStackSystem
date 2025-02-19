@@ -1,4 +1,4 @@
-import { AppRouter } from '@/routes';
+import { AppRouter } from './routes';
 import { AuthProvider } from '@/context/AuthContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import '@/i18n';

@@ -5,35 +5,31 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/form/Input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/Card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/context/AuthContext';
 import { formStyles } from '@/constants/styles';
 
-// Define validation schema using Zod
-// This schema will ensure that the form data meets our requirements
-const loginSchema = z.object({
-    email: z.string()
-        .min(1, { message: 'auth.errors.emailRequired' }) // Email cannot be empty
-        .email({ message: 'auth.errors.emailInvalid' }), // Must be a valid email format
-    password: z.string()
-        .min(1, { message: 'auth.errors.passwordRequired' }) // Password cannot be empty
-});
-
-// Create a TypeScript type from our schema
-type LoginFormData = z.infer<typeof loginSchema>;
-
 export function LoginPage() {
-    // Initialize hooks
-    const { t } = useTranslation(); // For internationalization
-    const { login } = useAuth(); // For authentication
-    const navigate = useNavigate(); // For navigation after login
+    const { t } = useTranslation();
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
-    // Initialize react-hook-form with zod resolver
+    // Define validation schema using Zod with i18n keys
+    const loginSchema = z.object({
+        email: z.string()
+            .min(1, { message: 'auth.errors.emailRequired' })
+            .email({ message: 'auth.errors.emailInvalid' }),
+        password: z.string()
+            .min(1, { message: 'auth.errors.passwordRequired' })
+    });
+
+    type LoginFormData = z.infer<typeof loginSchema>;
+
     const {
-        register, // Function to register inputs with form
-        handleSubmit, // Form submission handler
-        formState: { errors, isSubmitting }, // Form state including errors and loading state
-        setError, // Function to manually set errors
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        setError,
     } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -42,15 +38,13 @@ export function LoginPage() {
         }
     });
 
-    // Handle form submission
     const onSubmit = async (data: LoginFormData) => {
         try {
-            login(data.email, data.password);
-            navigate('/'); // Redirect to home page on successful login
+            await login(data.email, data.password);
+            navigate('/');
         } catch (error: unknown) {
-            // Set error if login fails
             setError('root', {
-                message: error instanceof Error ? error.message : 'auth.errors.invalidCredentials'
+                message: 'auth.errors.invalidCredentials'
             });
         }
     };
@@ -63,18 +57,7 @@ export function LoginPage() {
                 <div className="absolute -bottom-8 -left-4 w-72 h-72 bg-primary/5 rounded-full blur-3xl" />
             </div>
 
-            <Card className={`
-                w-full max-w-md 
-                backdrop-blur-sm 
-                bg-card 
-                dark:bg-slate-900/90 
-                shadow-xl
-                dark:shadow-slate-900/10
-                border-2
-                dark:border-slate-800
-                light:border-slate-200
-                rounded-xl
-            `}>
+            <Card className="w-full max-w-md backdrop-blur-sm bg-card dark:bg-slate-900/90 shadow-xl dark:shadow-slate-900/10 border-2 dark:border-slate-800 light:border-slate-200 rounded-xl">
                 <CardHeader className="space-y-1 pb-6">
                     <CardTitle className="text-2xl font-bold text-center">
                         <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
@@ -91,7 +74,7 @@ export function LoginPage() {
                             <Input
                                 type="email"
                                 label={t('auth.email')}
-                                placeholder="demo@example.com"
+                                placeholder={t('auth.emailPlaceholder')}
                                 error={errors.email ? t(errors.email.message!) : undefined}
                                 {...register('email')}
                                 disabled={isSubmitting}
@@ -128,7 +111,7 @@ export function LoginPage() {
                             {isSubmitting ? (
                                 <span className="flex items-center space-x-2">
                                     <span className="animate-spin">⚪</span>
-                                    <span>{t('common.loading')}</span>
+                                    <span>{t('auth.loading')}</span>
                                 </span>
                             ) : (
                                 t('auth.signIn')
@@ -156,9 +139,9 @@ export function LoginPage() {
                         </div>
 
                         <div className="mt-4 text-center text-sm text-muted-foreground/80 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg">
-                            {t('auth.demoCredentials')}:<br />
-                            Email: demo@example.com<br />
-                            Password: password
+                            <p className="font-medium mb-1">{t('auth.demoCredentialsTitle')}</p>
+                            <p>{t('auth.demoCredentialsEmail')}</p>
+                            <p>{t('auth.demoCredentialsPassword')}</p>
                         </div>
                     </form>
                 </CardContent>

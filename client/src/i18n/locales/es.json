@@ -9,22 +9,23 @@
     "favorites": "Favoritos",
     "compare": "Comparar",
     "profile": "Perfil",
-    "openMenu": "Abrir menú principal"
+    "openMenu": "Abrir menú principal",
+    "pokemon": "Pokédex"
   },
   "auth": {
     "login": "Iniciar Sesión",
     "register": "Registrarse",
     "resetPassword": "Restablecer Contraseña",
     "forgotPassword": "¿Olvidaste tu contraseña?",
-    "noAccount": "¿No tienes cuenta?",
-    "haveAccount": "¿Ya tienes cuenta?",
+    "noAccount": "¿No tienes una cuenta?",
+    "haveAccount": "¿Ya tienes una cuenta?",
     "signUp": "Registrarse",
     "signIn": "Iniciar Sesión",
     "logout": "Cerrar Sesión",
-    "username": "Nombre de usuario",
+    "username": "Usuario",
     "password": "Contraseña",
     "confirmPassword": "Confirmar Contraseña",
-    "usernamePlaceholder": "Ingresa tu nombre de usuario",
+    "usernamePlaceholder": "Ingresa tu usuario",
     "passwordPlaceholder": "Ingresa tu contraseña",
     "confirmPasswordPlaceholder": "Confirma tu contraseña",
     "rememberMe": "Recordarme",
@@ -32,25 +33,63 @@
     "continueWith": "Continuar con",
     "demoCredentials": "Credenciales de prueba",
     "email": "Correo electrónico",
+    "loginDescription": "Ingresa tus credenciales para acceder a tu cuenta",
+    "loading": "Iniciando sesión...",
+    "demoCredentialsTitle": "Credenciales de prueba",
+    "demoCredentialsEmail": "Email: demo@example.com",
+    "demoCredentialsPassword": "Contraseña: password",
+    "emailPlaceholder": "Ingresa tu email",
+    "registerDescription": "Crea una cuenta para comenzar tu aventura",
+    "passwordRequirements": "La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas y números",
     "errors": {
-      "emailRequired": "El correo electrónico es requerido",
-      "emailInvalid": "Por favor ingresa un correo electrónico válido",
+      "emailRequired": "El email es requerido",
+      "emailInvalid": "Por favor ingresa un email válido",
       "passwordRequired": "La contraseña es requerida",
-      "invalidCredentials": "Correo electrónico o contraseña inválidos"
+      "invalidCredentials": "Email o contraseña inválidos",
+      "usernameTooShort": "El usuario debe tener al menos 3 caracteres",
+      "usernameTooLong": "El usuario debe tener menos de 20 caracteres",
+      "invalidEmail": "Por favor ingresa un email válido",
+      "passwordTooShort": "La contraseña debe tener al menos 8 caracteres",
+      "passwordUppercase": "La contraseña debe incluir una mayúscula",
+      "passwordLowercase": "La contraseña debe incluir una minúscula",
+      "passwordNumber": "La contraseña debe incluir un número",
+      "passwordsDontMatch": "Las contraseñas no coinciden",
+      "registrationFailed": "Registro fallido. Por favor intenta de nuevo"
     }
   },
   "footer": {
-    "rights": "© 2024 PokéApp. Todos los derechos reservados.",
-    "privacy": "Política de Privacidad",
-    "terms": "Términos de Servicio",
-    "contact": "Contacto"
+    "rights": "© 2025 PokéApp. Todos los derechos reservados.",
+    "contact": "Contactar al Creador",
+    "sourceCode": "Código Fuente"
   },
   "pages": {
     "home": {
       "welcome": "Bienvenido a PokéApp",
-      "search": "Buscar Pokémon",
-      "filter": "Filtrar por tipo",
-      "sort": "Ordenar por"
+      "description": "Tu compañero definitivo para crear y gestionar tus equipos Pokémon. ¡Explora, compara y colecciona tus Pokémon favoritos!",
+      "features": {
+        "team": "Crea tu Equipo",
+        "teamDescription": "Crea tu equipo perfecto de 6 Pokémon. Analiza sus fortalezas y debilidades para construir la combinación definitiva.",
+        "compare": "Compara Pokémon",
+        "compareDescription": "Compara estadísticas, habilidades y movimientos entre cualquier par de Pokémon para tomar decisiones informadas.",
+        "favorites": "Sigue tus Favoritos",
+        "favoritesDescription": "Guarda tus Pokémon favoritos y organízalos en colecciones personalizadas.",
+        "pokedex": "Pokédex Completa",
+        "pokedexDescription": "Explora el vasto mundo Pokémon. Busca, filtra y aprende sobre sus habilidades, estadísticas y evoluciones.",
+        "teams": "Tus Equipos",
+        "teamsDescription": "Accede y gestiona todos tus equipos creados. Revisa, edita y organiza tus diferentes estrategias de equipo."
+      },
+      "stats": {
+        "pokemon": "Pokémon Disponibles",
+        "trainers": "Entrenadores Activos",
+        "teams": "Equipos Creados",
+        "trainersCount": "10+",
+        "teamsCount": "25+"
+      },
+      "cta": {
+        "start": "Comienza tu Aventura",
+        "explore": "Explorar Pokédex",
+        "login": "Inicia Sesión para Crear Equipos"
+      }
     },
     "pokemon": {
       "stats": "Estadísticas",
@@ -65,11 +104,11 @@
       "title": "Mi Equipo",
       "empty": "Tu equipo está vacío",
       "addPokemon": "Añadir Pokémon",
-      "maxReached": "Tamaño máximo de equipo alcanzado"
+      "maxReached": "Tamaño máximo del equipo alcanzado"
     },
     "favorites": {
       "title": "Favoritos",
-      "empty": "Aún no hay favoritos",
+      "empty": "No hay favoritos aún",
       "addSome": "Añade algunos Pokémon a favoritos"
     },
     "compare": {
