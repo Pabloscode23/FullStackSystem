@@ -2,14 +2,17 @@ import { AppRouter } from './routes';
 import { AuthProvider } from '@/context/AuthContext';
 import { ThemeProvider } from '@/context/ThemeContext';
 import '@/i18n';
+import { TeamProvider } from './context/TeamContext';
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <AppRouter />
-      </AuthProvider>
-    </ThemeProvider>
+    <TeamProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <AppRouter />
+        </AuthProvider>
+      </ThemeProvider>
+    </TeamProvider>
   );
 }
 

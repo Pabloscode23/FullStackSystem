@@ -92,19 +92,64 @@
       }
     },
     "pokemon": {
-      "stats": "Stats",
-      "types": "Types",
-      "abilities": "Abilities",
+      "labels": {
+        "stats": "Stats",
+        "types": "Types",
+        "abilities": "Abilities",
+        "moves": "Moves"
+      },
+      "types": {
+        "normal": "Normal",
+        "fire": "Fire",
+        "water": "Water",
+        "electric": "Electric",
+        "grass": "Grass",
+        "ice": "Ice",
+        "fighting": "Fighting",
+        "poison": "Poison",
+        "ground": "Ground",
+        "flying": "Flying",
+        "psychic": "Psychic",
+        "bug": "Bug",
+        "rock": "Rock",
+        "ghost": "Ghost",
+        "dragon": "Dragon",
+        "dark": "Dark",
+        "steel": "Steel",
+        "fairy": "Fairy"
+      },
+      "abilities": {
+        "overgrow": "Overgrow",
+        "chlorophyll": "Chlorophyll",
+        "blaze": "Blaze",
+        "solar-power": "Solar Power",
+        "torrent": "Torrent",
+        "rain-dish": "Rain Dish"
+      },
       "moves": "Moves",
       "addToTeam": "Add to Team",
       "addToFavorites": "Add to Favorites",
-      "removeFromFavorites": "Remove from Favorites"
+      "removeFromFavorites": "Remove from Favorites",
+      "title": "Pokédex",
+      "alreadyInTeam": "Already in Team",
+      "addedToTeam": "Added to Team!",
+      "viewDetails": "View Details",
+      "description": "Explore all available Pokémon, learn their stats, and add them to your team"
     },
     "myTeam": {
       "title": "My Team",
       "empty": "Your team is empty",
       "addPokemon": "Add Pokémon",
-      "maxReached": "Maximum team size reached"
+      "maxReached": "Maximum team size reached",
+      "viewTeam": "View Team",
+      "clickToView": "Click to view your team",
+      "addFromPokedex": "Add from Pokédex",
+      "dragTip": "Drag Pokémon here or click Add from Pokédex",
+      "emptySlot": "Empty Slot",
+      "currentTeam": "{count}/6 Pokémon",
+      "defaultName": "My Team",
+      "editName": "Edit team name",
+      "namePlaceholder": "Enter team name"
     },
     "favorites": {
       "title": "Favorites",
@@ -143,5 +188,17 @@
     "sort": "Sort",
     "next": "Next",
     "previous": "Previous"
+  },
+  "team": {
+    "errors": {
+      "teamFull": "Team is full",
+      "alreadyInTeam": "This Pokémon is already in your team",
+      "contextError": "useTeam must be used within a TeamProvider",
+      "invalidSlot": "Invalid team slot"
+    },
+    "success": {
+      "added": "Added to team",
+      "removed": "Removed from team"
+    }
   }
 } 

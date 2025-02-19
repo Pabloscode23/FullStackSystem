@@ -92,19 +92,63 @@
       }
     },
     "pokemon": {
+      "labels": {
+        "stats": "Estadísticas",
+        "types": "Tipos",
+        "abilities": "Habilidades",
+        "moves": "Movimientos"
+      },
       "stats": "Estadísticas",
-      "types": "Tipos",
-      "abilities": "Habilidades",
+      "types": {
+        "normal": "Normal",
+        "fire": "Fuego",
+        "water": "Agua",
+        "electric": "Eléctrico",
+        "grass": "Planta",
+        "ice": "Hielo",
+        "fighting": "Lucha",
+        "poison": "Veneno",
+        "ground": "Tierra",
+        "flying": "Volador",
+        "psychic": "Psíquico",
+        "bug": "Bicho",
+        "rock": "Roca",
+        "ghost": "Fantasma",
+        "dragon": "Dragón",
+        "dark": "Siniestro",
+        "steel": "Acero",
+        "fairy": "Hada"
+      },
+      "abilities": {
+        "overgrow": "Espesura",
+        "chlorophyll": "Clorofila",
+        "blaze": "Mar Llamas",
+        "solar-power": "Poder Solar",
+        "torrent": "Torrente",
+        "rain-dish": "Cura Lluvia"
+      },
       "moves": "Movimientos",
       "addToTeam": "Añadir al Equipo",
       "addToFavorites": "Añadir a Favoritos",
-      "removeFromFavorites": "Quitar de Favoritos"
+      "removeFromFavorites": "Quitar de Favoritos",
+      "title": "Pokédex",
+      "alreadyInTeam": "Ya está en el Equipo",
+      "addedToTeam": "¡Agregado al Equipo!",
+      "viewDetails": "Ver Detalles",
+      "description": "Explora todos los Pokémon disponibles, conoce sus estadísticas y agrégalos a tu equipo"
     },
     "myTeam": {
       "title": "Mi Equipo",
       "empty": "Tu equipo está vacío",
       "addPokemon": "Añadir Pokémon",
-      "maxReached": "Tamaño máximo del equipo alcanzado"
+      "maxReached": "Tamaño máximo del equipo alcanzado",
+      "viewTeam": "Ver Equipo",
+      "clickToView": "Click para ver tu equipo",
+      "emptySlot": "Espacio Vacío",
+      "currentTeam": "{count}/6 Pokémon",
+      "defaultName": "Mi Equipo",
+      "editName": "Editar nombre del equipo",
+      "namePlaceholder": "Ingresa nombre del equipo"
     },
     "favorites": {
       "title": "Favoritos",
@@ -143,5 +187,17 @@
     "sort": "Ordenar",
     "next": "Siguiente",
     "previous": "Anterior"
+  },
+  "team": {
+    "errors": {
+      "teamFull": "El equipo está lleno",
+      "alreadyInTeam": "Este Pokémon ya está en tu equipo",
+      "contextError": "useTeam debe usarse dentro de un TeamProvider",
+      "invalidSlot": "Posición de equipo inválida"
+    },
+    "success": {
+      "added": "Agregado al equipo",
+      "removed": "Removido del equipo"
+    }
   }
 } 
