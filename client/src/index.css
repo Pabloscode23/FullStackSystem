@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn-primary {
+    @apply px-4 py-2 bg-pokemon-red text-white rounded-lg hover:opacity-90 transition-opacity;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-md p-4;
+  }
+}
