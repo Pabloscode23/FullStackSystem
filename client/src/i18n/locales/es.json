@@ -64,7 +64,7 @@
   },
   "pages": {
     "home": {
-      "welcome": "Bienvenido a PokéApp",
+      "welcome": "Bienvenido(a) a PokéApp",
       "description": "Tu compañero definitivo para crear y gestionar tus equipos Pokémon. ¡Explora, compara y colecciona tus Pokémon favoritos!",
       "features": {
         "team": "Crea tu Equipo",
