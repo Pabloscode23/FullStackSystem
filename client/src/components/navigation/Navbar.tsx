@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/Button';
 import { LanguageSwitch } from '@/components/ui/LanguageSwitch';
+import { ThemeToggle } from '@/components/ui/ThemeToggle';
+import { navStyles } from '@/constants/styles';
 import {
     Bars3Icon,
     XMarkIcon,
@@ -60,40 +62,42 @@ export function Navbar() {
 
     const handleLogout = () => {
         logout();
-        // No need to navigate, ProtectedRoute will handle it
     };
 
     return (
-        <nav className="bg-background border-b">
-            <div className="container mx-auto px-4">
-                <div className="flex h-16 items-center justify-between">
+        <nav className={navStyles.nav}>
+            <div className={navStyles.container}>
+                <div className={navStyles.header}>
                     {/* Logo */}
-                    <Link to="/" className="flex items-center space-x-2">
+                    <Link to="/" className={navStyles.logoContainer}>
                         <img
                             src="/pokemonIcon.png"
                             alt={t('brand.logoAlt')}
-                            className="h-8 w-auto"
+                            className={navStyles.logoImage}
                         />
-                        <span className="text-2xl font-bold">{t('brand.name')}</span>
+                        <span className={navStyles.logoText}>{t('brand.name')}</span>
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center space-x-4">
+                    <div className={navStyles.desktopNav}>
                         {filteredNavigation.map((item) => (
                             <Link
                                 key={item.name}
                                 to={item.href}
-                                className="flex items-center space-x-1 text-foreground/80 hover:text-foreground px-3 py-2 rounded-md text-sm font-medium"
+                                className={navStyles.navLink}
                             >
-                                <item.icon className="h-5 w-5" />
+                                <item.icon className={navStyles.navIcon} />
                                 <span>{item.name}</span>
                             </Link>
                         ))}
-                        <LanguageSwitch />
+                        <div className="flex items-center space-x-2">
+                            <LanguageSwitch />
+                            <ThemeToggle />
+                        </div>
                     </div>
 
                     {/* Auth Buttons - Desktop */}
-                    <div className="hidden md:flex items-center space-x-4">
+                    <div className={navStyles.authContainer}>
                         {isAuthenticated ? (
                             <Button
                                 variant="ghost"
@@ -114,17 +118,17 @@ export function Navbar() {
                     </div>
 
                     {/* Mobile menu button */}
-                    <div className="flex md:hidden">
+                    <div className={navStyles.mobileMenuBtn}>
                         <button
                             type="button"
-                            className="inline-flex items-center justify-center p-2 rounded-md text-foreground/80 hover:text-foreground hover:bg-background/90"
+                            className={navStyles.mobileMenuTrigger}
                             onClick={() => setIsOpen(!isOpen)}
                         >
                             <span className="sr-only">{t('nav.openMenu')}</span>
                             {isOpen ? (
-                                <XMarkIcon className="block h-6 w-6" />
+                                <XMarkIcon className={navStyles.mobileIcon} />
                             ) : (
-                                <Bars3Icon className="block h-6 w-6" />
+                                <Bars3Icon className={navStyles.mobileIcon} />
                             )}
                         </button>
                     </div>
@@ -133,26 +137,29 @@ export function Navbar() {
 
             {/* Mobile menu */}
             <div className={`${isOpen ? 'block' : 'hidden'} md:hidden`}>
-                <div className="px-2 pt-2 pb-3 space-y-1">
+                <div className={navStyles.mobileMenu.container}>
                     {filteredNavigation.map((item) => (
                         <Link
                             key={item.name}
                             to={item.href}
-                            className="flex items-center space-x-2 text-foreground/80 hover:text-foreground hover:bg-background/90 px-3 py-2 rounded-md text-base font-medium"
+                            className={navStyles.mobileMenu.link}
                             onClick={() => setIsOpen(false)}
                         >
-                            <item.icon className="h-5 w-5" />
+                            <item.icon className={navStyles.navIcon} />
                             <span>{item.name}</span>
                         </Link>
                     ))}
-                    <LanguageSwitch />
+                    <div className="flex items-center space-x-2 px-3 py-2">
+                        <LanguageSwitch />
+                        <ThemeToggle />
+                    </div>
                 </div>
                 {/* Auth Buttons - Mobile */}
-                <div className="pt-4 pb-3 border-t border-foreground/10">
-                    <div className="px-2 space-y-1">
+                <div className={navStyles.mobileMenu.authSection}>
+                    <div className={navStyles.mobileMenu.authContainer}>
                         {isAuthenticated ? (
                             <button
-                                className="w-full text-left px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground hover:bg-background/90"
+                                className={navStyles.mobileMenu.authButton}
                                 onClick={handleLogout}
                             >
                                 {t('auth.logout')}
@@ -161,14 +168,14 @@ export function Navbar() {
                             <>
                                 <Link
                                     to="/login"
-                                    className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground hover:bg-background/90"
+                                    className={navStyles.mobileMenu.authLink}
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {t('auth.signIn')}
                                 </Link>
                                 <Link
                                     to="/register"
-                                    className="block px-3 py-2 rounded-md text-base font-medium text-foreground/80 hover:text-foreground hover:bg-background/90"
+                                    className={navStyles.mobileMenu.authLink}
                                     onClick={() => setIsOpen(false)}
                                 >
                                     {t('auth.signUp')}

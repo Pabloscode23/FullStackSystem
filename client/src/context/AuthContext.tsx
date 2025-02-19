@@ -8,11 +8,12 @@ const MOCK_USER = {
 };
 
 // Define the shape of our authentication context
-interface AuthContextType {
+export interface AuthContextType {
     user: typeof MOCK_USER | null;
     login: (email: string, password: string) => void;
     logout: () => void;
     isAuthenticated: boolean;
+    register: (email: string, password: string, username: string) => Promise<void>;
 }
 
 // Create the context with null as initial value
@@ -41,7 +42,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             user,
             login,
             logout,
-            isAuthenticated: !!user
+            isAuthenticated: !!user,
+            register: async (email: string, password: string, username: string) => {
+                // Implementation of register function
+            }
         }}>
             {children}
         </AuthContext.Provider>
