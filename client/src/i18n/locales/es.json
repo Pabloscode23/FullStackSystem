@@ -1,0 +1,108 @@
+{
+  "brand": {
+    "name": "PokéApp",
+    "logoAlt": "Logo de PokéApp"
+  },
+  "nav": {
+    "home": "Inicio",
+    "myTeam": "Mi Equipo",
+    "favorites": "Favoritos",
+    "compare": "Comparar",
+    "profile": "Perfil",
+    "openMenu": "Abrir menú principal"
+  },
+  "auth": {
+    "login": "Iniciar Sesión",
+    "register": "Registrarse",
+    "resetPassword": "Restablecer Contraseña",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes cuenta?",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "signUp": "Registrarse",
+    "signIn": "Iniciar Sesión",
+    "logout": "Cerrar Sesión",
+    "username": "Nombre de usuario",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar Contraseña",
+    "usernamePlaceholder": "Ingresa tu nombre de usuario",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "confirmPasswordPlaceholder": "Confirma tu contraseña",
+    "rememberMe": "Recordarme",
+    "or": "o",
+    "continueWith": "Continuar con",
+    "demoCredentials": "Credenciales de prueba",
+    "email": "Correo electrónico",
+    "errors": {
+      "emailRequired": "El correo electrónico es requerido",
+      "emailInvalid": "Por favor ingresa un correo electrónico válido",
+      "passwordRequired": "La contraseña es requerida",
+      "invalidCredentials": "Correo electrónico o contraseña inválidos"
+    }
+  },
+  "footer": {
+    "rights": "© 2024 PokéApp. Todos los derechos reservados.",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Servicio",
+    "contact": "Contacto"
+  },
+  "pages": {
+    "home": {
+      "welcome": "Bienvenido a PokéApp",
+      "search": "Buscar Pokémon",
+      "filter": "Filtrar por tipo",
+      "sort": "Ordenar por"
+    },
+    "pokemon": {
+      "stats": "Estadísticas",
+      "types": "Tipos",
+      "abilities": "Habilidades",
+      "moves": "Movimientos",
+      "addToTeam": "Añadir al Equipo",
+      "addToFavorites": "Añadir a Favoritos",
+      "removeFromFavorites": "Quitar de Favoritos"
+    },
+    "myTeam": {
+      "title": "Mi Equipo",
+      "empty": "Tu equipo está vacío",
+      "addPokemon": "Añadir Pokémon",
+      "maxReached": "Tamaño máximo de equipo alcanzado"
+    },
+    "favorites": {
+      "title": "Favoritos",
+      "empty": "Aún no hay favoritos",
+      "addSome": "Añade algunos Pokémon a favoritos"
+    },
+    "compare": {
+      "title": "Comparar Pokémon",
+      "selectFirst": "Selecciona el primer Pokémon",
+      "selectSecond": "Selecciona el segundo Pokémon",
+      "compare": "Comparar"
+    },
+    "profile": {
+      "title": "Perfil",
+      "settings": "Ajustes",
+      "language": "Idioma",
+      "theme": "Tema",
+      "logout": "Cerrar Sesión"
+    },
+    "notFound": {
+      "title": "404",
+      "message": "Página no encontrada",
+      "goHome": "Ir al Inicio"
+    }
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "next": "Siguiente",
+    "previous": "Anterior"
+  }
+} 
