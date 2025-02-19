@@ -13,7 +13,7 @@ interface Pokemon {
 interface TeamContextType {
     team: (Pokemon | null)[];
     teamName: string;
-    setTeamName: (name: string) => void;
+    updateTeamName: (name: string) => void;
     addToTeam: (pokemon: Pokemon) => { success: boolean; message: string };
     removeFromTeam: (index: number) => { success: boolean; message: string };
     isInTeam: (pokemonId: number) => boolean;
@@ -25,7 +25,7 @@ const TeamContext = createContext<TeamContextType | undefined>(undefined);
 export function TeamProvider({ children }: { children: ReactNode }) {
     const { t } = useTranslation();
     const [team, setTeam] = useState<(Pokemon | null)[]>(Array(6).fill(null));
-    const [teamName, setTeamName] = useState(t('myTeam.defaultName')); // "Mi Equipo" por defecto
+    const [teamName, setTeamName] = useState(t('team.defaultName')); // Default team name
 
     const isTeamFull = team.every(slot => slot !== null);
 
@@ -82,7 +82,7 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         <TeamContext.Provider value={{
             team,
             teamName,
-            setTeamName,
+            updateTeamName: setTeamName,
             addToTeam,
             removeFromTeam,
             isInTeam,

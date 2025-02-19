@@ -190,6 +190,8 @@
     "previous": "Previous"
   },
   "team": {
+    "viewTeam": "View Team",
+    "defaultName": "My Team",
     "errors": {
       "teamFull": "Team is full",
       "alreadyInTeam": "This Pokémon is already in your team",

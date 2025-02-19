@@ -2,10 +2,12 @@ import { useTeam } from '@/context/TeamContext';
 import { Button } from '@/components/ui/Button';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { XMarkIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
+import { type Pokemon } from '@/services/pokemonService';
+import { Input } from '@/components/ui/form/Input';
 
-// Componente para mostrar un Pokémon individual
+// Component to display an individual Pokemon preview
 function PokemonPreview({ pokemon }: { pokemon: NonNullable<Pokemon> }) {
     return (
         <div className="aspect-square rounded-lg overflow-hidden bg-accent/10">
@@ -18,7 +20,7 @@ function PokemonPreview({ pokemon }: { pokemon: NonNullable<Pokemon> }) {
     );
 }
 
-// Componente para el botón de "Ver equipo"
+// Component for the "View Team" button
 function ViewTeamButton({ onClick }: { onClick: () => void }) {
     const { t } = useTranslation();
     return (
@@ -31,16 +33,64 @@ function ViewTeamButton({ onClick }: { onClick: () => void }) {
     );
 }
 
-export function FloatingTeamPreview() {
-    const { team } = useTeam();
-    const navigate = useNavigate();
+// Component for editable team name
+function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) => void }) {
+    const [isEditing, setIsEditing] = useState(false);
+    const [value, setValue] = useState(name);
     const { t } = useTranslation();
+
+    const handleSave = () => {
+        onSave(value);
+        setIsEditing(false);
+    };
+
+    const handleKeyDown = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter') {
+            handleSave();
+        } else if (e.key === 'Escape') {
+            setValue(name);
+            setIsEditing(false);
+        }
+    };
+
+    if (isEditing) {
+        return (
+            <Input
+                type="text"
+                value={value}
+                onChange={(e) => setValue(e.target.value)}
+                onBlur={handleSave}
+                onKeyDown={handleKeyDown}
+                placeholder={t('pages.myTeam.namePlaceholder')}
+                className="text-sm h-8 w-full"
+                autoFocus
+            />
+        );
+    }
+
+    return (
+        <div className="flex items-center gap-2 group">
+            <span className="font-semibold">{name}</span>
+            <button
+                onClick={() => setIsEditing(true)}
+                className="opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+                <PencilIcon className="w-4 h-4 text-muted-foreground hover:text-foreground" />
+            </button>
+        </div>
+    );
+}
+
+export function FloatingTeamPreview() {
+    const { team, teamName, updateTeamName } = useTeam();
+    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
 
-    // Filtramos los pokémon null y verificamos si hay alguno
+    // Filter out null Pokemon and verify if there are any
     const validTeam = team.filter((pokemon): pokemon is NonNullable<typeof pokemon> => pokemon !== null);
     if (validTeam.length === 0) return null;
 
+    // Handle navigation to team page
     const handleViewTeam = () => {
         setIsOpen(false);
         navigate('/my-team');
@@ -48,13 +98,20 @@ export function FloatingTeamPreview() {
 
     return (
         <>
-            {/* Mobile Toggle Button */}
+            {/* Mobile Toggle Button - Hidden when drawer is open */}
             <Button
                 onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-4 right-4 md:hidden z-50 bg-gradient-to-r from-blue-500 to-purple-500"
+                className={`
+                    fixed bottom-4 right-4 
+                    md:hidden 
+                    z-50 
+                    bg-gradient-to-r from-blue-500 to-purple-500
+                    transition-all duration-300
+                    ${isOpen ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'}
+                `}
                 size="sm"
             >
-                {t('team.currentTeam')} ({validTeam.length})
+                {teamName}
             </Button>
 
             {/* Mobile Drawer */}
@@ -68,20 +125,25 @@ export function FloatingTeamPreview() {
                 z-40
                 ${isOpen ? 'translate-y-0' : 'translate-y-full'}
             `}>
-                <div className="flex justify-between items-center mb-4">
-                    <h3 className="font-semibold">
-                        {t('team.currentTeam')} ({validTeam.length}/6)
-                    </h3>
-                    <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setIsOpen(false)}
-                    >
-                        <XMarkIcon className="w-5 h-5" />
-                    </Button>
+                {/* Header with team name and counter */}
+                <div className="flex flex-col gap-2 mb-4">
+                    <div className="flex justify-between items-center">
+                        <TeamNameInput name={teamName} onSave={updateTeamName} />
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            <XMarkIcon className="w-5 h-5" />
+                        </Button>
+                    </div>
+                    <span className="text-sm text-muted-foreground">
+                        ({validTeam.length}/6 Pokémon)
+                    </span>
                 </div>
 
-                <div className="flex gap-2 overflow-x-auto pb-2">
+                {/* Pokemon preview grid */}
+                <div className="flex gap-2 overflow-x-auto pb-4">
                     {validTeam.map((pokemon) => (
                         <div key={pokemon.id} className="flex-shrink-0 w-16 h-16">
                             <PokemonPreview pokemon={pokemon} />
@@ -89,9 +151,7 @@ export function FloatingTeamPreview() {
                     ))}
                 </div>
 
-                <div className="mt-4">
-                    <ViewTeamButton onClick={handleViewTeam} />
-                </div>
+                <ViewTeamButton onClick={handleViewTeam} />
             </div>
 
             {/* Desktop Floating Preview */}
@@ -106,10 +166,14 @@ export function FloatingTeamPreview() {
                 w-full
                 z-40
             ">
-                <h3 className="font-semibold mb-4">
-                    {t('team.currentTeam')} ({validTeam.length}/6)
-                </h3>
+                <div className="flex justify-between items-center mb-4">
+                    <TeamNameInput name={teamName} onSave={updateTeamName} />
+                    <span className="text-sm text-muted-foreground">
+                        ({validTeam.length}/6)
+                    </span>
+                </div>
 
+                {/* Pokemon grid for desktop */}
                 <div className="grid grid-cols-3 gap-2 mb-4">
                     {validTeam.map((pokemon) => (
                         <PokemonPreview key={pokemon.id} pokemon={pokemon} />
