@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { HTMLAttributes, forwardRef } from "react";
 
+// Base Card component - Container for card content
 const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     ({ className, ...props }, ref) => (
         <div
@@ -19,6 +20,7 @@ const Card = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
 );
 Card.displayName = "Card";
 
+// Card Header - Contains title and optional description
 const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     ({ className, ...props }, ref) => (
         <div
@@ -34,8 +36,14 @@ const CardHeader = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
 );
 CardHeader.displayName = "CardHeader";
 
-const CardTitle = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLHeadingElement>>(
-    ({ className, ...props }, ref) => (
+// Interface for CardTitle to ensure it always has content
+interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+    children: React.ReactNode; // Required to ensure heading has content for accessibility
+}
+
+// Card Title - Main heading of the card with gradient text effect
+const CardTitle = forwardRef<HTMLHeadingElement, CardTitleProps>(
+    ({ className, children, ...props }, ref) => (
         <h3
             ref={ref}
             className={cn(
@@ -44,11 +52,14 @@ const CardTitle = forwardRef<HTMLParagraphElement, HTMLAttributes<HTMLHeadingEle
                 className
             )}
             {...props}
-        />
+        >
+            {children}
+        </h3>
     )
 );
 CardTitle.displayName = "CardTitle";
 
+// Card Content - Main content area of the card
 const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
     ({ className, ...props }, ref) => (
         <div
@@ -64,4 +75,5 @@ const CardContent = forwardRef<HTMLDivElement, HTMLAttributes<HTMLDivElement>>(
 );
 CardContent.displayName = "CardContent";
 
+// Export all card components for use in other parts of the application
 export { Card, CardHeader, CardTitle, CardContent }; 
