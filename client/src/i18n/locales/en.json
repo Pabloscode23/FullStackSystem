@@ -21,6 +21,7 @@
     "haveAccount": "Already have an account?",
     "signUp": "Sign up",
     "signIn": "Sign in",
+    "examplePlaceholder": "email@email.com",
     "logout": "Logout",
     "username": "Username",
     "password": "Password",
@@ -31,13 +32,12 @@
     "rememberMe": "Remember me",
     "or": "or",
     "continueWith": "Continue with",
-    "demoCredentials": "Demo credentials",
     "email": "Email",
     "loginDescription": "Enter your credentials to access your account",
-    "loading": "Signing in...",
-    "demoCredentialsTitle": "Demo Credentials",
-    "demoCredentialsEmail": "Email: demo@example.com",
-    "demoCredentialsPassword": "Password: password",
+    "loading": {
+      "register": "Creating account...",
+      "login": "Signing in..."
+    },
     "emailPlaceholder": "Enter your email",
     "registerDescription": "Create an account to start your journey",
     "passwordRequirements": "Password must be at least 8 characters and include uppercase, lowercase, and numbers",
@@ -48,18 +48,22 @@
       "invalidCredentials": "Invalid email or password",
       "usernameTooShort": "Username must be at least 3 characters",
       "usernameTooLong": "Username must be less than 20 characters",
-      "invalidEmail": "Please enter a valid email",
+      "invalidEmail": "Please enter a valid email address",
       "passwordTooShort": "Password must be at least 8 characters",
       "passwordUppercase": "Password must include an uppercase letter",
       "passwordLowercase": "Password must include a lowercase letter",
       "passwordNumber": "Password must include a number",
       "passwordsDontMatch": "Passwords do not match",
-      "registrationFailed": "Registration failed. Please try again"
+      "registrationFailed": "Registration failed. Please try again",
+      "usernameExists": "Username is already taken",
+      "emailExists": "Email address is already registered",
+      "registerSuccess": "Registration successful! Please log in",
+      "default": "An error occurred. Please try again"
     }
   },
   "footer": {
     "rights": "© 2025 PokéApp. All rights reserved.",
-    "contact": "Contact Creator",
+    "contact": "Contact Developer",
     "sourceCode": "Source Code"
   },
   "pages": {

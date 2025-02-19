@@ -11,21 +11,62 @@ import { FavoritesPage } from '@/pages/FavoritesPage';
 import { ComparePage } from '@/pages/ComparePage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { ResetPasswordPage } from '@/pages/auth/ResetPasswordPage';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 
 export function AppRouter() {
     return (
         <BrowserRouter>
             <Layout>
                 <Routes>
+                    {/* Public routes */}
                     <Route path="/" element={<HomePage />} />
-                    <Route path="/pokemon" element={<PokemonPage />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/register" element={<RegisterPage />} />
                     <Route path="/reset-password" element={<ResetPasswordPage />} />
-                    <Route path="/compare" element={<ComparePage />} />
-                    <Route path="/my-team" element={<MyTeamPage />} />
-                    <Route path="/favorites" element={<FavoritesPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
+
+                    {/* Protected routes */}
+                    <Route
+                        path="/pokemon"
+                        element={
+                            <ProtectedRoute>
+                                <PokemonPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/compare"
+                        element={
+                            <ProtectedRoute>
+                                <ComparePage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/my-team"
+                        element={
+                            <ProtectedRoute>
+                                <MyTeamPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/favorites"
+                        element={
+                            <ProtectedRoute>
+                                <FavoritesPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/profile"
+                        element={
+                            <ProtectedRoute>
+                                <ProfilePage />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    {/* Catch all */}
                     <Route path="*" element={<NotFoundPage />} />
                 </Routes>
             </Layout>

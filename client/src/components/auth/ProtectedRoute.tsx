@@ -1,4 +1,4 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 
 interface ProtectedRouteProps {
@@ -6,10 +6,18 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-    const { isAuthenticated } = useAuth();
+    const { user, loading } = useAuth();
+    const location = useLocation();
 
-    if (!isAuthenticated) {
-        return <Navigate to="/login" replace />;
+    // Show nothing while checking authentication status
+    if (loading) {
+        return null;
+    }
+
+    // Redirect to login if not authenticated
+    if (!user) {
+        // Save the attempted url for redirecting after login
+        return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
     return <>{children}</>;

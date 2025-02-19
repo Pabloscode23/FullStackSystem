@@ -1,12 +1,15 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { FirebaseError } from 'firebase/app';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/form/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/components/ui/Toaster';
 import { formStyles } from '@/constants/styles';
 import { AuthLayout } from '@/components/layout/AuthLayout';
 
@@ -33,11 +36,13 @@ export function RegisterPage() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { register: registerUser } = useAuth();
+    const { showToast } = useToast();
+    const [isLoading, setIsLoading] = useState(false);
 
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
+        formState: { errors },
         setError,
     } = useForm<RegisterFormData>({
         resolver: zodResolver(schema),
@@ -45,14 +50,41 @@ export function RegisterPage() {
 
     const onSubmit = async (data: RegisterFormData) => {
         try {
+            setIsLoading(true);
             await registerUser(data.email, data.password, data.username);
+            showToast(t('auth.errors.registerSuccess'), 'success');
             navigate('/login');
-        } catch (error: unknown) {
-            const errorMessage = error instanceof Error ? error.message : 'Registration failed';
-            console.error('Registration error:', errorMessage);
-            setError('root', {
-                message: 'auth.errors.registrationFailed'
-            });
+        } catch (error) {
+            if (error instanceof Error) {
+                // Handle specific validation errors
+                if (error.message === 'auth.errors.usernameExists') {
+                    setError('username', {
+                        type: 'manual',
+                        message: 'auth.errors.usernameExists'
+                    });
+                    showToast(t('auth.errors.usernameExists'), 'error');
+                }
+                else if (error.message === 'auth.errors.emailExists') {
+                    setError('email', {
+                        type: 'manual',
+                        message: 'auth.errors.emailExists'
+                    });
+                    showToast(t('auth.errors.emailExists'), 'error');
+                }
+                // Handle Firebase errors
+                else if (error instanceof FirebaseError) {
+                    showToast(
+                        t(`auth.errors.${error.code}`) || t('auth.errors.default'),
+                        'error'
+                    );
+                }
+                // Handle other errors
+                else {
+                    showToast(t('auth.errors.default'), 'error');
+                }
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -91,9 +123,9 @@ export function RegisterPage() {
                                 type="text"
                                 label={t('auth.username')}
                                 placeholder={t('auth.usernamePlaceholder')}
-                                error={errors.username ? t(errors.username.message!) : undefined}
+                                error={errors.username && t(errors.username.message!)}
                                 {...register('username')}
-                                disabled={isSubmitting}
+                                disabled={isLoading}
                                 className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
                             />
                         </div>
@@ -102,10 +134,10 @@ export function RegisterPage() {
                             <Input
                                 type="email"
                                 label={t('auth.email')}
-                                placeholder="demo@example.com"
-                                error={errors.email ? t(errors.email.message!) : undefined}
+                                placeholder={t('auth.examplePlaceholder')}
+                                error={errors.email && t(errors.email.message!)}
                                 {...register('email')}
-                                disabled={isSubmitting}
+                                disabled={isLoading}
                                 className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
                             />
                         </div>
@@ -117,7 +149,7 @@ export function RegisterPage() {
                                 placeholder={t('auth.passwordPlaceholder')}
                                 error={errors.password ? t(errors.password.message!) : undefined}
                                 {...register('password')}
-                                disabled={isSubmitting}
+                                disabled={isLoading}
                                 className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
                             />
                         </div>
@@ -129,7 +161,7 @@ export function RegisterPage() {
                                 placeholder={t('auth.confirmPasswordPlaceholder')}
                                 error={errors.confirmPassword ? t(errors.confirmPassword.message!) : undefined}
                                 {...register('confirmPassword')}
-                                disabled={isSubmitting}
+                                disabled={isLoading}
                                 className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
                             />
                         </div>
@@ -137,12 +169,12 @@ export function RegisterPage() {
                         <Button
                             type="submit"
                             className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-colors duration-200"
-                            disabled={isSubmitting}
+                            disabled={isLoading}
                         >
-                            {isSubmitting ? (
-                                <span className="flex items-center space-x-2">
+                            {isLoading ? (
+                                <span className="flex items-center justify-center gap-2">
                                     <span className="animate-spin">⚪</span>
-                                    <span>{t('common.loading')}</span>
+                                    <span>{t('auth.loading.register')}</span>
                                 </span>
                             ) : (
                                 t('auth.signUp')
@@ -167,10 +199,6 @@ export function RegisterPage() {
                                     {t('auth.signIn')}
                                 </Link>
                             </p>
-                        </div>
-
-                        <div className="mt-4 text-center text-sm text-muted-foreground/80 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg">
-                            {t('auth.passwordRequirements')}
                         </div>
                     </form>
                 </CardContent>

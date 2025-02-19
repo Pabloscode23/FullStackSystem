@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -7,21 +8,23 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/form/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/components/ui/Toaster';
 import { formStyles } from '@/constants/styles';
 import { AuthLayout } from '@/components/layout/AuthLayout';
+import { FirebaseError } from 'firebase/app';
 
 export function LoginPage() {
     const { t } = useTranslation();
-    const { login } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
+    const { login } = useAuth();
+    const { showToast } = useToast();
+    const [isLoading, setIsLoading] = useState(false);
 
     // Define validation schema using Zod with i18n keys
     const loginSchema = z.object({
-        email: z.string()
-            .min(1, { message: 'auth.errors.emailRequired' })
-            .email({ message: 'auth.errors.emailInvalid' }),
-        password: z.string()
-            .min(1, { message: 'auth.errors.passwordRequired' })
+        email: z.string().email('auth.errors.invalidEmail'),
+        password: z.string().min(1, 'auth.errors.passwordRequired'),
     });
 
     type LoginFormData = z.infer<typeof loginSchema>;
@@ -29,24 +32,28 @@ export function LoginPage() {
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
-        setError,
+        formState: { errors },
     } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
-        defaultValues: {
-            email: '',
-            password: ''
-        }
     });
 
     const onSubmit = async (data: LoginFormData) => {
         try {
+            setIsLoading(true);
             await login(data.email, data.password);
-            navigate('/');
-        } catch (error: unknown) {
-            setError('root', {
-                message: 'auth.errors.invalidCredentials'
-            });
+            showToast(t('auth.loginSuccess'), 'success');
+            // La navegación ocurrirá automáticamente por el ProtectedRoute
+        } catch (error) {
+            if (error instanceof FirebaseError) {
+                showToast(
+                    t(`auth.errors.${error.code}`) || t('auth.errors.default'),
+                    'error'
+                );
+            } else {
+                showToast(t('auth.errors.default'), 'error');
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -85,9 +92,9 @@ export function LoginPage() {
                                 type="email"
                                 label={t('auth.email')}
                                 placeholder={t('auth.emailPlaceholder')}
-                                error={errors.email ? t(errors.email.message!) : undefined}
+                                error={errors.email?.message}
                                 {...register('email')}
-                                disabled={isSubmitting}
+                                disabled={isLoading}
                                 className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
                             />
                         </div>
@@ -97,9 +104,9 @@ export function LoginPage() {
                                 type="password"
                                 label={t('auth.password')}
                                 placeholder={t('auth.passwordPlaceholder')}
-                                error={errors.password ? t(errors.password.message!) : undefined}
+                                error={errors.password?.message}
                                 {...register('password')}
-                                disabled={isSubmitting}
+                                disabled={isLoading}
                                 className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
                             />
                         </div>
@@ -116,12 +123,12 @@ export function LoginPage() {
                         <Button
                             type="submit"
                             className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-colors duration-200"
-                            disabled={isSubmitting}
+                            disabled={isLoading}
                         >
-                            {isSubmitting ? (
-                                <span className="flex items-center space-x-2">
+                            {isLoading ? (
+                                <span className="flex items-center justify-center gap-2">
                                     <span className="animate-spin">⚪</span>
-                                    <span>{t('auth.loading')}</span>
+                                    <span>{t('auth.loading.login')}</span>
                                 </span>
                             ) : (
                                 t('auth.signIn')
@@ -142,16 +149,13 @@ export function LoginPage() {
                         <div className="text-center">
                             <p className="text-sm text-muted-foreground">
                                 {t('auth.noAccount')}{' '}
-                                <Link to="/register" className="text-primary hover:text-primary/80 transition-colors">
+                                <Link
+                                    to="/register"
+                                    className="text-primary hover:text-primary/80 transition-colors"
+                                >
                                     {t('auth.signUp')}
                                 </Link>
                             </p>
-                        </div>
-
-                        <div className="mt-4 text-center text-sm text-muted-foreground/80 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg">
-                            <p className="font-medium mb-1">{t('auth.demoCredentialsTitle')}</p>
-                            <p>{t('auth.demoCredentialsEmail')}</p>
-                            <p>{t('auth.demoCredentialsPassword')}</p>
                         </div>
                     </form>
                 </CardContent>

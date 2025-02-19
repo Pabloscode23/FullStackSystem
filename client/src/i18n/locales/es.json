@@ -21,6 +21,7 @@
     "haveAccount": "¿Ya tienes una cuenta?",
     "signUp": "Registrarse",
     "signIn": "Iniciar Sesión",
+    "examplePlaceholder": "correo@correo.com",
     "logout": "Cerrar Sesión",
     "username": "Usuario",
     "password": "Contraseña",
@@ -31,13 +32,9 @@
     "rememberMe": "Recordarme",
     "or": "o",
     "continueWith": "Continuar con",
-    "demoCredentials": "Credenciales de prueba",
     "email": "Correo electrónico",
     "loginDescription": "Ingresa tus credenciales para acceder a tu cuenta",
     "loading": "Iniciando sesión...",
-    "demoCredentialsTitle": "Credenciales de prueba",
-    "demoCredentialsEmail": "Email: demo@example.com",
-    "demoCredentialsPassword": "Contraseña: password",
     "emailPlaceholder": "Ingresa tu email",
     "registerDescription": "Crea una cuenta para comenzar tu aventura",
     "passwordRequirements": "La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas y números",
@@ -54,12 +51,14 @@
       "passwordLowercase": "La contraseña debe incluir una minúscula",
       "passwordNumber": "La contraseña debe incluir un número",
       "passwordsDontMatch": "Las contraseñas no coinciden",
-      "registrationFailed": "Registro fallido. Por favor intenta de nuevo"
+      "registrationFailed": "Registro fallido. Por favor intenta de nuevo",
+      "usernameExists": "El nombre de usuario ya está en uso",
+      "emailExists": "El correo electrónico ya está registrado"
     }
   },
   "footer": {
     "rights": "© 2025 PokéApp. Todos los derechos reservados.",
-    "contact": "Contactar al Creador",
+    "contact": "Contactar al Desarrollador",
     "sourceCode": "Código Fuente"
   },
   "pages": {

@@ -10,10 +10,21 @@ import {
     UsersIcon,
     SparklesIcon,
 } from '@heroicons/react/24/outline';
+import { useState, useEffect } from 'react';
 
 export function HomePage() {
     const { t } = useTranslation();
-    const { isAuthenticated } = useAuth();
+    const { user, getUsersCount } = useAuth();
+    const [usersCount, setUsersCount] = useState(0);
+
+    useEffect(() => {
+        const fetchUsersCount = async () => {
+            const count = await getUsersCount();
+            setUsersCount(count);
+        };
+
+        fetchUsersCount();
+    }, [getUsersCount]);
 
     const features = [
         {
@@ -47,7 +58,7 @@ export function HomePage() {
             gradient: 'from-blue-500 to-cyan-500'
         },
         {
-            number: t('pages.home.stats.trainersCount'),
+            number: usersCount.toString(),
             label: t('pages.home.stats.trainers'),
             icon: UsersIcon,
             gradient: 'from-purple-500 to-pink-500'
@@ -81,7 +92,7 @@ export function HomePage() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full sm:w-auto mx-auto">
-                    {!isAuthenticated ? (
+                    {!user ? (
                         <>
                             <Link to="/register" className="w-full sm:w-auto min-w-[160px]">
                                 <Button
