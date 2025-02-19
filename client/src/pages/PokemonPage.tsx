@@ -1,12 +1,13 @@
-import { PokemonListContainer } from '../components/pokemon/PokemonListContainer';
 import { useTranslation } from 'react-i18next';
-import { FloatingTeamPreview } from '../components/team/FloatingTeamPreview';
+import { PageContainer } from '@/components/layout/PageContainer';
+import { PokemonListContainer } from '@/components/pokemon/PokemonListContainer';
+import { FloatingTeamPreview } from '@/components/team/FloatingTeamPreview';
 
 export function PokemonPage() {
     const { t } = useTranslation();
 
     return (
-        <div className="min-h-screen space-y-8 pb-12">
+        <PageContainer>
             {/* Hero Section with animated background */}
             <section className="relative text-center py-12 overflow-hidden">
                 <div className="absolute inset-0 -z-10">
@@ -26,14 +27,12 @@ export function PokemonPage() {
             </section>
 
             {/* Main Content */}
-            <div className="container mx-auto px-4">
-                <div className="relative backdrop-blur-sm bg-card/50 border border-accent/20 rounded-lg shadow-lg">
-                    <PokemonListContainer />
-                </div>
+            <div className="relative backdrop-blur-sm bg-card/50 border border-accent/20 rounded-lg shadow-lg">
+                <PokemonListContainer />
             </div>
 
             {/* Floating Team Preview */}
             <FloatingTeamPreview />
-        </div>
+        </PageContainer>
     );
 } 

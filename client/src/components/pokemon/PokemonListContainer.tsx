@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { pokemonService, type Pokemon } from '@/services/pokemonService';
-import { PokemonCard } from './PokemonCard';
-import { Spinner } from '../ui/Spinner';
+import { PokemonCard } from '@/components/pokemon/PokemonCard';
+import { Spinner } from '@/components/ui/Spinner';
 import { Button } from '@/components/ui/Button';
 import {
     ChevronLeftIcon,

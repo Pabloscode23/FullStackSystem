@@ -1,97 +1,123 @@
-import { useState } from 'react';
+import { useTeam } from '@/context/TeamContext';
+import { Button } from '@/components/ui/Button';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
-import { useTeam } from '../../context/TeamContext';
-import { PencilIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
+
+// Componente para mostrar un Pokémon individual
+function PokemonPreview({ pokemon }: { pokemon: NonNullable<Pokemon> }) {
+    return (
+        <div className="aspect-square rounded-lg overflow-hidden bg-accent/10">
+            <img
+                src={pokemon.sprites.front_default}
+                alt={pokemon.name}
+                className="w-full h-full object-contain"
+            />
+        </div>
+    );
+}
+
+// Componente para el botón de "Ver equipo"
+function ViewTeamButton({ onClick }: { onClick: () => void }) {
+    const { t } = useTranslation();
+    return (
+        <Button
+            onClick={onClick}
+            className="w-full bg-gradient-to-r from-blue-500 to-purple-500"
+        >
+            {t('team.viewTeam')}
+        </Button>
+    );
+}
 
 export function FloatingTeamPreview() {
+    const { team } = useTeam();
+    const navigate = useNavigate();
     const { t } = useTranslation();
-    const { team, teamName, setTeamName } = useTeam();
-    const [isEditing, setIsEditing] = useState(false);
-    const [editedName, setEditedName] = useState(teamName);
-    const teamCount = team.filter(Boolean).length;
+    const [isOpen, setIsOpen] = useState(false);
 
-    const handleNameSubmit = () => {
-        if (editedName.trim()) {
-            setTeamName(editedName.trim());
-        } else {
-            setEditedName(teamName);
-        }
-        setIsEditing(false);
+    // Filtramos los pokémon null y verificamos si hay alguno
+    const validTeam = team.filter((pokemon): pokemon is NonNullable<typeof pokemon> => pokemon !== null);
+    if (validTeam.length === 0) return null;
+
+    const handleViewTeam = () => {
+        setIsOpen(false);
+        navigate('/my-team');
     };
 
     return (
-        <div className="fixed bottom-6 right-6 z-50">
-            <div className="group relative flex flex-col gap-2 bg-card/95 backdrop-blur-sm p-3 rounded-lg shadow-lg border border-accent/20 hover:border-accent/40 transition-all duration-300">
-                {/* Team Name */}
-                <div className="flex items-center justify-between gap-2">
-                    {isEditing ? (
-                        <input
-                            type="text"
-                            value={editedName}
-                            onChange={(e) => setEditedName(e.target.value)}
-                            onBlur={handleNameSubmit}
-                            onKeyDown={(e) => e.key === 'Enter' && handleNameSubmit()}
-                            className="bg-background/50 px-2 py-1 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary"
-                            placeholder={t('myTeam.namePlaceholder')}
-                            maxLength={20}
-                            autoFocus
-                        />
-                    ) : (
-                        <h3 className="text-sm font-medium flex items-center gap-2">
-                            {teamName}
-                            <button
-                                onClick={() => setIsEditing(true)}
-                                className="opacity-0 group-hover:opacity-100 transition-opacity"
-                                title={t('myTeam.editName')}
-                            >
-                                <PencilIcon className="w-3 h-3 text-muted-foreground hover:text-foreground" />
-                            </button>
-                        </h3>
-                    )}
+        <>
+            {/* Mobile Toggle Button */}
+            <Button
+                onClick={() => setIsOpen(!isOpen)}
+                className="fixed bottom-4 right-4 md:hidden z-50 bg-gradient-to-r from-blue-500 to-purple-500"
+                size="sm"
+            >
+                {t('team.currentTeam')} ({validTeam.length})
+            </Button>
+
+            {/* Mobile Drawer */}
+            <div className={`
+                fixed inset-x-0 bottom-0 
+                bg-card/95 backdrop-blur-sm 
+                border-t border-accent/20 
+                p-4 shadow-lg 
+                transform transition-transform duration-300 ease-in-out
+                md:hidden
+                z-40
+                ${isOpen ? 'translate-y-0' : 'translate-y-full'}
+            `}>
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="font-semibold">
+                        {t('team.currentTeam')} ({validTeam.length}/6)
+                    </h3>
+                    <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => setIsOpen(false)}
+                    >
+                        <XMarkIcon className="w-5 h-5" />
+                    </Button>
                 </div>
 
-                {/* Team Preview */}
-                <Link
-                    to="/my-team"
-                    className="flex items-center gap-2"
-                >
-                    <div className="flex -space-x-3">
-                        {team.map((pokemon, index) => (
-                            pokemon ? (
-                                <img
-                                    key={index}
-                                    src={pokemon.sprites.front_default}
-                                    alt={pokemon.name}
-                                    className="w-10 h-10 rounded-full border-2 border-background"
-                                />
-                            ) : (
-                                <div
-                                    key={index}
-                                    className="w-10 h-10 rounded-full border-2 border-dashed border-accent/40 bg-accent/5 flex items-center justify-center"
-                                    title={t('myTeam.emptySlot')}
-                                >
-                                    {index + 1}
-                                </div>
-                            )
-                        ))}
-                    </div>
+                <div className="flex gap-2 overflow-x-auto pb-2">
+                    {validTeam.map((pokemon) => (
+                        <div key={pokemon.id} className="flex-shrink-0 w-16 h-16">
+                            <PokemonPreview pokemon={pokemon} />
+                        </div>
+                    ))}
+                </div>
 
-                    <div className="ml-2">
-                        <span className="text-sm font-medium">
-                            {t('myTeam.currentTeam', { count: teamCount })}
-                        </span>
-                        <span className="ml-2 text-sm text-muted-foreground">
-                            {t('myTeam.viewTeam')}
-                        </span>
-                    </div>
-                </Link>
-
-                {/* Tooltip */}
-                <div className="absolute -top-8 right-0 opacity-0 group-hover:opacity-100 transition-opacity bg-popover text-popover-foreground text-sm px-2 py-1 rounded shadow-lg">
-                    {t('myTeam.clickToView')}
+                <div className="mt-4">
+                    <ViewTeamButton onClick={handleViewTeam} />
                 </div>
             </div>
-        </div>
+
+            {/* Desktop Floating Preview */}
+            <div className="
+                fixed right-4 bottom-4
+                hidden md:block
+                bg-card/95 backdrop-blur-sm
+                border border-accent/20
+                rounded-lg shadow-lg
+                p-4
+                max-w-xs
+                w-full
+                z-40
+            ">
+                <h3 className="font-semibold mb-4">
+                    {t('team.currentTeam')} ({validTeam.length}/6)
+                </h3>
+
+                <div className="grid grid-cols-3 gap-2 mb-4">
+                    {validTeam.map((pokemon) => (
+                        <PokemonPreview key={pokemon.id} pokemon={pokemon} />
+                    ))}
+                </div>
+
+                <ViewTeamButton onClick={handleViewTeam} />
+            </div>
+        </>
     );
 } 
