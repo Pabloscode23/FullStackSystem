@@ -1,11 +1,11 @@
 export interface TeamPokemon {
     id: number;
     name: string;
-    types: {
+    types: Array<{
         type: {
             name: string;
-        };
-    }[];
+        }
+    }>;
     sprites: {
         front_default: string;
         other: {
@@ -18,10 +18,9 @@ export interface TeamPokemon {
 
 export interface Team {
     id: string;
-    userId: string;
     name: string;
     pokemon: TeamPokemon[];
+    userId: string;
     createdAt: Date;
-    updatedAt: Date;
     favorite: boolean;
 } 

@@ -6,6 +6,7 @@ import { PencilIcon } from '@heroicons/react/24/outline';
 import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/form/Input';
 import { PokemonPreview } from './PokemonPreview';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 // Component for editable team name
 function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) => void }) {
@@ -131,7 +132,7 @@ function TeamActions({ onView, onSave }: { onView: () => void; onSave: () => voi
 }
 
 export function FloatingTeamPreview() {
-    const { team, teamName, updateTeamName, saveTeam } = useTeam();
+    const { team, teamName, updateTeamName, saveTeam, isEditing } = useTeam();
     const navigate = useNavigate();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [isDesktopVisible, setIsDesktopVisible] = useState(true);
@@ -165,6 +166,11 @@ export function FloatingTeamPreview() {
             console.error('Error saving team:', error);
         }
     };
+
+    // Si estamos en modo edición, no mostramos el preview
+    if (isEditing) {
+        return null;
+    }
 
     return (
         <>

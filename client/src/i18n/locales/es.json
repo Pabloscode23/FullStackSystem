@@ -152,7 +152,7 @@
     },
     "myTeam": {
       "title": "Mis Equipos",
-      "empty": "Tu equipo está vacío",
+      "empty": "Aún no tienes ningún equipo",
       "addPokemon": "Añadir Pokémon",
       "maxReached": "Tamaño máximo del equipo alcanzado",
       "viewTeam": "Ver Equipo",
@@ -166,7 +166,6 @@
       "namePlaceholder": "Ingresa un nombre genial para tu equipo",
       "description": "Accede y gestiona todos tus equipos creados. Revisa, edita y organiza tus diferentes estrategias de equipo.",
       "createFirst": "Crea tu primer equipo"
-  
     },
     "favorites": {
       "title": "Equipos Favoritos",
@@ -237,6 +236,14 @@
     },
     "pokemon": {
       "count": "{{count}} Pokémon"
+    },
+    "edit": {
+      "title": "Editar Equipo",
+      "name": "Nombre del Equipo",
+      "namePlaceholder": "Ingresa el nombre del equipo",
+      "addPokemon": "Agregar Pokémon",
+      "removePokemon": "Quitar del equipo",
+      "notFound": "Equipo no encontrado"
     }
   }
 } 

@@ -4,6 +4,8 @@ import { PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { StarIcon as StarOutline } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolid } from '@heroicons/react/24/solid';
 import type { Team, TeamPokemon } from '@/types/team';
+import { useNavigate } from 'react-router-dom';
+import { useTeam } from '@/context/TeamContext';
 
 interface TeamCardProps {
     team: Team;
@@ -29,7 +31,15 @@ function getTypeCount(pokemon: TeamPokemon[] | undefined) {
 
 export function TeamCard({ team, onDelete, onToggleFavorite }: TeamCardProps) {
     const { t } = useTranslation();
-    const typeCount = getTypeCount(team.pokemon);
+    const navigate = useNavigate();
+    const { startEditing } = useTeam();
+
+    const handleEdit = async () => {
+        const success = await startEditing(team.id);
+        if (success) {
+            navigate(`/teams/edit/${team.id}`);
+        }
+    };
 
     return (
         <div className="bg-card mb-9 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group/card">
@@ -120,7 +130,7 @@ export function TeamCard({ team, onDelete, onToggleFavorite }: TeamCardProps) {
                             variant="ghost"
                             size="sm"
                             className="text-blue-600 hover:text-blue-800 hover:bg-blue-100/50"
-                            onClick={() => {/* Implementar edición */ }}
+                            onClick={handleEdit}
                         >
                             <PencilIcon className="h-4 w-4 mr-1" />
                             {t('common.edit')}

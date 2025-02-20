@@ -22,7 +22,8 @@ export const teamService = {
                 name,
                 pokemon,
                 createdAt: serverTimestamp(),
-                updatedAt: serverTimestamp()
+                updatedAt: serverTimestamp(),
+                favorite: false
             };
 
             const docRef = await addDoc(collection(db, 'teams'), teamData);
@@ -42,12 +43,16 @@ export const teamService = {
             );
 
             const snapshot = await getDocs(teamsQuery);
-            return snapshot.docs.map(doc => ({
-                id: doc.id,
-                ...doc.data(),
-                createdAt: (doc.data().createdAt as Timestamp).toDate(),
-                updatedAt: (doc.data().updatedAt as Timestamp).toDate()
-            })) as Team[];
+            return snapshot.docs.map(doc => {
+                const data = doc.data();
+                return {
+                    id: doc.id,
+                    ...data,
+                    favorite: data.favorite ?? false,
+                    createdAt: data.createdAt ? new Date(data.createdAt.seconds * 1000) : new Date(),
+                    pokemon: data.pokemon || []
+                } as Team;
+            });
         } catch (error) {
             console.error('Error getting user teams:', error);
             throw error;

@@ -143,15 +143,6 @@ export function LoginPage() {
                             />
                         </div>
 
-                        <div className="flex items-center justify-between">
-                            <Link
-                                to="/reset-password"
-                                className="text-sm text-primary hover:text-primary/80 transition-colors"
-                            >
-                                {t('auth.forgotPassword')}
-                            </Link>
-                        </div>
-
                         <Button
                             type="submit"
                             className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-colors duration-200"

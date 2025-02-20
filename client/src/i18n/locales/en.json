@@ -146,7 +146,7 @@
     },
     "myTeam": {
       "title": "My Teams",
-      "empty": "Your team is empty",
+      "empty": "You don't have any teams yet",
       "addPokemon": "Add Pokémon",
       "maxReached": "Maximum team size reached",
       "viewTeam": "View Team",
@@ -230,6 +230,14 @@
     },
     "pokemon": {
       "count": "{{count}} Pokémon"
+    },
+    "edit": {
+      "title": "Edit Team",
+      "name": "Team Name",
+      "namePlaceholder": "Enter team name",
+      "addPokemon": "Add Pokémon",
+      "removePokemon": "Remove from team",
+      "reorder": "Drag to reorder"
     }
   }
 } 

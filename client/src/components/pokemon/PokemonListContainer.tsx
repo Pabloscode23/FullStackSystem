@@ -9,12 +9,27 @@ import {
     ChevronDoubleRightIcon
 } from '@heroicons/react/24/outline';
 import { AnimatedPokemonCard } from '@/components/pokemon/AnimatedPokemonCard';
+import { useTeam } from '@/context/TeamContext';
+import { useAuth } from '@/context/AuthContext';
+import { teamService } from '@/services/teamService';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/components/ui/Toaster';
+import { useTranslation } from 'react-i18next';
 
 // Number of Pokemon to display per page
 const POKEMON_PER_PAGE = 20;
 const MAX_POKEMON = 200; // Match the service constant
 
 export function PokemonListContainer() {
+    const { isEditing, currentTeamId, addToTeam, handleAddPokemon } = useTeam();
+    const { user } = useAuth();
+    const navigate = useNavigate();
+    const { toast } = useToast();
+    const { t } = useTranslation();
+
+    console.log('isEditing:', isEditing); // Para debug
+    console.log('currentTeamId:', currentTeamId); // Para debug
+
     // State management for Pokemon data and UI
     const [pokemon, setPokemon] = useState<Pokemon[]>([]);
     const [loading, setLoading] = useState(true);
@@ -80,6 +95,44 @@ export function PokemonListContainer() {
         return pages;
     };
 
+    const handlePokemonSelect = async (pokemon: Pokemon) => {
+        if (isEditing && currentTeamId) {
+            try {
+                const userTeams = await teamService.getUserTeams(user!.uid);
+                const currentTeam = userTeams.find(t => t.id === currentTeamId);
+
+                if (currentTeam) {
+                    const updatedPokemon = [...currentTeam.pokemon, pokemon];
+                    await teamService.updateTeam(currentTeamId, {
+                        ...currentTeam,
+                        pokemon: updatedPokemon
+                    });
+
+                    toast({
+                        title: t('team.success.added'),
+                        variant: 'default',
+                        className: 'bg-green-500 text-white'
+                    });
+
+                    navigate(`/teams/edit/${currentTeamId}`);
+                }
+            } catch (error) {
+                console.error('Error updating team:', error);
+                toast({
+                    title: t('team.errors.saveFailed'),
+                    variant: 'destructive'
+                });
+            }
+        } else {
+            const result = addToTeam(pokemon);
+            toast({
+                title: result.message,
+                variant: result.success ? 'default' : 'destructive',
+                className: result.success ? 'bg-green-500 text-white' : undefined
+            });
+        }
+    };
+
     // Error handling
     if (error) {
         return (
@@ -98,9 +151,13 @@ export function PokemonListContainer() {
             ) : (
                 <>
                     {/* Pokemon Grid */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
-                        {pokemon.map((poke, index) => (
-                            <AnimatedPokemonCard key={poke.id} pokemon={poke} index={index} />
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        {pokemon.map((poke) => (
+                            <AnimatedPokemonCard
+                                key={poke.id}
+                                pokemon={poke}
+                                onAdd={handleAddPokemon}
+                            />
                         ))}
                     </div>
 

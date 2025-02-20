@@ -1,9 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { PokemonListContainer } from '@/components/pokemon/PokemonListContainer';
 import { FloatingTeamPreview } from '@/components/team/FloatingTeamPreview';
+import { useTeam } from '@/context/TeamContext';
+import { FloatingEditTeamPreview } from '@/components/team/FloatingEditTeamPreview';
 
 export function PokemonPage() {
     const { t } = useTranslation();
+    const { mode } = useTeam();
 
     return (
         <div className="min-h-screen space-y-4 pt-4">
@@ -26,7 +29,7 @@ export function PokemonPage() {
                 <PokemonListContainer />
             </div>
 
-            <FloatingTeamPreview />
+            {mode === 'editing' ? <FloatingEditTeamPreview /> : <FloatingTeamPreview />}
         </div>
     );
 } 

@@ -9,6 +9,7 @@ import { NotFoundPage } from '@/pages/NotFoundPage';
 import { MyTeamPage } from '@/pages/MyTeamPage';
 import { FavoritesPage } from '@/pages/FavoritesPage';;
 import { ResetPasswordPage } from '@/pages/auth/ResetPasswordPage';
+import { EditTeamPage } from '@/pages/EditTeamPage';
 
 const router = createBrowserRouter([
     {
@@ -44,6 +45,14 @@ const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute>
                         <MyTeamPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'teams/edit/:teamId',
+                element: (
+                    <ProtectedRoute>
+                        <EditTeamPage />
                     </ProtectedRoute>
                 ),
             },

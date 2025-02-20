@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/context/ThemeContext';
 import { ToastProvider } from '@/components/ui/Toaster';
 import { AppRouter } from '@/routes';
 import '@/i18n';
+import { EditTeamPage } from '@/pages/EditTeamPage';
 
 function App() {
   return (
