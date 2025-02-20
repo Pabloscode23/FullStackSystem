@@ -1,6 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
 import { pokemonService, type Pokemon } from '@/services/pokemonService';
-import { PokemonCard } from '@/components/pokemon/PokemonCard';
 import { Spinner } from '@/components/ui/Spinner';
 import { Button } from '@/components/ui/Button';
 import {
@@ -9,6 +8,7 @@ import {
     ChevronDoubleLeftIcon,
     ChevronDoubleRightIcon
 } from '@heroicons/react/24/outline';
+import { AnimatedPokemonCard } from '@/components/pokemon/AnimatedPokemonCard';
 
 // Number of Pokemon to display per page
 const POKEMON_PER_PAGE = 20;
@@ -99,11 +99,8 @@ export function PokemonListContainer() {
                 <>
                     {/* Pokemon Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
-                        {pokemon.map((poke) => (
-                            <PokemonCard
-                                key={poke.id}
-                                pokemon={poke}
-                            />
+                        {pokemon.map((poke, index) => (
+                            <AnimatedPokemonCard key={poke.id} pokemon={poke} index={index} />
                         ))}
                     </div>
 

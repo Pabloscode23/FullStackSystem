@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { RegisterPage } from '@/pages/auth/RegisterPage';
 import { HomePage } from '@/pages/HomePage';
@@ -34,54 +34,50 @@ const router = createBrowserRouter([
                 element: <ResetPasswordPage />,
             },
             {
+                path: 'pokemon',
+                element: (
+                    <ProtectedRoute>
+                        <PokemonPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'compare',
+                element: (
+                    <ProtectedRoute>
+                        <ComparePage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'my-team',
+                element: (
+                    <ProtectedRoute>
+                        <MyTeamPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'favorites',
+                element: (
+                    <ProtectedRoute>
+                        <FavoritesPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'profile',
+                element: (
+                    <ProtectedRoute>
+                        <ProfilePage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
                 path: '*',
-                element: <Navigate to="/" replace />,
+                element: <NotFoundPage />,
             },
         ],
-    },
-    {
-        path: '/pokemon',
-        element: (
-            <ProtectedRoute>
-                <PokemonPage />
-            </ProtectedRoute>
-        ),
-    },
-    {
-        path: '/compare',
-        element: (
-            <ProtectedRoute>
-                <ComparePage />
-            </ProtectedRoute>
-        ),
-    },
-    {
-        path: '/my-team',
-        element: (
-            <ProtectedRoute>
-                <MyTeamPage />
-            </ProtectedRoute>
-        ),
-    },
-    {
-        path: '/favorites',
-        element: (
-            <ProtectedRoute>
-                <FavoritesPage />
-            </ProtectedRoute>
-        ),
-    },
-    {
-        path: '/profile',
-        element: (
-            <ProtectedRoute>
-                <ProfilePage />
-            </ProtectedRoute>
-        ),
-    },
-    {
-        path: '*',
-        element: <NotFoundPage />,
     },
 ]);
 

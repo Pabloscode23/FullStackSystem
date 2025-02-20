@@ -95,22 +95,6 @@ export function PokemonCard({ pokemon, isFavorite, onToggleFavorite }: PokemonCa
         setTimeout(() => setShowToast(false), 2000);
     };
 
-    // Función para traducir tipos
-    const getTranslatedType = (type: string) => {
-        return t(`pokemon.types.${type}`, { defaultValue: type.charAt(0).toUpperCase() + type.slice(1) });
-    };
-
-    // Función para traducir habilidades
-    const getTranslatedAbility = (ability: string) => {
-        // Formatea el nombre de la habilidad para que sea más legible si no hay traducción
-        const formattedName = ability
-            .split('-')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-
-        return t(`pokemon.abilities.${ability}`, { defaultValue: formattedName });
-    };
-
     return (
         <div className="group relative bg-card/95 backdrop-blur-sm border border-accent/20 rounded-xl 
             overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1
@@ -196,14 +180,15 @@ export function PokemonCard({ pokemon, isFavorite, onToggleFavorite }: PokemonCa
                     </div>
                 </div>
 
-                {/* Actions with improved styling */}
-                <div className="flex justify-between items-center pt-2">
+                {/* Actions con botón centrado */}
+                <div className="flex flex-col items-center gap-4 pt-2">
                     <button
                         onClick={handleAddToTeam}
                         disabled={isCurrentlyInTeam}
                         className={`
-                            flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium
+                            flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-medium
                             transition-all duration-200 shadow-sm hover:shadow-md
+                            max-w-[200px] justify-center mx-auto
                             ${isCurrentlyInTeam
                                 ? 'bg-accent/20 text-muted-foreground cursor-not-allowed'
                                 : isTeamFull

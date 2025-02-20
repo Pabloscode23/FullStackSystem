@@ -208,11 +208,22 @@
       "teamFull": "El equipo está lleno",
       "alreadyInTeam": "Este Pokémon ya está en tu equipo",
       "contextError": "useTeam debe usarse dentro de un TeamProvider",
-      "invalidSlot": "Posición de equipo inválida"
+      "invalidSlot": "Posición de equipo inválida",
+      "nameRequired": "El nombre del equipo es requerido",
+      "nameExists": "Ya existe un equipo con este nombre",
+      "incompleteTeam": "Tu equipo debe tener 6 Pokémon"
     },
     "success": {
       "added": "Agregado al equipo",
-      "removed": "Removido del equipo"
+      "removed": "Eliminado del equipo",
+      "saved": "¡Equipo guardado exitosamente!"
+    },
+    "actions": {
+      "save": "Guardar Equipo",
+      "view": "Ver Equipo"
+    },
+    "errors": {
+      "saveFailed": "Error al guardar el equipo"
     }
   }
 } 

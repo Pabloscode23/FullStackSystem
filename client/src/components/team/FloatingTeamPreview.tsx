@@ -4,34 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { XMarkIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { useState } from 'react';
-import { type Pokemon } from '@/services/pokemonService';
 import { Input } from '@/components/ui/form/Input';
-
-// Component to display an individual Pokemon preview
-function PokemonPreview({ pokemon }: { pokemon: NonNullable<Pokemon> }) {
-    return (
-        <div className="aspect-square rounded-lg overflow-hidden bg-accent/10">
-            <img
-                src={pokemon.sprites.front_default}
-                alt={pokemon.name}
-                className="w-full h-full object-contain"
-            />
-        </div>
-    );
-}
-
-// Component for the "View Team" button
-function ViewTeamButton({ onClick }: { onClick: () => void }) {
-    const { t } = useTranslation();
-    return (
-        <Button
-            onClick={onClick}
-            className="w-full bg-gradient-to-r from-blue-500 to-purple-500"
-        >
-            {t('team.viewTeam')}
-        </Button>
-    );
-}
+import { PokemonPreview } from './PokemonPreview';
 
 // Component for editable team name
 function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) => void }) {
@@ -81,8 +55,29 @@ function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) 
     );
 }
 
+// Component for action buttons
+function TeamActions({ onView, onSave }: { onView: () => void; onSave: () => void }) {
+    const { t } = useTranslation();
+    return (
+        <div className="space-y-2">
+            <Button
+                onClick={onView}
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-500"
+            >
+                {t('team.actions.view')}
+            </Button>
+            <Button
+                onClick={onSave}
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-500"
+            >
+                {t('team.actions.save')}
+            </Button>
+        </div>
+    );
+}
+
 export function FloatingTeamPreview() {
-    const { team, teamName, updateTeamName } = useTeam();
+    const { team, teamName, updateTeamName, saveTeam } = useTeam();
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
 
@@ -94,6 +89,17 @@ export function FloatingTeamPreview() {
     const handleViewTeam = () => {
         setIsOpen(false);
         navigate('/my-team');
+    };
+
+    const handleSaveTeam = async () => {
+        try {
+            const success = await saveTeam();
+            if (success) {
+                setIsOpen(false);
+            }
+        } catch (error) {
+            console.error('Error saving team:', error);
+        }
     };
 
     return (
@@ -144,14 +150,17 @@ export function FloatingTeamPreview() {
 
                 {/* Pokemon preview grid */}
                 <div className="flex gap-2 overflow-x-auto pb-4">
-                    {validTeam.map((pokemon) => (
+                    {validTeam.map((pokemon, index) => (
                         <div key={pokemon.id} className="flex-shrink-0 w-16 h-16">
-                            <PokemonPreview pokemon={pokemon} />
+                            <PokemonPreview
+                                pokemon={pokemon}
+                                index={index}
+                            />
                         </div>
                     ))}
                 </div>
 
-                <ViewTeamButton onClick={handleViewTeam} />
+                <TeamActions onView={handleViewTeam} onSave={handleSaveTeam} />
             </div>
 
             {/* Desktop Floating Preview */}
@@ -175,12 +184,16 @@ export function FloatingTeamPreview() {
 
                 {/* Pokemon grid for desktop */}
                 <div className="grid grid-cols-3 gap-2 mb-4">
-                    {validTeam.map((pokemon) => (
-                        <PokemonPreview key={pokemon.id} pokemon={pokemon} />
+                    {validTeam.map((pokemon, index) => (
+                        <PokemonPreview
+                            key={pokemon.id}
+                            pokemon={pokemon}
+                            index={index}
+                        />
                     ))}
                 </div>
 
-                <ViewTeamButton onClick={handleViewTeam} />
+                <TeamActions onView={handleViewTeam} onSave={handleSaveTeam} />
             </div>
         </>
     );
