@@ -14,7 +14,12 @@ export function EditTeamPage() {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { user } = useAuth();
-    const { startEditing, stopEditing, updateTeamPokemon } = useTeam();
+    const {
+        startEditing,
+        stopEditing,
+        updateTeamPokemon,
+        forceResetState
+    } = useTeam();
     const [currentTeam, setCurrentTeam] = useState<Team | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [teamName, setTeamName] = useState('');
@@ -41,12 +46,21 @@ export function EditTeamPage() {
         };
 
         fetchTeam();
+    }, [teamId, user, startEditing, updateTeamPokemon]);
 
-        // Cleanup function
+    useEffect(() => {
+        const originalState = sessionStorage.getItem('teamEditState');
+
         return () => {
-            stopEditing();
+            if (originalState && currentTeam) {
+                const original = JSON.parse(originalState);
+                if (original.team?.id === currentTeam.id &&
+                    original.team?.pokemon.length === currentTeam.pokemon.length) {
+                    forceResetState();
+                }
+            }
         };
-    }, [teamId, user]);
+    }, [currentTeam, forceResetState]);
 
     const handleNavigate = (path: string) => {
         stopEditing();

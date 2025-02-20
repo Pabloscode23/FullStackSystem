@@ -256,26 +256,42 @@ export function TeamProvider({ children }: { children: ReactNode }) {
     };
 
     const startCreating = () => {
-        setMode('creating');
-        setIsEditing(false);
-        setCurrentTeamId(null);
-        setEditingTeam(null);
-        resetTeam();
+        // Si no hay un equipo en edición activo, iniciar modo creación
+        if (!editingTeam) {
+            sessionStorage.removeItem('teamEditState');
+            setMode('creating');
+            setIsEditing(false);
+            setCurrentTeamId(null);
+            setEditingTeam(null);
+            resetTeam();
+        }
     };
 
     const stopEditing = () => {
-        // Solo limpiar el estado si no estamos en una ruta de edición
-        if (!window.location.pathname.includes('/teams/edit/') &&
-            !window.location.pathname.includes('/pokemon')) {
-            console.log('Stopping edit mode - not in edit route');
+        const currentPath = window.location.pathname;
+
+        // Si estamos en la página principal o en teams, limpiar todo
+        if (currentPath === '/' || currentPath === '/teams') {
             setMode('idle');
             setIsEditing(false);
             setCurrentTeamId(null);
             setEditingTeam(null);
             setTeamState(Array(6).fill(null));
             sessionStorage.removeItem('teamEditState');
-        } else {
-            console.log('Not stopping edit mode - in edit route');
+            return;
+        }
+
+        // Si estamos en la página de Pokémon
+        if (currentPath === '/pokemon') {
+            // Solo limpiar si no estamos editando activamente
+            if (!isEditing || !editingTeam) {
+                setMode('creating');
+                setIsEditing(false);
+                setCurrentTeamId(null);
+                setEditingTeam(null);
+                setTeamState(Array(6).fill(null));
+                sessionStorage.removeItem('teamEditState');
+            }
         }
     };
 
@@ -363,6 +379,16 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    // Agregar un nuevo método para forzar la limpieza del estado
+    const forceResetState = () => {
+        setMode('creating');
+        setIsEditing(false);
+        setCurrentTeamId(null);
+        setEditingTeam(null);
+        setTeamState(Array(6).fill(null));
+        sessionStorage.removeItem('teamEditState');
+    };
+
     return (
         <TeamContext.Provider value={{
             team: teamState,
@@ -389,7 +415,8 @@ export function TeamProvider({ children }: { children: ReactNode }) {
             setMode,
             setIsEditing,
             setCurrentTeamId,
-            setEditingTeam
+            setEditingTeam,
+            forceResetState
         }}>
             {children}
         </TeamContext.Provider>

@@ -42,94 +42,96 @@ export function TeamCard({ team, onDelete, onToggleFavorite }: TeamCardProps) {
     };
 
     return (
-        <div className="bg-card mb-9 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden group/card">
-            <div className="p-6 space-y-6">
-                {/* Header */}
-                <div className="flex justify-between items-center mb-2">
-                    <div className="flex items-center gap-3">
-                        <h3 className="text-xl font-semibold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                            {team.name}
-                        </h3>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => onToggleFavorite(team.id, !team.favorite)}
-                            className={`
-                                relative overflow-hidden
-                                transition-all duration-300 ease-out
-                                hover:scale-110 active:scale-95
-                                ${team.favorite
-                                    ? 'text-yellow-400 bg-yellow-400/10 hover:bg-yellow-400/20'
-                                    : 'text-muted-foreground hover:text-yellow-400'
-                                }
-                            `}
-                        >
-                            <div className={`
-                                transform transition-all duration-300
-                                ${team.favorite ? 'scale-100 rotate-0' : 'scale-0 rotate-180'}
-                            `}>
-                                <StarSolid className="h-5 w-5" />
-                            </div>
-                            <div className={`
-                                absolute inset-0 flex items-center justify-center
-                                transform transition-all duration-300
-                                ${team.favorite ? 'scale-0 rotate-180' : 'scale-100 rotate-0'}
-                            `}>
-                                <StarOutline className="h-5 w-5" />
-                            </div>
-                        </Button>
-                    </div>
-                    <span className="text-sm text-muted-foreground">
-                        {new Date(team.createdAt).toLocaleDateString()}
-                    </span>
-                </div>
+        <div className="relative group/card overflow-hidden mb-6">
+            {/* Fondo con gradiente más pronunciado */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50/50 to-pink-50/30 
+                dark:from-accent/10 dark:via-background dark:to-accent/5" />
 
-                {/* Pokemon Grid */}
-                <div className="grid grid-cols-3 gap-3">
-                    {team.pokemon?.map((pokemon, index) => (
-                        <div
-                            key={index}
-                            className="group relative aspect-square rounded-lg overflow-hidden bg-accent/5 p-2"
-                        >
-                            <div className="absolute top-2 left-2 z-10 px-2 py-1 bg-black/40 rounded-full text-xs text-white">
-                                #{pokemon.id}
-                            </div>
-                            <img
-                                src={pokemon.sprites.other['official-artwork'].front_default}
-                                alt={pokemon.name}
-                                className="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-300"
-                            />
-                            {/* Pokemon Info Overlay */}
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-3">
-                                <p className="text-white text-sm font-medium capitalize mb-1">
-                                    {pokemon.name}
-                                </p>
-                                <div className="flex flex-wrap gap-1">
-                                    {pokemon.types?.map((type, i) => (
-                                        <span
-                                            key={i}
-                                            className="text-xs px-2 py-0.5 rounded-full bg-white/20 text-white backdrop-blur-sm"
-                                        >
-                                            {type.type.name}
-                                        </span>
-                                    ))}
+            <div className="relative border border-accent/20 rounded-xl bg-white/80 dark:bg-slate-900/80 
+                backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-300">
+                {/* Decorative top border */}
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-80" />
+
+                <div className="p-6 space-y-6">
+                    {/* Header con mejor contraste */}
+                    <div className="flex justify-between items-center">
+                        <div className="flex items-center gap-3">
+                            <h3 className="text-xl font-semibold bg-clip-text text-transparent 
+                                bg-gradient-to-r from-blue-700 to-purple-700 
+                                dark:from-blue-400 dark:to-purple-400">
+                                {team.name}
+                            </h3>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => onToggleFavorite(team.id, !team.favorite)}
+                                className={`
+                                    relative overflow-hidden transition-all duration-300 ease-out
+                                    hover:scale-110 active:scale-95
+                                    ${team.favorite
+                                        ? 'text-yellow-600 bg-yellow-100 hover:bg-yellow-200 dark:bg-yellow-400/20'
+                                        : 'text-slate-400 hover:text-yellow-600 hover:bg-yellow-50'
+                                    }
+                                `}
+                            >
+                                {team.favorite ? <StarSolid className="w-5 h-5" /> : <StarOutline className="w-5 h-5" />}
+                            </Button>
+                        </div>
+                    </div>
+
+                    {/* Pokemon Grid con mejor profundidad */}
+                    <div className="grid grid-cols-3 gap-4">
+                        {team.pokemon?.map((pokemon, index) => (
+                            <div
+                                key={index}
+                                className="group relative aspect-square rounded-lg overflow-hidden 
+                                    bg-gradient-to-br from-slate-50 to-white dark:from-slate-800 dark:to-slate-900
+                                    shadow-sm hover:shadow-md transition-all duration-300
+                                    border border-slate-200/50 dark:border-slate-700/50"
+                            >
+                                <div className="absolute top-2 left-2 z-10 px-2 py-1 
+                                    bg-black/30 backdrop-blur-sm 
+                                    rounded-full text-xs text-white font-medium">
+                                    #{pokemon.id}
+                                </div>
+                                <img
+                                    src={pokemon.sprites.other['official-artwork'].front_default}
+                                    alt={pokemon.name}
+                                    className="w-full h-full object-contain transform group-hover:scale-110 
+                                        transition-transform duration-300 p-2"
+                                />
+                                {/* Info Overlay con mejor contraste */}
+                                <div className="absolute inset-0 bg-gradient-to-t 
+                                    from-slate-900/90 via-slate-900/60 to-transparent 
+                                    opacity-0 group-hover:opacity-100 transition-opacity duration-200 
+                                    flex flex-col justify-end p-3">
+                                    <p className="text-white text-sm font-medium capitalize mb-1">
+                                        {pokemon.name}
+                                    </p>
+                                    <div className="flex flex-wrap gap-1">
+                                        {pokemon.types?.map((type, i) => (
+                                            <span key={i} className="text-xs px-2 py-0.5 rounded-full 
+                                                bg-white/30 text-white backdrop-blur-sm font-medium">
+                                                {type.type.name}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            {/* Footer */}
-            <div className="border-t border-border p-4 bg-accent/5">
-                <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-3">
+                        ))}
                     </div>
-                    <div className="flex gap-3">
+                </div>
+
+                {/* Footer con mejor separación visual */}
+                <div className="border-t border-slate-200 dark:border-slate-700/50 
+                    p-4 bg-slate-50/50 dark:bg-slate-800/50 backdrop-blur-sm">
+                    <div className="flex justify-end items-center gap-3">
                         <Button
                             variant="ghost"
                             size="sm"
-                            className="text-blue-600 hover:text-blue-800 hover:bg-blue-100/50"
+                            className="text-blue-700 hover:text-blue-800 hover:bg-blue-50 
+                                dark:text-blue-400 dark:hover:bg-blue-900/30
+                                font-medium"
                             onClick={handleEdit}
                         >
                             <PencilIcon className="h-4 w-4 mr-1" />
@@ -138,7 +140,9 @@ export function TeamCard({ team, onDelete, onToggleFavorite }: TeamCardProps) {
                         <Button
                             variant="ghost"
                             size="sm"
-                            className="text-red-600 hover:text-red-800 hover:bg-red-100/50"
+                            className="text-red-600 hover:text-red-700 hover:bg-red-50
+                                dark:text-red-400 dark:hover:bg-red-900/30
+                                font-medium"
                             onClick={() => onDelete(team.id)}
                         >
                             <TrashIcon className="h-4 w-4 mr-1" />

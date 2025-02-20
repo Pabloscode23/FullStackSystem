@@ -1,12 +1,26 @@
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PokemonListContainer } from '@/components/pokemon/PokemonListContainer';
 import { FloatingTeamPreview } from '@/components/team/FloatingTeamPreview';
 import { useTeam } from '@/context/TeamContext';
 import { FloatingEditTeamPreview } from '@/components/team/FloatingEditTeamPreview';
+import { Button } from '@/components/ui/button';
 
 export function PokemonPage() {
     const { t } = useTranslation();
-    const { mode } = useTeam();
+    const { mode, startCreating, forceResetState } = useTeam();
+
+    // Asegurar que estamos en modo creación si no estamos editando
+    useEffect(() => {
+        if (mode === 'idle') {
+            startCreating();
+        }
+    }, [mode, startCreating]);
+
+    // Botón para crear nuevo equipo
+    const handleNewTeam = () => {
+        forceResetState();
+    };
 
     return (
         <div className="min-h-screen space-y-4 pt-4">
@@ -30,6 +44,18 @@ export function PokemonPage() {
             </div>
 
             {mode === 'editing' ? <FloatingEditTeamPreview /> : <FloatingTeamPreview />}
+
+            {/* Agregar botón si estamos en modo edición */}
+            {mode === 'editing' && (
+                <div className="container mx-auto px-4 mb-4">
+                    <Button
+                        onClick={handleNewTeam}
+                        className="bg-gradient-to-r from-blue-500 to-purple-500"
+                    >
+                        {t('team.actions.createNew')}
+                    </Button>
+                </div>
+            )}
         </div>
     );
 } 
