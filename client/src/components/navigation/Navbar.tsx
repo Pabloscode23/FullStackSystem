@@ -11,8 +11,6 @@ import {
     HomeIcon,
     UserGroupIcon,
     HeartIcon,
-    ArrowsRightLeftIcon,
-    UserCircleIcon,
     BookOpenIcon,
 } from '@heroicons/react/24/outline';
 import { useAuth } from '@/context/AuthContext';
@@ -38,7 +36,7 @@ export function Navbar() {
         },
         {
             name: t('nav.myTeam'),
-            href: '/my-team',
+            href: '/teams',
             icon: UserGroupIcon,
             requiresAuth: true
         },
@@ -47,19 +45,7 @@ export function Navbar() {
             href: '/favorites',
             icon: HeartIcon,
             requiresAuth: true
-        },
-        {
-            name: t('nav.compare'),
-            href: '/compare',
-            icon: ArrowsRightLeftIcon,
-            requiresAuth: true
-        },
-        {
-            name: t('nav.profile'),
-            href: '/profile',
-            icon: UserCircleIcon,
-            requiresAuth: true
-        },
+        }
     ];
 
     // Filter navigation items based on auth state

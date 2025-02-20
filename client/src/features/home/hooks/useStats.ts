@@ -6,6 +6,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/AuthContext';
+import { useTeam } from '@/context/TeamContext';
 import {
     BookOpenIcon,
     UsersIcon,
@@ -16,16 +17,20 @@ import type { Stat } from '../types';
 export function useStats() {
     const { t } = useTranslation();
     const { getUsersCount } = useAuth();
+    const { getTeamsCount } = useTeam();
     const [usersCount, setUsersCount] = useState(0);
+    const [teamsCount, setTeamsCount] = useState(0);
 
     useEffect(() => {
-        const fetchUsersCount = async () => {
-            const count = await getUsersCount();
-            setUsersCount(count);
+        const fetchCounts = async () => {
+            const users = await getUsersCount();
+            const teams = await getTeamsCount();
+            setUsersCount(users);
+            setTeamsCount(teams);
         };
 
-        fetchUsersCount();
-    }, [getUsersCount]);
+        fetchCounts();
+    }, [getUsersCount, getTeamsCount]);
 
     const stats: Stat[] = [
         {
@@ -41,7 +46,7 @@ export function useStats() {
             gradient: 'from-indigo-500 to-purple-500'
         },
         {
-            number: t('pages.home.stats.teamsCount'),
+            number: teamsCount.toString(),
             label: t('pages.home.stats.teams'),
             icon: SparklesIcon,
             gradient: 'from-purple-500 to-pink-500'

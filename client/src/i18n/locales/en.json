@@ -5,7 +5,7 @@
   },
   "nav": {
     "home": "Home",
-    "myTeam": "My Team",
+    "myTeam": "My Teams",
     "favorites": "Favorites",
     "compare": "Compare",
     "profile": "Profile",
@@ -75,14 +75,14 @@
       "welcome": "Welcome to PokéApp",
       "description": "Your ultimate companion for building and managing your Pokémon teams. Explore, compare, and collect your favorite Pokémon!",
       "features": {
-        "team": "Build Your Team",
-        "teamDescription": "Create your perfect team of 6 Pokémon. Analyze their strengths and weaknesses to build the ultimate combination.",
+        "team": "Favorite Teams",
+        "teamDescription": "Visualize your favorite teams and decide if you want to add or remove teams of Pokémons.",
         "compare": "Compare Pokémon",
         "compareDescription": "Compare stats, abilities, and moves between any two Pokémon to make informed decisions.",
         "favorites": "Track Your Favorites",
         "favoritesDescription": "Save your favorite Pokémon and organize them into custom collections.",
         "pokedex": "Complete Pokédex",
-        "pokedexDescription": "Explore the vast world of Pokémon. Search, filter, and learn about their abilities, stats, and evolutions.",
+        "pokedexDescription": "Explore the vast world of Pokémon. Search, learn about their abilities, stats, evolutions, and create Pokémon teams.",
         "teams": "Your Teams",
         "teamsDescription": "Access and manage all your created teams. Review, edit, and organize your different team strategies."
       },
@@ -145,7 +145,7 @@
       "description": "Explore all available Pokémon, learn their stats, and add them to your team"
     },
     "myTeam": {
-      "title": "My Team",
+      "title": "My Teams",
       "empty": "Your team is empty",
       "addPokemon": "Add Pokémon",
       "maxReached": "Maximum team size reached",

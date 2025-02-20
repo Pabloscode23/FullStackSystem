@@ -14,9 +14,9 @@ export function HomePage() {
     const stats = useStats();
 
     return (
-        <div className="space-y-12 pb-12">
+        <div className="space-y-10 pb-12">
             {/* Hero Section */}
-            <section className="relative text-center space-y-6 py-24 overflow-hidden px-4">
+            <section className="relative text-center space-y-6 py-20 overflow-hidden px-4">
 
                 <h1 className="text-4xl md:text-6xl font-bold">
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
@@ -63,7 +63,7 @@ export function HomePage() {
             </section>
 
             {/* Features Grid */}
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-4 ">
                 <div className={`${layoutStyles.grid} gap-8 max-w-7xl mx-auto`}>
                     {features.map((feature, index) => (
                         <FeatureCard key={index} feature={feature} />

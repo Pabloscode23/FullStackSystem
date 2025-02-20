@@ -4,6 +4,10 @@ import { useAuth } from './AuthContext';
 import { teamService } from '@/services/teamService';
 import { useToast } from '@/components/ui/Toaster';
 import type { Pokemon } from '@/types/pokemon';
+import { getCountFromServer } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
+import { db } from '@/config/firebase';
+
 
 interface TeamContextType {
     team: (Pokemon | null)[];
@@ -15,6 +19,7 @@ interface TeamContextType {
     isTeamFull: boolean;
     saveTeam: () => Promise<boolean>;
     resetTeam: () => void;
+    getTeamsCount: () => Promise<number>;
 }
 
 const TeamContext = createContext<TeamContextType | undefined>(undefined);
@@ -129,6 +134,12 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    const getTeamsCount = async () => {
+        const teamsRef = collection(db, 'teams');
+        const snapshot = await getCountFromServer(teamsRef);
+        return snapshot.data().count;
+    };
+
     return (
         <TeamContext.Provider value={{
             team,
@@ -139,7 +150,8 @@ export function TeamProvider({ children }: { children: ReactNode }) {
             isInTeam,
             isTeamFull,
             saveTeam,
-            resetTeam
+            resetTeam,
+            getTeamsCount
         }}>
             {children}
         </TeamContext.Provider>
@@ -148,6 +160,7 @@ export function TeamProvider({ children }: { children: ReactNode }) {
 
 export function useTeam() {
     const context = useContext(TeamContext);
+    const { t } = useTranslation();
     if (!context) throw new Error(t('team.errors.contextError'));
     return context;
 } 

@@ -7,9 +7,7 @@ import { RootLayout } from '@/components/layout/RootLayout';
 import { PokemonPage } from '@/pages/PokemonPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { MyTeamPage } from '@/pages/MyTeamPage';
-import { FavoritesPage } from '@/pages/FavoritesPage';
-import { ComparePage } from '@/pages/ComparePage';
-import { ProfilePage } from '@/pages/ProfilePage';
+import { FavoritesPage } from '@/pages/FavoritesPage';;
 import { ResetPasswordPage } from '@/pages/auth/ResetPasswordPage';
 
 const router = createBrowserRouter([
@@ -42,15 +40,7 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: 'compare',
-                element: (
-                    <ProtectedRoute>
-                        <ComparePage />
-                    </ProtectedRoute>
-                ),
-            },
-            {
-                path: 'my-team',
+                path: 'teams',
                 element: (
                     <ProtectedRoute>
                         <MyTeamPage />
@@ -62,14 +52,6 @@ const router = createBrowserRouter([
                 element: (
                     <ProtectedRoute>
                         <FavoritesPage />
-                    </ProtectedRoute>
-                ),
-            },
-            {
-                path: 'profile',
-                element: (
-                    <ProtectedRoute>
-                        <ProfilePage />
                     </ProtectedRoute>
                 ),
             },

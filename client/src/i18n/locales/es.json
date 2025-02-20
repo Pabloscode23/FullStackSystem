@@ -5,7 +5,7 @@
   },
   "nav": {
     "home": "Inicio",
-    "myTeam": "Mi Equipo",
+    "myTeam": "Mis Equipos",
     "favorites": "Favoritos",
     "compare": "Comparar",
     "profile": "Perfil",
@@ -78,14 +78,14 @@
       "welcome": "Bienvenido(a) a PokéApp",
       "description": "Tu compañero definitivo para crear y gestionar tus equipos Pokémon. ¡Explora, compara y colecciona tus Pokémon favoritos!",
       "features": {
-        "team": "Crea tu Equipo",
-        "teamDescription": "Crea tu equipo perfecto de 6 Pokémon. Analiza sus fortalezas y debilidades para construir la combinación definitiva.",
+        "team": "Equipos Favoritos",
+        "teamDescription": "Visualiza tus equipos favoritos y decide si quieres agregar o quitar",
         "compare": "Compara Pokémon",
         "compareDescription": "Compara estadísticas, habilidades y movimientos entre cualquier par de Pokémon para tomar decisiones informadas.",
         "favorites": "Sigue tus Favoritos",
         "favoritesDescription": "Guarda tus Pokémon favoritos y organízalos en colecciones personalizadas.",
         "pokedex": "Pokédex Completa",
-        "pokedexDescription": "Explora el vasto mundo Pokémon. Busca, filtra y aprende sobre sus habilidades, estadísticas y evoluciones.",
+        "pokedexDescription": "Explora el vasto mundo Pokémon. Busca, aprende sobre sus habilidades, estadísticas, evoluciones y crea equipos de Pokémones.",
         "teams": "Tus Equipos",
         "teamsDescription": "Accede y gestiona todos tus equipos creados. Revisa, edita y organiza tus diferentes estrategias de equipo."
       },
