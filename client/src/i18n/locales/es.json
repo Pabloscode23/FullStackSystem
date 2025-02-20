@@ -79,7 +79,7 @@
       "description": "Tu compañero definitivo para crear y gestionar tus equipos Pokémon. ¡Explora, compara y colecciona tus Pokémon favoritos!",
       "features": {
         "team": "Equipos Favoritos",
-        "teamDescription": "Visualiza tus equipos favoritos y decide si quieres agregar o quitar",
+        "teamDescription": "Visualiza tus equipos favoritos y decide si quieres agregar o quitar equipos de Pokémon.",
         "compare": "Compara Pokémon",
         "compareDescription": "Compara estadísticas, habilidades y movimientos entre cualquier par de Pokémon para tomar decisiones informadas.",
         "favorites": "Sigue tus Favoritos",
@@ -232,7 +232,8 @@
     },
     "actions": {
       "save": "Guardar Equipo",
-      "view": "Ver Equipo"
+      "view": "Ver Equipo",
+      "create": "Crear Equipo"
     },
     "pokemon": {
       "count": "{{count}} Pokémon"

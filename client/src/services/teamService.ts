@@ -58,10 +58,7 @@ export const teamService = {
     updateTeam: async (teamId: string, updates: Partial<Team>) => {
         try {
             const teamRef = doc(db, 'teams', teamId);
-            await updateDoc(teamRef, {
-                ...updates,
-                updatedAt: serverTimestamp()
-            });
+            await updateDoc(teamRef, updates);
         } catch (error) {
             console.error('Error updating team:', error);
             throw error;

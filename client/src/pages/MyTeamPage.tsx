@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/Button';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import type { Team } from '@/types/team';
 import { TeamCard } from '@/components/team/TeamCard';
+import { useNavigate } from 'react-router-dom';
 
 export function MyTeamPage() {
     const { t } = useTranslation();
@@ -13,6 +14,7 @@ export function MyTeamPage() {
     const [isLoading, setIsLoading] = useState(true);
     const { user } = useAuth();
     const [expandedTeamId, setExpandedTeamId] = useState<string | null>(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTeams = async () => {
@@ -56,6 +58,10 @@ export function MyTeamPage() {
         setExpandedTeamId(currentId => currentId === teamId ? null : teamId);
     };
 
+    const handleCreateTeam = () => {
+        navigate('/pokemon');
+    };
+
     return (
         <div className="min-h-screen space-y-4 pt-4">
             {/* Hero Section with animated background */}
@@ -77,7 +83,7 @@ export function MyTeamPage() {
                 <div className="flex justify-end">
                     <Button
                         className="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-                        onClick={() => {/* Implementar creación */ }}
+                        onClick={handleCreateTeam}
                     >
                         <PlusIcon className="h-5 w-5 mr-2" />
                         {t('team.actions.create')}

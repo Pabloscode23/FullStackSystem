@@ -225,7 +225,8 @@
     },
     "actions": {
       "save": "Save Team",
-      "view": "View Team"
+      "view": "View Team",
+      "create": "Create Team"
     },
     "pokemon": {
       "count": "{{count}} Pokémon"
