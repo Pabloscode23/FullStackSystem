@@ -282,18 +282,20 @@ export function TeamProvider({ children }: { children: ReactNode }) {
     const updateTeamPokemon = (pokemon: TeamPokemon[]) => {
         const fullTeam = Array(6).fill(null);
         pokemon.forEach((p, i) => {
-            fullTeam[i] = {
-                ...p,
-                stats: [],
-                abilities: [],
-                types: p.types.map(type => ({
-                    slot: 1,
-                    type: {
-                        ...type.type,
-                        url: ''
-                    }
-                }))
-            } as Pokemon;
+            if (p) {
+                fullTeam[i] = {
+                    ...p,
+                    stats: [],
+                    abilities: [],
+                    types: p.types ? p.types.map(type => ({
+                        slot: 1,
+                        type: {
+                            ...type.type,
+                            url: ''
+                        }
+                    })) : []
+                } as Pokemon;
+            }
         });
         setTeamState(fullTeam);
     };
