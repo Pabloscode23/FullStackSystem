@@ -307,7 +307,9 @@ export function TeamProvider({ children }: { children: ReactNode }) {
 
         if (mode === 'editing' && currentTeamId && editingTeam && user) {
             try {
-                if (editingTeam.pokemon.length >= 6) {
+                // Verificar usando teamState en lugar de editingTeam.pokemon
+                const currentPokemonCount = teamState.filter(p => p !== null).length;
+                if (currentPokemonCount >= 6) {
                     showToast(t('team.errors.teamFull'), 'error');
                     return false;
                 }
@@ -319,22 +321,26 @@ export function TeamProvider({ children }: { children: ReactNode }) {
                     sprites: pokemon.sprites
                 };
 
-                const updatedPokemon = [...editingTeam.pokemon, teamPokemon];
+                // Encontrar el primer slot vacío
+                const emptySlotIndex = teamState.findIndex(p => p === null);
+                const updatedPokemon = [...editingTeam.pokemon];
+                updatedPokemon[emptySlotIndex] = teamPokemon;
+
                 const updatedTeam = {
                     ...editingTeam,
-                    pokemon: updatedPokemon
+                    pokemon: updatedPokemon.filter(p => p !== null) // Filtrar nulls
                 };
 
                 await teamService.updateTeam(currentTeamId, updatedTeam);
                 setEditingTeam(updatedTeam);
-                updateTeamPokemon(updatedPokemon);
+                updateTeamPokemon(updatedTeam.pokemon);
 
                 // Actualizar sessionStorage
-                const editState = JSON.parse(sessionStorage.getItem('teamEditState') || '{}');
                 sessionStorage.setItem('teamEditState', JSON.stringify({
-                    ...editState,
+                    teamId: currentTeamId,
                     team: updatedTeam,
-                    pokemon: updatedPokemon
+                    mode: 'editing',
+                    isEditing: true
                 }));
 
                 showToast(t('team.success.added'), 'success');
