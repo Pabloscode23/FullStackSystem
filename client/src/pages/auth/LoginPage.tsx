@@ -56,12 +56,13 @@ export function LoginPage() {
         try {
             setIsLoading(true);
             await login(data.email, data.password);
-            showToast(t('auth.loginSuccess'), 'success');
-            // Navigation will be handled by ProtectedRoute
+            showToast(t('auth.success.login'), 'success');
+            // Redirigir a home después del login
+            window.location.href = '/';
         } catch (error) {
             if (error instanceof FirebaseError) {
                 const errorKey = getFirebaseErrorKey(error.code);
-                console.log('Mapped error key:', errorKey); // Para debugging
+                console.log('Mapped error key:', errorKey);
                 showToast(t(errorKey), 'error');
             } else {
                 showToast(t('auth.errors.default'), 'error');

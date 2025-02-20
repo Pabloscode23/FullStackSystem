@@ -62,6 +62,10 @@
       "networkError": "Error de conexión. Por favor verifica tu conexión a internet",
       "tooManyRequests": "Demasiados intentos fallidos. Por favor intenta más tarde",
       "userDisabled": "Esta cuenta ha sido deshabilitada"
+    },
+    "success": {
+      "login": "¡Bienvenido(a) de nuevo!",
+      "register": "¡Registro exitoso! Por favor inicia sesión"
     }
   },
   "footer": {

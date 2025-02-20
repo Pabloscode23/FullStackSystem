@@ -52,7 +52,7 @@ export function RegisterPage() {
         try {
             setIsLoading(true);
             await registerUser(data.email, data.password, data.username);
-            showToast(t('auth.errors.registerSuccess'), 'success');
+            showToast(t('auth.success.register'), 'success');
             window.location.href = '/login';
 
         } catch (error) {
