@@ -56,8 +56,8 @@
       "passwordsDontMatch": "Passwords do not match",
       "registrationFailed": "Registration failed. Please try again",
       "usernameExists": "Username is already taken",
-      "emailExists": "Email address is already registered",
-      "registerSuccess": "Registration successful! Please log in",
+      "emailExists": "Email is already registered",
+      "registerSuccess": "Registration successful! Please sign in",
       "default": "An error occurred. Please try again"
     }
   },

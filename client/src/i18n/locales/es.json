@@ -57,7 +57,7 @@
       "registrationFailed": "Registro fallido. Por favor intenta de nuevo",
       "usernameExists": "El nombre de usuario ya está en uso",
       "emailExists": "El correo electrónico ya está registrado",
-      "registerSuccess": "Registro exitoso! Por favor inicia sesión",
+      "registerSuccess": "¡Registro exitoso! Por favor inicia sesión",
       "default": "Ocurrió un error. Por favor intenta de nuevo",
       "networkError": "Error de conexión. Por favor verifica tu conexión a internet",
       "tooManyRequests": "Demasiados intentos fallidos. Por favor intenta más tarde",

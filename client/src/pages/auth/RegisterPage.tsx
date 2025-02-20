@@ -52,13 +52,12 @@ export function RegisterPage() {
         try {
             setIsLoading(true);
             await registerUser(data.email, data.password, data.username);
-
-            // Force a complete page reload and navigation
+            showToast(t('auth.errors.registerSuccess'), 'success');
             window.location.href = '/login';
 
         } catch (error) {
             if (error instanceof Error) {
-                // Handle specific validation errors
+                // Errores específicos de validación
                 if (error.message === 'auth.errors.usernameExists') {
                     setError('username', {
                         type: 'manual',
@@ -73,19 +72,25 @@ export function RegisterPage() {
                     });
                     showToast(t('auth.errors.emailExists'), 'error');
                 }
-                // Handle Firebase errors
+                // Errores de Firebase
                 else if (error instanceof FirebaseError) {
-                    showToast(
-                        t(`auth.errors.${error.code}`) || t('auth.errors.default'),
-                        'error'
-                    );
+                    const firebaseErrors: Record<string, string> = {
+                        'auth/email-already-in-use': 'auth.errors.emailExists',
+                        'auth/invalid-email': 'auth.errors.emailInvalid',
+                        'auth/operation-not-allowed': 'auth.errors.registrationFailed',
+                        'auth/weak-password': 'auth.errors.passwordTooShort',
+                        'auth/network-request-failed': 'auth.errors.networkError',
+                        'auth/too-many-requests': 'auth.errors.tooManyRequests',
+                        'auth/user-disabled': 'auth.errors.userDisabled'
+                    };
+
+                    const errorMessage = firebaseErrors[error.code] || 'auth.errors.default';
+                    showToast(t(errorMessage), 'error');
                 }
-                // Handle other errors
                 else {
                     showToast(t('auth.errors.default'), 'error');
                 }
             }
-        } finally {
             setIsLoading(false);
         }
     };
