@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -15,7 +15,6 @@ import { FirebaseError } from 'firebase/app';
 
 export function LoginPage() {
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const location = useLocation();
     const { login } = useAuth();
     const { showToast } = useToast();
@@ -23,8 +22,13 @@ export function LoginPage() {
 
     // Define validation schema using Zod with i18n keys
     const loginSchema = z.object({
-        email: z.string().email('auth.errors.invalidEmail'),
-        password: z.string().min(1, 'auth.errors.passwordRequired'),
+        email: z
+            .string()
+            .min(1, { message: 'auth.errors.emailRequired' })
+            .email({ message: 'auth.errors.emailInvalid' }),
+        password: z
+            .string()
+            .min(1, { message: 'auth.errors.passwordRequired' }),
     });
 
     type LoginFormData = z.infer<typeof loginSchema>;
@@ -33,22 +37,32 @@ export function LoginPage() {
         register,
         handleSubmit,
         formState: { errors },
+        setValue,
     } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
     });
+
+    // Handle registration success message and email pre-fill
+    useEffect(() => {
+        if (location.state?.message) {
+            showToast(t(location.state.message), 'success');
+            if (location.state.email) {
+                setValue('email', location.state.email);
+            }
+        }
+    }, [location.state, showToast, t, setValue]);
 
     const onSubmit = async (data: LoginFormData) => {
         try {
             setIsLoading(true);
             await login(data.email, data.password);
             showToast(t('auth.loginSuccess'), 'success');
-            // La navegación ocurrirá automáticamente por el ProtectedRoute
+            // Navigation will be handled by ProtectedRoute
         } catch (error) {
             if (error instanceof FirebaseError) {
-                showToast(
-                    t(`auth.errors.${error.code}`) || t('auth.errors.default'),
-                    'error'
-                );
+                const errorKey = getFirebaseErrorKey(error.code);
+                console.log('Mapped error key:', errorKey); // Para debugging
+                showToast(t(errorKey), 'error');
             } else {
                 showToast(t('auth.errors.default'), 'error');
             }
@@ -56,6 +70,23 @@ export function LoginPage() {
             setIsLoading(false);
         }
     };
+
+    // Helper function to map Firebase error codes to i18n keys
+    function getFirebaseErrorKey(errorCode: string): string {
+        const errorMap: Record<string, string> = {
+            'auth/invalid-login-credentials': 'auth.errors.invalidCredentials',
+            'auth/invalid-email': 'auth.errors.emailInvalid',
+            'auth/user-disabled': 'auth.errors.userDisabled',
+            'auth/user-not-found': 'auth.errors.invalidCredentials',
+            'auth/wrong-password': 'auth.errors.invalidCredentials',
+            'auth/too-many-requests': 'auth.errors.tooManyRequests',
+            'auth/network-request-failed': 'auth.errors.networkError',
+            'auth/internal-error': 'auth.errors.default'
+        };
+
+        console.log('Firebase error code:', errorCode);
+        return errorMap[errorCode] || 'auth.errors.default';
+    }
 
     return (
         <AuthLayout>
@@ -92,7 +123,7 @@ export function LoginPage() {
                                 type="email"
                                 label={t('auth.email')}
                                 placeholder={t('auth.emailPlaceholder')}
-                                error={errors.email?.message}
+                                error={errors.email ? t(errors.email.message!) : undefined}
                                 {...register('email')}
                                 disabled={isLoading}
                                 className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
@@ -104,7 +135,7 @@ export function LoginPage() {
                                 type="password"
                                 label={t('auth.password')}
                                 placeholder={t('auth.passwordPlaceholder')}
-                                error={errors.password?.message}
+                                error={errors.password ? t(errors.password.message!) : undefined}
                                 {...register('password')}
                                 disabled={isLoading}
                                 className="bg-background/50 backdrop-blur-sm transition-colors duration-200"

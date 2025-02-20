@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -34,7 +34,6 @@ type RegisterFormData = z.infer<typeof schema>;
 
 export function RegisterPage() {
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const { register: registerUser } = useAuth();
     const { showToast } = useToast();
     const [isLoading, setIsLoading] = useState(false);
@@ -52,8 +51,10 @@ export function RegisterPage() {
         try {
             setIsLoading(true);
             await registerUser(data.email, data.password, data.username);
-            showToast(t('auth.errors.registerSuccess'), 'success');
-            navigate('/login');
+
+            // Force a complete page reload and navigation
+            window.location.href = '/login';
+
         } catch (error) {
             if (error instanceof Error) {
                 // Handle specific validation errors
