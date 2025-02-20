@@ -157,12 +157,15 @@
       "currentTeam": "{count}/6 Pokémon",
       "defaultName": "Click here to name your team",
       "editName": "Give your team a name",
-      "namePlaceholder": "Enter a cool name for your team"
+      "namePlaceholder": "Enter a cool name for your team",
+      "description": "Access and manage all your created teams. Review, edit and organize your different team strategies.",
+      "createFirst": "Create your first team"
     },
     "favorites": {
-      "title": "Favorites",
-      "empty": "No favorites yet",
-      "addSome": "Add some Pokémon to favorites"
+      "title": "Favorite Teams",
+      "description": "Access and manage your favorite teams. Keep track of your best team strategies.",
+      "empty": "No favorite teams yet",
+      "addSome": "Mark some teams as favorites to see them here"
     },
     "compare": {
       "title": "Compare Pokémon",
@@ -196,7 +199,9 @@
     "sort": "Sort",
     "next": "Next",
     "previous": "Previous",
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "details": "Team Details",
+    "hide": "Hide Details"
   },
   "team": {
     "viewTeam": "View Team",
@@ -221,6 +226,9 @@
     "actions": {
       "save": "Save Team",
       "view": "View Team"
+    },
+    "pokemon": {
+      "count": "{{count}} Pokémon"
     }
   }
 } 

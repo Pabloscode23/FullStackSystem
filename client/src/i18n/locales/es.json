@@ -151,7 +151,7 @@
       "dragTip": "Arrastra Pokémon aquí o haz clic en Agregar desde Pokédex"
     },
     "myTeam": {
-      "title": "Mi Equipo",
+      "title": "Mis Equipos",
       "empty": "Tu equipo está vacío",
       "addPokemon": "Añadir Pokémon",
       "maxReached": "Tamaño máximo del equipo alcanzado",
@@ -163,12 +163,16 @@
       "currentTeam": "{count}/6 Pokémon",
       "defaultName": "Haz clic aquí para nombrar tu equipo",
       "editName": "Dale un nombre a tu equipo",
-      "namePlaceholder": "Ingresa un nombre genial para tu equipo"
+      "namePlaceholder": "Ingresa un nombre genial para tu equipo",
+      "description": "Accede y gestiona todos tus equipos creados. Revisa, edita y organiza tus diferentes estrategias de equipo.",
+      "createFirst": "Crea tu primer equipo"
+  
     },
     "favorites": {
-      "title": "Favoritos",
-      "empty": "No hay favoritos aún",
-      "addSome": "Añade algunos Pokémon a favoritos"
+      "title": "Equipos Favoritos",
+      "description": "Accede y gestiona tus equipos favoritos. Mantén un registro de tus mejores estrategias.",
+      "empty": "Aún no hay equipos favoritos",
+      "addSome": "Marca algunos equipos como favoritos para verlos aquí"
     },
     "compare": {
       "title": "Comparar Pokémon",
@@ -202,7 +206,9 @@
     "sort": "Ordenar",
     "next": "Siguiente",
     "previous": "Anterior",
-    "saving": "Guardando..."
+    "saving": "Guardando...",
+    "details": "Detalles del Equipo",
+    "hide": "Ocultar Detalles"
   },
   "team": {
     "viewTeam": "Ver Equipo",
@@ -227,6 +233,9 @@
     "actions": {
       "save": "Guardar Equipo",
       "view": "Ver Equipo"
+    },
+    "pokemon": {
+      "count": "{{count}} Pokémon"
     }
   }
 } 
