@@ -66,19 +66,26 @@ export function EditTeamPage() {
         if (!currentTeam) return;
 
         try {
-            const newPokemon = [...currentTeam.pokemon];
-            newPokemon.splice(index, 1);
+            // Crear una copia del array actual preservando los índices
+            const pokemonArray = [...currentTeam.pokemon];
+
+            // Crear un array con las posiciones correctas
+            const updatedPokemon = pokemonArray.map((p, i) => i === index ? null : p)
+                .filter(p => p !== null); // Filtrar nulls para la base de datos
 
             const updatedTeam = {
                 ...currentTeam,
-                pokemon: newPokemon
+                pokemon: updatedPokemon
             };
 
             await updateTeamInDB(updatedTeam);
-
             setCurrentTeam(updatedTeam);
 
-            updateTeamPokemon(newPokemon);
+            // Mantener las posiciones originales al actualizar el estado
+            const teamStateArray = [...pokemonArray];
+            teamStateArray[index] = null;
+            updateTeamPokemon(teamStateArray);
+
         } catch (error) {
             console.error('Error removing pokemon:', error);
         }
@@ -145,7 +152,7 @@ export function EditTeamPage() {
 
     return (
         <div className="min-h-screen space-y-4 pt-4">
-            {/* Hero Section */}
+            {/* Hero Section con gradiente mejorado */}
             <section className="relative py-8">
                 <div className="container mx-auto px-4">
                     <h1 className="text-4xl md:text-5xl font-bold text-center">
@@ -153,48 +160,56 @@ export function EditTeamPage() {
                             {t('team.edit.title')}
                         </span>
                     </h1>
+                    <p className="mt-3 text-lg text-muted-foreground text-center max-w-2xl mx-auto">
+                        {t('pages.myTeam.description')}
+                    </p>
                 </div>
             </section>
 
-            {/* Main Content */}
+            {/* Main Content con mejor espaciado y diseño */}
             <div className="container mx-auto px-4 space-y-8">
                 <div className="max-w-4xl mx-auto space-y-8">
-                    {/* Team Name */}
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium">{t('team.edit.name')}</label>
+                    {/* Team Name con mejor diseño */}
+                    <div className="space-y-2 max-w-md mx-auto">
                         <Input
                             value={teamName}
                             onChange={(e) => handleUpdateName(e.target.value)}
                             placeholder={t('team.edit.namePlaceholder')}
-                            className="max-w-md"
+                            className="text-center text-lg font-medium bg-accent/5 focus:bg-accent/10 border-accent/20"
                         />
                     </div>
 
-                    {/* Pokemon Grid */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    {/* Pokemon Grid con mejor diseño */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
                         {currentTeam.pokemon.map((pokemon, index) => (
                             <div
                                 key={index}
-                                className="relative group aspect-square rounded-lg overflow-hidden bg-accent/5 p-2"
+                                className="relative group aspect-square rounded-xl overflow-hidden bg-accent/5 p-2
+                                    hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
                             >
-                                <div className="absolute top-2 left-2 z-10 px-2 py-1 bg-black/40 rounded-full text-xs text-white">
+                                <div className="absolute top-2 left-2 z-10 px-2 py-1 bg-black/40 backdrop-blur-sm 
+                                    rounded-full text-xs text-white font-medium">
                                     #{pokemon.id}
                                 </div>
                                 <img
                                     src={pokemon.sprites.other['official-artwork'].front_default}
                                     alt={pokemon.name}
-                                    className="w-full h-full object-contain transform group-hover:scale-110 transition-transform duration-300"
+                                    className="w-full h-full object-contain transform group-hover:scale-110 
+                                        transition-transform duration-300"
                                 />
-                                {/* Pokemon Info Overlay */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-3">
-                                    <p className="text-white text-sm font-medium capitalize mb-1">
+                                {/* Pokemon Info Overlay mejorado */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 
+                                    to-transparent opacity-0 group-hover:opacity-100 transition-opacity 
+                                    duration-200 flex flex-col justify-end p-4">
+                                    <p className="text-white text-sm font-medium capitalize mb-2">
                                         {pokemon.name}
                                     </p>
-                                    <div className="flex flex-wrap gap-1">
+                                    <div className="flex flex-wrap gap-2">
                                         {pokemon.types?.map((type, i) => (
                                             <span
                                                 key={i}
-                                                className="text-xs px-2 py-0.5 rounded-full bg-white/20 text-white backdrop-blur-sm"
+                                                className="text-xs px-2 py-1 rounded-full bg-white/20 
+                                                    text-white backdrop-blur-sm font-medium"
                                             >
                                                 {type.type.name}
                                             </span>
@@ -203,7 +218,9 @@ export function EditTeamPage() {
                                     <Button
                                         variant="destructive"
                                         size="sm"
-                                        className="mt-2 w-full opacity-0 group-hover:opacity-100 transition-opacity"
+                                        className="mt-3 w-full opacity-0 group-hover:opacity-100 
+                                            transition-opacity bg-red-500/80 hover:bg-red-600/80 
+                                            backdrop-blur-sm"
                                         onClick={() => handleRemovePokemon(index)}
                                     >
                                         <TrashIcon className="h-4 w-4 mr-1" />
@@ -215,31 +232,20 @@ export function EditTeamPage() {
                         {currentTeam.pokemon.length < 6 && (
                             <Button
                                 variant="outline"
-                                className="h-full aspect-square border-dashed flex flex-col items-center justify-center gap-2"
+                                className="h-full aspect-square border-2 border-dashed 
+                                    flex flex-col items-center justify-center gap-3
+                                    bg-accent/5 hover:bg-accent/10 transition-colors
+                                    group"
                                 onClick={() => handleNavigate('/pokemon')}
                             >
-                                <PlusIcon className="h-8 w-8" />
-                                {t('team.edit.addPokemon')}
+                                <PlusIcon className="h-8 w-8 text-muted-foreground 
+                                    group-hover:text-foreground transition-colors" />
+                                <span className="text-sm text-muted-foreground 
+                                    group-hover:text-foreground transition-colors">
+                                    {t('team.edit.addPokemon')}
+                                </span>
                             </Button>
                         )}
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex justify-end gap-4">
-                        <Button
-                            variant="outline"
-                            onClick={() => handleNavigate('/teams')}
-                        >
-                            {t('common.cancel')}
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                handleSave().then(() => handleNavigate('/teams'));
-                            }}
-                            disabled={isSaving}
-                        >
-                            {isSaving ? t('common.saving') : t('common.save')}
-                        </Button>
                     </div>
                 </div>
             </div>

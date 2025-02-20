@@ -280,7 +280,10 @@ export function TeamProvider({ children }: { children: ReactNode }) {
     };
 
     const updateTeamPokemon = (pokemon: TeamPokemon[]) => {
+        // Crear un array de 6 posiciones con null
         const fullTeam = Array(6).fill(null);
+
+        // Mantener los Pokémon en sus posiciones originales
         pokemon.forEach((p, i) => {
             if (p) {
                 fullTeam[i] = {
@@ -297,6 +300,8 @@ export function TeamProvider({ children }: { children: ReactNode }) {
                 } as Pokemon;
             }
         });
+
+        // Actualizar el estado manteniendo las posiciones
         setTeamState(fullTeam);
     };
 
