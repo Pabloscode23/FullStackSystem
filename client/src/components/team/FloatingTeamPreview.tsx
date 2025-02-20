@@ -2,8 +2,8 @@ import { useTeam } from '@/context/TeamContext';
 import { Button } from '@/components/ui/Button';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { XMarkIcon, PencilIcon } from '@heroicons/react/24/outline';
-import { useState } from 'react';
+import { PencilIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/form/Input';
 import { PokemonPreview } from './PokemonPreview';
 
@@ -12,9 +12,16 @@ function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) 
     const [isEditing, setIsEditing] = useState(false);
     const [value, setValue] = useState(name);
     const { t } = useTranslation();
+    const isDefaultName = name === t('team.defaultName');
 
     const handleSave = () => {
-        onSave(value);
+        const trimmedValue = value.trim();
+        if (trimmedValue === '') {
+            setValue(name);
+            setIsEditing(false);
+            return;
+        }
+        onSave(trimmedValue);
         setIsEditing(false);
     };
 
@@ -27,6 +34,11 @@ function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) 
         }
     };
 
+    const startEditing = () => {
+        setValue(name);
+        setIsEditing(true);
+    };
+
     if (isEditing) {
         return (
             <Input
@@ -35,42 +47,84 @@ function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) 
                 onChange={(e) => setValue(e.target.value)}
                 onBlur={handleSave}
                 onKeyDown={handleKeyDown}
-                placeholder={t('pages.myTeam.namePlaceholder')}
-                className="text-sm h-8 w-full"
+                placeholder={t('team.namePlaceholder')}
+                className="text-sm h-8 w-full bg-accent/5 focus:bg-accent/10"
                 autoFocus
             />
         );
     }
 
     return (
-        <div className="flex items-center gap-2 group">
-            <span className="font-semibold">{name}</span>
-            <button
-                onClick={() => setIsEditing(true)}
-                className="opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-                <PencilIcon className="w-4 h-4 text-muted-foreground hover:text-foreground" />
-            </button>
-        </div>
+        <button
+            onClick={startEditing}
+            className={`
+                group flex items-center gap-9 
+                px-3 py-1.5 rounded-lg transition-all duration-200
+                ${isDefaultName
+                    ? 'bg-blue-500/10 hover:bg-blue-500/15 border border-blue-500/20'
+                    : 'hover:bg-accent/10'
+                }
+                min-w-[200px]
+            `}
+        >
+            <span className={`
+                font-medium truncate
+                ${isDefaultName
+                    ? 'text-blue-500 group-hover:text-blue-600'
+                    : 'text-foreground'
+                }
+            `}>
+                {name}
+            </span>
+            <PencilIcon className={`
+                w-4 h-4 flex-shrink-0
+                ${isDefaultName
+                    ? 'text-blue-500 animate-bounce'
+                    : 'text-muted-foreground group-hover:text-foreground'
+                }
+            `} />
+        </button>
     );
 }
 
 // Component for action buttons
 function TeamActions({ onView, onSave }: { onView: () => void; onSave: () => void }) {
     const { t } = useTranslation();
+    const [isSaving, setIsSaving] = useState(false);
+
+    const handleSave = async () => {
+        setIsSaving(true);
+        try {
+            await onSave();
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
     return (
         <div className="space-y-2">
             <Button
                 onClick={onView}
                 className="w-full bg-gradient-to-r from-blue-500 to-purple-500"
             >
-                {t('team.actions.view')}
+                {t('pages.myTeam.viewTeam')}
             </Button>
             <Button
-                onClick={onSave}
-                className="w-full bg-gradient-to-r from-green-500 to-emerald-500"
+                onClick={handleSave}
+                disabled={isSaving}
+                className={`
+                    w-full bg-gradient-to-r from-green-500 to-emerald-500
+                    disabled:opacity-70
+                `}
             >
-                {t('team.actions.save')}
+                {isSaving ? (
+                    <div className="flex items-center justify-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <span>{t('common.saving')}</span>
+                    </div>
+                ) : (
+                    t('common.save')
+                )}
             </Button>
         </div>
     );
@@ -84,6 +138,14 @@ export function FloatingTeamPreview() {
 
     // Filter out null Pokemon and verify if there are any
     const validTeam = team.filter((pokemon): pokemon is NonNullable<typeof pokemon> => pokemon !== null);
+
+    // Mostrar el componente cuando se agregue un Pokémon
+    useEffect(() => {
+        if (validTeam.length > 0) {
+            setIsDesktopVisible(true);
+        }
+    }, [validTeam.length]);
+
     if (validTeam.length === 0) return null;
 
     // Handle navigation to team page
@@ -135,31 +197,27 @@ export function FloatingTeamPreview() {
             `}>
                 {/* Header with team name and counter */}
                 <div className="flex flex-col gap-2 mb-4">
-                    <div className="flex justify-between items-center">
-                        <TeamNameInput name={teamName} onSave={updateTeamName} />
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => setIsDrawerOpen(false)}
-                        >
-                            <XMarkIcon className="w-5 h-5" />
-                        </Button>
-                    </div>
-                    <span className="text-sm text-muted-foreground">
-                        ({validTeam.length}/6 Pokémon)
-                    </span>
-                </div>
+                    <div className="flex flex-col gap-3">
+                        <div className="flex items-center justify-between gap-4">
+                            <TeamNameInput name={teamName} onSave={updateTeamName} />
+                            <span className="text-sm font-medium text-muted-foreground px-3 py-1.5 bg-accent/10 rounded-full flex-shrink-0">
+                                {validTeam.length}/6
+                            </span>
+                        </div>
 
-                {/* Pokemon preview grid */}
-                <div className="flex gap-2 overflow-x-auto pb-4">
-                    {validTeam.map((pokemon, index) => (
-                        <div key={pokemon.id} className="flex-shrink-0 w-16 h-16">
+                        <div className="h-[1px] bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
+                    </div>
+
+                    {/* Grid de Pokémon */}
+                    <div className="grid grid-cols-3 gap-2">
+                        {validTeam.map((pokemon, index) => (
                             <PokemonPreview
+                                key={pokemon.id}
                                 pokemon={pokemon}
                                 index={index}
                             />
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
 
                 <TeamActions onView={handleViewTeam} onSave={handleSaveTeam} />
@@ -179,7 +237,7 @@ export function FloatingTeamPreview() {
                 transition-all duration-300
                 ${isDesktopVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}
             `}>
-                <div className="flex justify-between items-center mb-4">
+                <div className="flex justify-between items-center mb-4 gap-4">
                     <TeamNameInput name={teamName} onSave={updateTeamName} />
                     <span className="text-sm text-muted-foreground">
                         ({validTeam.length}/6)

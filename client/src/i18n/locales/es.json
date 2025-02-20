@@ -157,11 +157,13 @@
       "maxReached": "Tamaño máximo del equipo alcanzado",
       "viewTeam": "Ver Equipo",
       "clickToView": "Click para ver tu equipo",
+      "addFromPokedex": "Agregar desde Pokédex",
+      "dragTip": "Arrastra Pokémon aquí o haz clic en Agregar desde Pokédex",
       "emptySlot": "Espacio Vacío",
       "currentTeam": "{count}/6 Pokémon",
-      "defaultName": "Mi Equipo",
-      "editName": "Editar nombre del equipo",
-      "namePlaceholder": "Ingresa nombre del equipo"
+      "defaultName": "Haz clic aquí para nombrar tu equipo",
+      "editName": "Dale un nombre a tu equipo",
+      "namePlaceholder": "Ingresa un nombre genial para tu equipo"
     },
     "favorites": {
       "title": "Favoritos",
@@ -199,17 +201,20 @@
     "filter": "Filtrar",
     "sort": "Ordenar",
     "next": "Siguiente",
-    "previous": "Anterior"
+    "previous": "Anterior",
+    "saving": "Guardando..."
   },
   "team": {
     "viewTeam": "Ver Equipo",
-    "defaultName": "Mi Equipo",
+    "clickToEditName": "Dale un nombre a tu equipo",
+    "defaultName": "Nombra tu equipo",
+    "namePlaceholder": "Ingresa un nombre para tu equipo",
     "errors": {
       "teamFull": "El equipo está lleno",
       "alreadyInTeam": "Este Pokémon ya está en tu equipo",
       "contextError": "useTeam debe usarse dentro de un TeamProvider",
       "invalidSlot": "Posición de equipo inválida",
-      "nameRequired": "El nombre del equipo es requerido",
+      "nameRequired": "Por favor dale un nombre único a tu equipo",
       "nameExists": "Ya existe un equipo con este nombre",
       "incompleteTeam": "Tu equipo debe tener 6 Pokémon",
       "saveFailed": "Error al guardar el equipo"
