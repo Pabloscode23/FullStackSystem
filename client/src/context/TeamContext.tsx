@@ -1,13 +1,36 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from './AuthContext';
+import { teamService } from '@/services/teamService';
+import { useToast } from '@/components/ui/Toaster';
 
 interface Pokemon {
     id: number;
     name: string;
     sprites: {
         front_default: string;
+        other: {
+            'official-artwork': {
+                front_default: string;
+            }
+        }
     };
-    // Add other Pokemon properties as needed
+    types: Array<{
+        type: {
+            name: string;
+        }
+    }>;
+    stats: Array<{
+        base_stat: number;
+        stat: {
+            name: string;
+        }
+    }>;
+    abilities: Array<{
+        ability: {
+            name: string;
+        }
+    }>;
 }
 
 interface TeamContextType {
@@ -18,12 +41,15 @@ interface TeamContextType {
     removeFromTeam: (index: number) => { success: boolean; message: string };
     isInTeam: (pokemonId: number) => boolean;
     isTeamFull: boolean;
+    saveTeam: () => Promise<boolean>;
 }
 
 const TeamContext = createContext<TeamContextType | undefined>(undefined);
 
 export function TeamProvider({ children }: { children: ReactNode }) {
     const { t } = useTranslation();
+    const { user } = useAuth();
+    const { showToast } = useToast();
     const [team, setTeam] = useState<(Pokemon | null)[]>(Array(6).fill(null));
     const [teamName, setTeamName] = useState(t('team.defaultName')); // Default team name
 
@@ -78,6 +104,53 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         return team.some(pokemon => pokemon?.id === pokemonId);
     };
 
+    const saveTeam = async () => {
+        if (!user) return false;
+
+        try {
+            // Validar que tenga nombre
+            if (!teamName.trim()) {
+                showToast(t('team.errors.nameRequired'), 'error');
+                return false;
+            }
+
+            // Validar que tenga 6 pokémon
+            const validTeam = team.filter((pokemon): pokemon is NonNullable<typeof pokemon> => pokemon !== null);
+            if (validTeam.length !== 6) {
+                showToast(t('team.errors.incompleteTeam'), 'error');
+                return false;
+            }
+
+            // Validar nombre único
+            const nameExists = await teamService.checkTeamNameExists(user.uid, teamName);
+            if (nameExists) {
+                showToast(t('team.errors.nameExists'), 'error');
+                return false;
+            }
+
+            const simplifiedTeam = validTeam.map(pokemon => ({
+                id: pokemon.id,
+                name: pokemon.name,
+                sprites: {
+                    front_default: pokemon.sprites.front_default,
+                    other: {
+                        'official-artwork': {
+                            front_default: pokemon.sprites.other['official-artwork'].front_default
+                        }
+                    }
+                }
+            }));
+
+            await teamService.createTeam(user.uid, teamName, simplifiedTeam);
+            showToast(t('team.success.saved'), 'success');
+            return true;
+        } catch (error) {
+            console.error('Error saving team:', error);
+            showToast(t('team.errors.saveFailed'), 'error');
+            return false;
+        }
+    };
+
     return (
         <TeamContext.Provider value={{
             team,
@@ -86,7 +159,8 @@ export function TeamProvider({ children }: { children: ReactNode }) {
             addToTeam,
             removeFromTeam,
             isInTeam,
-            isTeamFull
+            isTeamFull,
+            saveTeam
         }}>
             {children}
         </TeamContext.Provider>

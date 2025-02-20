@@ -79,7 +79,8 @@ function TeamActions({ onView, onSave }: { onView: () => void; onSave: () => voi
 export function FloatingTeamPreview() {
     const { team, teamName, updateTeamName, saveTeam } = useTeam();
     const navigate = useNavigate();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isDesktopVisible, setIsDesktopVisible] = useState(true);
 
     // Filter out null Pokemon and verify if there are any
     const validTeam = team.filter((pokemon): pokemon is NonNullable<typeof pokemon> => pokemon !== null);
@@ -87,7 +88,7 @@ export function FloatingTeamPreview() {
 
     // Handle navigation to team page
     const handleViewTeam = () => {
-        setIsOpen(false);
+        setIsDrawerOpen(false);
         navigate('/my-team');
     };
 
@@ -95,7 +96,8 @@ export function FloatingTeamPreview() {
         try {
             const success = await saveTeam();
             if (success) {
-                setIsOpen(false);
+                setIsDrawerOpen(false);
+                setIsDesktopVisible(false);
             }
         } catch (error) {
             console.error('Error saving team:', error);
@@ -104,16 +106,16 @@ export function FloatingTeamPreview() {
 
     return (
         <>
-            {/* Mobile Toggle Button - Hidden when drawer is open */}
+            {/* Mobile Toggle Button */}
             <Button
-                onClick={() => setIsOpen(!isOpen)}
+                onClick={() => setIsDrawerOpen(!isDrawerOpen)}
                 className={`
                     fixed bottom-4 right-4 
                     md:hidden 
                     z-50 
                     bg-gradient-to-r from-blue-500 to-purple-500
                     transition-all duration-300
-                    ${isOpen ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'}
+                    ${isDrawerOpen ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'}
                 `}
                 size="sm"
             >
@@ -129,7 +131,7 @@ export function FloatingTeamPreview() {
                 transform transition-transform duration-300 ease-in-out
                 md:hidden
                 z-40
-                ${isOpen ? 'translate-y-0' : 'translate-y-full'}
+                ${isDrawerOpen ? 'translate-y-0' : 'translate-y-full'}
             `}>
                 {/* Header with team name and counter */}
                 <div className="flex flex-col gap-2 mb-4">
@@ -138,7 +140,7 @@ export function FloatingTeamPreview() {
                         <Button
                             variant="ghost"
                             size="sm"
-                            onClick={() => setIsOpen(false)}
+                            onClick={() => setIsDrawerOpen(false)}
                         >
                             <XMarkIcon className="w-5 h-5" />
                         </Button>
@@ -164,17 +166,19 @@ export function FloatingTeamPreview() {
             </div>
 
             {/* Desktop Floating Preview */}
-            <div className="
+            <div className={`
                 fixed right-4 bottom-4
                 hidden md:block
-                bg-card/95 backdrop-blur-sm
+                bg-card/95 backdrop-blur-sm 
                 border border-accent/20
                 rounded-lg shadow-lg
                 p-4
                 max-w-xs
                 w-full
                 z-40
-            ">
+                transition-all duration-300
+                ${isDesktopVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}
+            `}>
                 <div className="flex justify-between items-center mb-4">
                     <TeamNameInput name={teamName} onSave={updateTeamName} />
                     <span className="text-sm text-muted-foreground">

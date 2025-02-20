@@ -207,21 +207,17 @@
       "invalidSlot": "Invalid team slot",
       "nameRequired": "Team name is required",
       "nameExists": "A team with this name already exists",
-      "incompleteTeam": "Your team must have 6 Pokémon"
+      "incompleteTeam": "Your team must have 6 Pokémon",
+      "saveFailed": "Failed to save team"
     },
     "success": {
       "added": "Added to team",
-      "removed": "Removed from team"
+      "removed": "Removed from team",
+      "saved": "Team saved successfully!"
     },
     "actions": {
       "save": "Save Team",
       "view": "View Team"
-    },
-    "success": {
-      "saved": "Team saved successfully"
-    },
-    "errors": {
-      "saveFailed": "Failed to save team"
     }
   }
 } 

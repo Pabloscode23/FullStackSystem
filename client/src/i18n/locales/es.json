@@ -211,7 +211,8 @@
       "invalidSlot": "Posición de equipo inválida",
       "nameRequired": "El nombre del equipo es requerido",
       "nameExists": "Ya existe un equipo con este nombre",
-      "incompleteTeam": "Tu equipo debe tener 6 Pokémon"
+      "incompleteTeam": "Tu equipo debe tener 6 Pokémon",
+      "saveFailed": "Error al guardar el equipo"
     },
     "success": {
       "added": "Agregado al equipo",
@@ -221,9 +222,6 @@
     "actions": {
       "save": "Guardar Equipo",
       "view": "Ver Equipo"
-    },
-    "errors": {
-      "saveFailed": "Error al guardar el equipo"
     }
   }
 } 
