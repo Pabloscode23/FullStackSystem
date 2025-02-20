@@ -1,34 +1,17 @@
-import { type HTMLAttributes, createElement, forwardRef } from 'react';
-import { clsx } from 'clsx';
+import { cn } from "@/lib/utils";
 
-interface SkeletonProps extends HTMLAttributes<HTMLDivElement> {
-    variant?: 'default' | 'circular' | 'rectangular';
-    width?: string | number;
-    height?: string | number;
+interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
+    className?: string;
 }
 
-const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
-    ({ className, variant = 'default', width, height, style, ...props }, ref) =>
-        createElement('div', {
-            ref,
-            className: clsx(
-                "animate-pulse bg-muted/50",
-                {
-                    'rounded-md': variant === 'default',
-                    'rounded-full': variant === 'circular',
-                    'rounded-none': variant === 'rectangular',
-                },
+export function Skeleton({ className, ...props }: SkeletonProps) {
+    return (
+        <div
+            className={cn(
+                "animate-pulse rounded-md bg-slate-200 dark:bg-slate-700",
                 className
-            ),
-            style: {
-                width,
-                height,
-                ...style
-            },
-            ...props
-        })
-);
-
-Skeleton.displayName = "Skeleton";
-
-export { Skeleton }; 
+            )}
+            {...props}
+        />
+    );
+} 

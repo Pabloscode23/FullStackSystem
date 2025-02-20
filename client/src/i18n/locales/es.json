@@ -34,7 +34,10 @@
     "continueWith": "Continuar con",
     "email": "Correo electrónico",
     "loginDescription": "Ingresa tus credenciales para acceder a tu cuenta",
-    "loading": "Iniciando sesión...",
+    "loading": {
+      "register": "Registrando...",
+      "login": "Iniciando sesión..."
+    },
     "emailPlaceholder": "Ingresa tu email",
     "registerDescription": "Crea una cuenta para comenzar tu aventura",
     "passwordRequirements": "La contraseña debe tener al menos 8 caracteres e incluir mayúsculas, minúsculas y números",
@@ -53,7 +56,12 @@
       "passwordsDontMatch": "Las contraseñas no coinciden",
       "registrationFailed": "Registro fallido. Por favor intenta de nuevo",
       "usernameExists": "El nombre de usuario ya está en uso",
-      "emailExists": "El correo electrónico ya está registrado"
+      "emailExists": "El correo electrónico ya está registrado",
+      "registerSuccess": "Registro exitoso! Por favor inicia sesión",
+      "default": "Ocurrió un error. Por favor intenta de nuevo",
+      "networkError": "Error de conexión. Por favor verifica tu conexión a internet",
+      "tooManyRequests": "Demasiados intentos fallidos. Por favor intenta más tarde",
+      "userDisabled": "Esta cuenta ha sido deshabilitada"
     }
   },
   "footer": {
@@ -134,7 +142,9 @@
       "alreadyInTeam": "Ya está en el Equipo",
       "addedToTeam": "¡Agregado al Equipo!",
       "viewDetails": "Ver Detalles",
-      "description": "Explora todos los Pokémon disponibles, conoce sus estadísticas y agrégalos a tu equipo"
+      "description": "Explora todos los Pokémon disponibles, conoce sus estadísticas y agrégalos a tu equipo",
+      "addFromPokedex": "Agregar desde Pokédex",
+      "dragTip": "Arrastra Pokémon aquí o haz clic en Agregar desde Pokédex"
     },
     "myTeam": {
       "title": "Mi Equipo",

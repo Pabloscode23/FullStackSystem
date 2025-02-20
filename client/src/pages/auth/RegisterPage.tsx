@@ -12,6 +12,7 @@ import { useAuth } from '@/context/AuthContext';
 import { useToast } from '@/components/ui/Toaster';
 import { formStyles } from '@/constants/styles';
 import { AuthLayout } from '@/components/layout/AuthLayout';
+import { Skeleton } from '@/components/ui/Skeleton';
 
 const schema = z.object({
     username: z.string()
@@ -108,99 +109,124 @@ export function RegisterPage() {
                 duration-300
             ">
                 <CardHeader className="space-y-1 pb-6">
-                    <CardTitle className="text-2xl font-bold text-center">
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
-                            {t('auth.register')}
-                        </span>
-                    </CardTitle>
-                    <p className="text-center text-muted-foreground">
-                        {t('auth.registerDescription')}
-                    </p>
+                    {isLoading ? (
+                        <>
+                            <Skeleton className="h-8 w-3/4 mx-auto mb-2" />
+                            <Skeleton className="h-5 w-2/3 mx-auto" />
+                        </>
+                    ) : (
+                        <>
+                            <CardTitle className="text-2xl font-bold text-center">
+                                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500">
+                                    {t('auth.register')}
+                                </span>
+                            </CardTitle>
+                            <p className="text-center text-muted-foreground">
+                                {t('auth.registerDescription')}
+                            </p>
+                        </>
+                    )}
                 </CardHeader>
                 <CardContent>
                     <form className={`${formStyles.container} space-y-4`} onSubmit={handleSubmit(onSubmit)}>
-                        <div className={formStyles.group}>
-                            <Input
-                                type="text"
-                                label={t('auth.username')}
-                                placeholder={t('auth.usernamePlaceholder')}
-                                error={errors.username && t(errors.username.message!)}
-                                {...register('username')}
-                                disabled={isLoading}
-                                className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
-                            />
-                        </div>
-
-                        <div className={formStyles.group}>
-                            <Input
-                                type="email"
-                                label={t('auth.email')}
-                                placeholder={t('auth.examplePlaceholder')}
-                                error={errors.email && t(errors.email.message!)}
-                                {...register('email')}
-                                disabled={isLoading}
-                                className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
-                            />
-                        </div>
-
-                        <div className={formStyles.group}>
-                            <Input
-                                type="password"
-                                label={t('auth.password')}
-                                placeholder={t('auth.passwordPlaceholder')}
-                                error={errors.password ? t(errors.password.message!) : undefined}
-                                {...register('password')}
-                                disabled={isLoading}
-                                className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
-                            />
-                        </div>
-
-                        <div className={formStyles.group}>
-                            <Input
-                                type="password"
-                                label={t('auth.confirmPassword')}
-                                placeholder={t('auth.confirmPasswordPlaceholder')}
-                                error={errors.confirmPassword ? t(errors.confirmPassword.message!) : undefined}
-                                {...register('confirmPassword')}
-                                disabled={isLoading}
-                                className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
-                            />
-                        </div>
-
-                        <Button
-                            type="submit"
-                            className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-colors duration-200"
-                            disabled={isLoading}
-                        >
-                            {isLoading ? (
-                                <span className="flex items-center justify-center gap-2">
-                                    <span className="animate-spin">⚪</span>
-                                    <span>{t('auth.loading.register')}</span>
-                                </span>
-                            ) : (
-                                t('auth.signUp')
-                            )}
-                        </Button>
-
-                        <div className="relative my-6">
-                            <div className="absolute inset-0 flex items-center">
-                                <span className="w-full border-t dark:border-slate-700 light:border-slate-200" />
+                        {isLoading ? (
+                            <div className="space-y-6">
+                                <Skeleton className="h-20" />
+                                <Skeleton className="h-20" />
+                                <Skeleton className="h-20" />
+                                <Skeleton className="h-20" />
+                                <Skeleton className="h-11 w-full" />
+                                <div className="space-y-4 mt-6">
+                                    <Skeleton className="h-[1px] w-full" />
+                                    <Skeleton className="h-5 w-1/2 mx-auto" />
+                                </div>
                             </div>
-                            <div className="relative flex justify-center text-xs uppercase">
-                                <span className="bg-card dark:bg-slate-900 px-2 text-muted-foreground">
-                                    {t('auth.or')}
-                                </span>
-                            </div>
-                        </div>
+                        ) : (
+                            <>
+                                <div className={formStyles.group}>
+                                    <Input
+                                        type="text"
+                                        label={t('auth.username')}
+                                        placeholder={t('auth.usernamePlaceholder')}
+                                        error={errors.username && t(errors.username.message!)}
+                                        {...register('username')}
+                                        disabled={isLoading}
+                                        className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
+                                    />
+                                </div>
 
-                        <div className="text-center">
-                            <p className="text-sm text-muted-foreground">
-                                {t('auth.haveAccount')}{' '}
-                                <Link to="/login" className="text-primary hover:text-primary/80 transition-colors">
-                                    {t('auth.signIn')}
-                                </Link>
-                            </p>
-                        </div>
+                                <div className={formStyles.group}>
+                                    <Input
+                                        type="email"
+                                        label={t('auth.email')}
+                                        placeholder={t('auth.examplePlaceholder')}
+                                        error={errors.email && t(errors.email.message!)}
+                                        {...register('email')}
+                                        disabled={isLoading}
+                                        className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
+                                    />
+                                </div>
+
+                                <div className={formStyles.group}>
+                                    <Input
+                                        type="password"
+                                        label={t('auth.password')}
+                                        placeholder={t('auth.passwordPlaceholder')}
+                                        error={errors.password ? t(errors.password.message!) : undefined}
+                                        {...register('password')}
+                                        disabled={isLoading}
+                                        className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
+                                    />
+                                </div>
+
+                                <div className={formStyles.group}>
+                                    <Input
+                                        type="password"
+                                        label={t('auth.confirmPassword')}
+                                        placeholder={t('auth.confirmPasswordPlaceholder')}
+                                        error={errors.confirmPassword ? t(errors.confirmPassword.message!) : undefined}
+                                        {...register('confirmPassword')}
+                                        disabled={isLoading}
+                                        className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
+                                    />
+                                </div>
+
+                                <Button
+                                    type="submit"
+                                    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-colors duration-200"
+                                    disabled={isLoading}
+                                >
+                                    {isLoading ? (
+                                        <span className="flex items-center justify-center gap-2">
+                                            <span className="animate-spin">⚪</span>
+                                            <span>{t('auth.loading.register')}</span>
+                                        </span>
+                                    ) : (
+                                        t('auth.signUp')
+                                    )}
+                                </Button>
+
+                                <div className="relative my-6">
+                                    <div className="absolute inset-0 flex items-center">
+                                        <span className="w-full border-t dark:border-slate-700 light:border-slate-200" />
+                                    </div>
+                                    <div className="relative flex justify-center text-xs uppercase">
+                                        <span className="bg-card dark:bg-slate-900 px-2 text-muted-foreground">
+                                            {t('auth.or')}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div className="text-center">
+                                    <p className="text-sm text-muted-foreground">
+                                        {t('auth.haveAccount')}{' '}
+                                        <Link to="/login" className="text-primary hover:text-primary/80 transition-colors">
+                                            {t('auth.signIn')}
+                                        </Link>
+                                    </p>
+                                </div>
+                            </>
+                        )}
                     </form>
                 </CardContent>
             </Card>
