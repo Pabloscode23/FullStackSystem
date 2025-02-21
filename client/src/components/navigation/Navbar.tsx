@@ -11,8 +11,6 @@ import {
     HomeIcon,
     UserGroupIcon,
     HeartIcon,
-    ArrowsRightLeftIcon,
-    UserCircleIcon,
     BookOpenIcon,
 } from '@heroicons/react/24/outline';
 import { useAuth } from '@/context/AuthContext';
@@ -20,7 +18,7 @@ import { useAuth } from '@/context/AuthContext';
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const { t } = useTranslation();
-    const { isAuthenticated, logout } = useAuth();
+    const { user, logout } = useAuth();
 
     // Define navigation items with auth requirements
     const navigationItems = [
@@ -38,7 +36,7 @@ export function Navbar() {
         },
         {
             name: t('nav.myTeam'),
-            href: '/my-team',
+            href: '/teams',
             icon: UserGroupIcon,
             requiresAuth: true
         },
@@ -47,28 +45,20 @@ export function Navbar() {
             href: '/favorites',
             icon: HeartIcon,
             requiresAuth: true
-        },
-        {
-            name: t('nav.compare'),
-            href: '/compare',
-            icon: ArrowsRightLeftIcon,
-            requiresAuth: true
-        },
-        {
-            name: t('nav.profile'),
-            href: '/profile',
-            icon: UserCircleIcon,
-            requiresAuth: true
-        },
+        }
     ];
 
     // Filter navigation items based on auth state
     const filteredNavigation = navigationItems.filter(
-        item => !item.requiresAuth || isAuthenticated
+        item => !item.requiresAuth || !!user
     );
 
-    const handleLogout = () => {
-        logout();
+    const handleLogout = async () => {
+        try {
+            await logout();
+        } catch (error) {
+            console.error('Error logging out:', error);
+        }
     };
 
     return (
@@ -105,7 +95,7 @@ export function Navbar() {
 
                     {/* Auth Buttons - Desktop */}
                     <div className={navStyles.authContainer}>
-                        {isAuthenticated ? (
+                        {user ? (
                             <Button
                                 variant="ghost"
                                 onClick={handleLogout}
@@ -164,7 +154,7 @@ export function Navbar() {
                 {/* Auth Buttons - Mobile */}
                 <div className={navStyles.mobileMenu.authSection}>
                     <div className={navStyles.mobileMenu.authContainer}>
-                        {isAuthenticated ? (
+                        {user ? (
                             <button
                                 className={navStyles.mobileMenu.authButton}
                                 onClick={handleLogout}
@@ -173,18 +163,10 @@ export function Navbar() {
                             </button>
                         ) : (
                             <>
-                                <Link
-                                    to="/login"
-                                    className={navStyles.mobileMenu.authLink}
-                                    onClick={() => setIsOpen(false)}
-                                >
+                                <Link to="/login" className={navStyles.mobileMenu.authLink}>
                                     {t('auth.signIn')}
                                 </Link>
-                                <Link
-                                    to="/register"
-                                    className={navStyles.mobileMenu.authLink}
-                                    onClick={() => setIsOpen(false)}
-                                >
+                                <Link to="/register" className={navStyles.mobileMenu.authLink}>
                                     {t('auth.signUp')}
                                 </Link>
                             </>

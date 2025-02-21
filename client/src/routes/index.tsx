@@ -1,34 +1,77 @@
-import { BrowserRouter } from 'react-router-dom';
-import { Routes, Route } from 'react-router-dom';
-import { Layout } from '@/components/layout/Layout';
-import { HomePage } from '@/pages/HomePage';
-import { PokemonPage } from '@/pages/PokemonPage';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { RegisterPage } from '@/pages/auth/RegisterPage';
+import { HomePage } from '@/pages/HomePage';
+import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
+import { RootLayout } from '@/components/layout/RootLayout';
+import { PokemonPage } from '@/pages/PokemonPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { MyTeamPage } from '@/pages/MyTeamPage';
-import { FavoritesPage } from '@/pages/FavoritesPage';
-import { ComparePage } from '@/pages/ComparePage';
-import { ProfilePage } from '@/pages/ProfilePage';
+import { FavoritesPage } from '@/pages/FavoritesPage';;
 import { ResetPasswordPage } from '@/pages/auth/ResetPasswordPage';
+import { EditTeamPage } from '@/pages/EditTeamPage';
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <RootLayout />,
+        children: [
+            {
+                index: true,
+                element: <HomePage />,
+            },
+            {
+                path: 'login',
+                element: <LoginPage />,
+            },
+            {
+                path: 'register',
+                element: <RegisterPage />,
+            },
+            {
+                path: 'reset-password',
+                element: <ResetPasswordPage />,
+            },
+            {
+                path: 'pokemon',
+                element: (
+                    <ProtectedRoute>
+                        <PokemonPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'teams',
+                element: (
+                    <ProtectedRoute>
+                        <MyTeamPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'teams/edit/:teamId',
+                element: (
+                    <ProtectedRoute>
+                        <EditTeamPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: 'favorites',
+                element: (
+                    <ProtectedRoute>
+                        <FavoritesPage />
+                    </ProtectedRoute>
+                ),
+            },
+            {
+                path: '*',
+                element: <NotFoundPage />,
+            },
+        ],
+    },
+]);
 
 export function AppRouter() {
-    return (
-        <BrowserRouter>
-            <Layout>
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/pokemon" element={<PokemonPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/register" element={<RegisterPage />} />
-                    <Route path="/reset-password" element={<ResetPasswordPage />} />
-                    <Route path="/compare" element={<ComparePage />} />
-                    <Route path="/my-team" element={<MyTeamPage />} />
-                    <Route path="/favorites" element={<FavoritesPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="*" element={<NotFoundPage />} />
-                </Routes>
-            </Layout>
-        </BrowserRouter>
-    );
+    return <RouterProvider router={router} />;
 }

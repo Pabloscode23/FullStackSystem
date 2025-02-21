@@ -1,18 +1,22 @@
-import { AppRouter } from './routes';
 import { AuthProvider } from '@/context/AuthContext';
+import { TeamProvider } from '@/context/TeamContext';
 import { ThemeProvider } from '@/context/ThemeContext';
+import { ToastProvider } from '@/components/ui/Toaster';
+import { AppRouter } from '@/routes';
 import '@/i18n';
-import { TeamProvider } from './context/TeamContext';
+import { EditTeamPage } from '@/pages/EditTeamPage';
 
 function App() {
   return (
-    <TeamProvider>
-      <ThemeProvider>
+    <ThemeProvider>
+      <ToastProvider>
         <AuthProvider>
-          <AppRouter />
+          <TeamProvider>
+            <AppRouter />
+          </TeamProvider>
         </AuthProvider>
-      </ThemeProvider>
-    </TeamProvider>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }
 

@@ -5,7 +5,7 @@
   },
   "nav": {
     "home": "Home",
-    "myTeam": "My Team",
+    "myTeam": "My Teams",
     "favorites": "Favorites",
     "compare": "Compare",
     "profile": "Profile",
@@ -21,6 +21,7 @@
     "haveAccount": "Already have an account?",
     "signUp": "Sign up",
     "signIn": "Sign in",
+    "examplePlaceholder": "email@email.com",
     "logout": "Logout",
     "username": "Username",
     "password": "Password",
@@ -31,13 +32,12 @@
     "rememberMe": "Remember me",
     "or": "or",
     "continueWith": "Continue with",
-    "demoCredentials": "Demo credentials",
     "email": "Email",
     "loginDescription": "Enter your credentials to access your account",
-    "loading": "Signing in...",
-    "demoCredentialsTitle": "Demo Credentials",
-    "demoCredentialsEmail": "Email: demo@example.com",
-    "demoCredentialsPassword": "Password: password",
+    "loading": {
+      "register": "Creating account...",
+      "login": "Signing in..."
+    },
     "emailPlaceholder": "Enter your email",
     "registerDescription": "Create an account to start your journey",
     "passwordRequirements": "Password must be at least 8 characters and include uppercase, lowercase, and numbers",
@@ -48,18 +48,26 @@
       "invalidCredentials": "Invalid email or password",
       "usernameTooShort": "Username must be at least 3 characters",
       "usernameTooLong": "Username must be less than 20 characters",
-      "invalidEmail": "Please enter a valid email",
+      "invalidEmail": "Please enter a valid email address",
       "passwordTooShort": "Password must be at least 8 characters",
       "passwordUppercase": "Password must include an uppercase letter",
       "passwordLowercase": "Password must include a lowercase letter",
       "passwordNumber": "Password must include a number",
       "passwordsDontMatch": "Passwords do not match",
-      "registrationFailed": "Registration failed. Please try again"
+      "registrationFailed": "Registration failed. Please try again",
+      "usernameExists": "Username is already taken",
+      "emailExists": "Email is already registered",
+      "registerSuccess": "Registration successful! Please sign in",
+      "default": "An error occurred. Please try again"
+    },
+    "success": {
+      "login": "Welcome back!",
+      "register": "Registration successful! Please sign in"
     }
   },
   "footer": {
     "rights": "© 2025 PokéApp. All rights reserved.",
-    "contact": "Contact Creator",
+    "contact": "Contact Developer",
     "sourceCode": "Source Code"
   },
   "pages": {
@@ -67,14 +75,14 @@
       "welcome": "Welcome to PokéApp",
       "description": "Your ultimate companion for building and managing your Pokémon teams. Explore, compare, and collect your favorite Pokémon!",
       "features": {
-        "team": "Build Your Team",
-        "teamDescription": "Create your perfect team of 6 Pokémon. Analyze their strengths and weaknesses to build the ultimate combination.",
+        "team": "Favorite Teams",
+        "teamDescription": "Visualize your favorite teams and decide if you want to add or remove teams of Pokémons.",
         "compare": "Compare Pokémon",
         "compareDescription": "Compare stats, abilities, and moves between any two Pokémon to make informed decisions.",
         "favorites": "Track Your Favorites",
         "favoritesDescription": "Save your favorite Pokémon and organize them into custom collections.",
         "pokedex": "Complete Pokédex",
-        "pokedexDescription": "Explore the vast world of Pokémon. Search, filter, and learn about their abilities, stats, and evolutions.",
+        "pokedexDescription": "Explore the vast world of Pokémon. Search, learn about their abilities, stats, evolutions, and create Pokémon teams.",
         "teams": "Your Teams",
         "teamsDescription": "Access and manage all your created teams. Review, edit, and organize your different team strategies."
       },
@@ -137,8 +145,8 @@
       "description": "Explore all available Pokémon, learn their stats, and add them to your team"
     },
     "myTeam": {
-      "title": "My Team",
-      "empty": "Your team is empty",
+      "title": "My Teams",
+      "empty": "You don't have any teams yet",
       "addPokemon": "Add Pokémon",
       "maxReached": "Maximum team size reached",
       "viewTeam": "View Team",
@@ -147,14 +155,17 @@
       "dragTip": "Drag Pokémon here or click Add from Pokédex",
       "emptySlot": "Empty Slot",
       "currentTeam": "{count}/6 Pokémon",
-      "defaultName": "My Team",
-      "editName": "Edit team name",
-      "namePlaceholder": "Enter team name"
+      "defaultName": "Click here to name your team",
+      "editName": "Give your team a name",
+      "namePlaceholder": "Enter a cool name for your team",
+      "description": "Access and manage all your created teams. Review, edit and organize your different team strategies.",
+      "createFirst": "Create your first team"
     },
     "favorites": {
-      "title": "Favorites",
-      "empty": "No favorites yet",
-      "addSome": "Add some Pokémon to favorites"
+      "title": "Favorite Teams",
+      "description": "Access and manage your favorite teams. Keep track of your best team strategies.",
+      "empty": "No favorite teams yet",
+      "addSome": "Mark some teams as favorites to see them here"
     },
     "compare": {
       "title": "Compare Pokémon",
@@ -187,20 +198,50 @@
     "filter": "Filter",
     "sort": "Sort",
     "next": "Next",
-    "previous": "Previous"
+    "previous": "Previous",
+    "saving": "Saving...",
+    "details": "Team Details",
+    "hide": "Hide Details"
   },
   "team": {
     "viewTeam": "View Team",
-    "defaultName": "My Team",
+    "clickToEditName": "Give your team a name",
+    "defaultName": "Name your team",
+    "namePlaceholder": "Enter a name for your team",
     "errors": {
       "teamFull": "Team is full",
       "alreadyInTeam": "This Pokémon is already in your team",
       "contextError": "useTeam must be used within a TeamProvider",
-      "invalidSlot": "Invalid team slot"
+      "invalidSlot": "Invalid team slot",
+      "nameRequired": "Please give your team a unique name",
+      "nameExists": "A team with this name already exists",
+      "incompleteTeam": "Your team must have 6 Pokémon",
+      "saveFailed": "Failed to save team"
     },
     "success": {
       "added": "Added to team",
-      "removed": "Removed from team"
+      "removed": "Removed from team",
+      "saved": "Team saved successfully!"
+    },
+    "actions": {
+      "save": "Save Team",
+      "view": "View Team",
+      "create": "Create Team",
+      "createNew": "Enable team creation"
+    },
+    "pokemon": {
+      "count": "{{count}} Pokémon"
+    },
+    "edit": {
+      "title": "Edit Team",
+      "name": "Team's Name",
+      "namePlaceholder": "Enter team name",
+      "addPokemon": "Add Pokémon",
+      "removePokemon": "Remove from team",
+      "reorder": "Drag to reorder"
+    },
+    "editing": {
+      "name": "Team: {{name}}"
     }
   }
 } 

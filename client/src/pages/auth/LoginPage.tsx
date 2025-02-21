@@ -1,5 +1,6 @@
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -7,21 +8,27 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/form/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/context/AuthContext';
+import { useToast } from '@/components/ui/Toaster';
 import { formStyles } from '@/constants/styles';
 import { AuthLayout } from '@/components/layout/AuthLayout';
+import { FirebaseError } from 'firebase/app';
 
 export function LoginPage() {
     const { t } = useTranslation();
+    const location = useLocation();
     const { login } = useAuth();
-    const navigate = useNavigate();
+    const { showToast } = useToast();
+    const [isLoading, setIsLoading] = useState(false);
 
     // Define validation schema using Zod with i18n keys
     const loginSchema = z.object({
-        email: z.string()
+        email: z
+            .string()
             .min(1, { message: 'auth.errors.emailRequired' })
             .email({ message: 'auth.errors.emailInvalid' }),
-        password: z.string()
-            .min(1, { message: 'auth.errors.passwordRequired' })
+        password: z
+            .string()
+            .min(1, { message: 'auth.errors.passwordRequired' }),
     });
 
     type LoginFormData = z.infer<typeof loginSchema>;
@@ -29,26 +36,58 @@ export function LoginPage() {
     const {
         register,
         handleSubmit,
-        formState: { errors, isSubmitting },
-        setError,
+        formState: { errors },
+        setValue,
     } = useForm<LoginFormData>({
         resolver: zodResolver(loginSchema),
-        defaultValues: {
-            email: '',
-            password: ''
-        }
     });
+
+    // Handle registration success message and email pre-fill
+    useEffect(() => {
+        if (location.state?.message) {
+            showToast(t(location.state.message), 'success');
+            if (location.state.email) {
+                setValue('email', location.state.email);
+            }
+        }
+    }, [location.state, showToast, t, setValue]);
 
     const onSubmit = async (data: LoginFormData) => {
         try {
+            setIsLoading(true);
             await login(data.email, data.password);
-            navigate('/');
-        } catch (error: unknown) {
-            setError('root', {
-                message: 'auth.errors.invalidCredentials'
-            });
+            showToast(t('auth.success.login'), 'success');
+            // Redirigir a home después del login
+            window.location.href = '/';
+        } catch (error) {
+            if (error instanceof FirebaseError) {
+                const errorKey = getFirebaseErrorKey(error.code);
+                console.log('Mapped error key:', errorKey);
+                showToast(t(errorKey), 'error');
+            } else {
+                showToast(t('auth.errors.default'), 'error');
+            }
+        } finally {
+            setIsLoading(false);
         }
     };
+
+    // Helper function to map Firebase error codes to i18n keys
+    function getFirebaseErrorKey(errorCode: string): string {
+        const errorMap: Record<string, string> = {
+            'auth/invalid-login-credentials': 'auth.errors.invalidCredentials',
+            'auth/invalid-email': 'auth.errors.emailInvalid',
+            'auth/user-disabled': 'auth.errors.userDisabled',
+            'auth/user-not-found': 'auth.errors.invalidCredentials',
+            'auth/wrong-password': 'auth.errors.invalidCredentials',
+            'auth/too-many-requests': 'auth.errors.tooManyRequests',
+            'auth/network-request-failed': 'auth.errors.networkError',
+            'auth/internal-error': 'auth.errors.default'
+        };
+
+        console.log('Firebase error code:', errorCode);
+        return errorMap[errorCode] || 'auth.errors.default';
+    }
 
     return (
         <AuthLayout>
@@ -87,7 +126,7 @@ export function LoginPage() {
                                 placeholder={t('auth.emailPlaceholder')}
                                 error={errors.email ? t(errors.email.message!) : undefined}
                                 {...register('email')}
-                                disabled={isSubmitting}
+                                disabled={isLoading}
                                 className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
                             />
                         </div>
@@ -99,29 +138,20 @@ export function LoginPage() {
                                 placeholder={t('auth.passwordPlaceholder')}
                                 error={errors.password ? t(errors.password.message!) : undefined}
                                 {...register('password')}
-                                disabled={isSubmitting}
+                                disabled={isLoading}
                                 className="bg-background/50 backdrop-blur-sm transition-colors duration-200"
                             />
-                        </div>
-
-                        <div className="flex items-center justify-between">
-                            <Link
-                                to="/reset-password"
-                                className="text-sm text-primary hover:text-primary/80 transition-colors"
-                            >
-                                {t('auth.forgotPassword')}
-                            </Link>
                         </div>
 
                         <Button
                             type="submit"
                             className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 transition-colors duration-200"
-                            disabled={isSubmitting}
+                            disabled={isLoading}
                         >
-                            {isSubmitting ? (
-                                <span className="flex items-center space-x-2">
+                            {isLoading ? (
+                                <span className="flex items-center justify-center gap-2">
                                     <span className="animate-spin">⚪</span>
-                                    <span>{t('auth.loading')}</span>
+                                    <span>{t('auth.loading.login')}</span>
                                 </span>
                             ) : (
                                 t('auth.signIn')
@@ -142,16 +172,13 @@ export function LoginPage() {
                         <div className="text-center">
                             <p className="text-sm text-muted-foreground">
                                 {t('auth.noAccount')}{' '}
-                                <Link to="/register" className="text-primary hover:text-primary/80 transition-colors">
+                                <Link
+                                    to="/register"
+                                    className="text-primary hover:text-primary/80 transition-colors"
+                                >
                                     {t('auth.signUp')}
                                 </Link>
                             </p>
-                        </div>
-
-                        <div className="mt-4 text-center text-sm text-muted-foreground/80 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-lg">
-                            <p className="font-medium mb-1">{t('auth.demoCredentialsTitle')}</p>
-                            <p>{t('auth.demoCredentialsEmail')}</p>
-                            <p>{t('auth.demoCredentialsPassword')}</p>
                         </div>
                     </form>
                 </CardContent>

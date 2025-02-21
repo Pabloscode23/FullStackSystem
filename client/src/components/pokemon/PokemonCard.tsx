@@ -6,6 +6,8 @@ import {
 } from '@heroicons/react/24/outline';
 import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 
 interface PokemonCardProps {
     pokemon: {
@@ -36,13 +38,15 @@ interface PokemonCardProps {
             }
         }>;
     };
+    onAdd?: (pokemon: { id: number; name: string; sprites: { front_default: string; other: { 'official-artwork': { front_default: string; } } } }) => void;
     isFavorite?: boolean;
     onToggleFavorite?: () => void;
 }
 
-export function PokemonCard({ pokemon, isFavorite, onToggleFavorite }: PokemonCardProps) {
+export function PokemonCard({ pokemon, onAdd, isFavorite, onToggleFavorite }: PokemonCardProps) {
     const { t } = useTranslation();
-    const { addToTeam, isInTeam, isTeamFull } = useTeam();
+    const { mode, handleAddPokemon, isInTeam, isTeamFull, currentTeamId } = useTeam();
+    const navigate = useNavigate();
     const [showToast, setShowToast] = useState(false);
     const [toastMessage, setToastMessage] = useState('');
     const [toastType, setToastType] = useState<'success' | 'warning'>('success');
@@ -79,36 +83,11 @@ export function PokemonCard({ pokemon, isFavorite, onToggleFavorite }: PokemonCa
         return colors[type] || 'bg-gray-400';
     };
 
-    const handleAddToTeam = () => {
-        if (isTeamFull && !isCurrentlyInTeam) {
-            setToastMessage(t('team.errors.teamFull'));
-            setToastType('warning');
-            setShowToast(true);
-            setTimeout(() => setShowToast(false), 2000);
-            return;
+    const handleClick = async () => {
+        const success = await handleAddPokemon(pokemon);
+        if (success && mode === 'editing' && currentTeamId) {
+            navigate(`/teams/edit/${currentTeamId}`);
         }
-
-        const result = addToTeam(pokemon);
-        setToastMessage(result.message);
-        setToastType(result.success ? 'success' : 'warning');
-        setShowToast(true);
-        setTimeout(() => setShowToast(false), 2000);
-    };
-
-    // Función para traducir tipos
-    const getTranslatedType = (type: string) => {
-        return t(`pokemon.types.${type}`, { defaultValue: type.charAt(0).toUpperCase() + type.slice(1) });
-    };
-
-    // Función para traducir habilidades
-    const getTranslatedAbility = (ability: string) => {
-        // Formatea el nombre de la habilidad para que sea más legible si no hay traducción
-        const formattedName = ability
-            .split('-')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-
-        return t(`pokemon.abilities.${ability}`, { defaultValue: formattedName });
     };
 
     return (
@@ -117,7 +96,7 @@ export function PokemonCard({ pokemon, isFavorite, onToggleFavorite }: PokemonCa
             hover:border-accent/40 bg-gradient-to-br from-background/50 to-accent/5">
             {/* Pokemon Image with gradient background based on type */}
             <div className="relative aspect-square overflow-hidden">
-                <div className={`absolute inset-0 opacity-10 bg-gradient-to-br ${getTypeGradient(pokemon.types[0].type.name)}`} />
+                <div className={`absolute inset-0 opacity-10 bg-gradient-to-br ${getTypeColor(pokemon.types[0].type.name)}`} />
                 <img
                     src={pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default}
                     alt={pokemon.name}
@@ -196,14 +175,15 @@ export function PokemonCard({ pokemon, isFavorite, onToggleFavorite }: PokemonCa
                     </div>
                 </div>
 
-                {/* Actions with improved styling */}
-                <div className="flex justify-between items-center pt-2">
-                    <button
-                        onClick={handleAddToTeam}
-                        disabled={isCurrentlyInTeam}
+                {/* Actions con botón centrado */}
+                <div className="flex flex-col items-center gap-4 pt-2">
+                    <Button
+                        onClick={handleClick}
+                        disabled={isCurrentlyInTeam || isTeamFull}
                         className={`
-                            flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium
+                            flex items-center gap-2 px-6 py-2 rounded-lg text-sm font-medium
                             transition-all duration-200 shadow-sm hover:shadow-md
+                            max-w-[200px] justify-center mx-auto
                             ${isCurrentlyInTeam
                                 ? 'bg-accent/20 text-muted-foreground cursor-not-allowed'
                                 : isTeamFull
@@ -228,7 +208,7 @@ export function PokemonCard({ pokemon, isFavorite, onToggleFavorite }: PokemonCa
                                     : t('pages.pokemon.addToTeam')
                             }
                         </span>
-                    </button>
+                    </Button>
 
                     {onToggleFavorite && (
                         <button
