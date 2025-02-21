@@ -23,77 +23,25 @@ export function FloatingEditTeamPreview() {
             {/* Versión Desktop */}
             <div className="fixed right-4 bottom-4 w-64 
                 hidden md:block 
-                bg-card border border-accent/20 rounded-lg shadow-lg p-4
-                transform translate-y-[-80px]"
+                bg-card border border-accent/20 rounded-lg shadow-lg
+                transform translate-y-[-80px]
+                overflow-hidden"
             >
-                <div className="flex justify-center items-center mb-4">
-                    <h3 className="font-medium text-center">
-                        {t('team.editing.name', { name: editingTeam.name })}
-                    </h3>
-                </div>
-
-                <div className="grid grid-cols-3 gap-2">
-                    {currentPokemon.map((pokemon, index) => (
-                        <div key={index} className="relative aspect-square bg-accent/5 rounded-lg p-1">
-                            <img
-                                src={pokemon.sprites.front_default}
-                                alt={pokemon.name}
-                                className="w-full h-full object-contain"
-                            />
-                        </div>
-                    ))}
-                    {Array(6 - currentPokemon.length).fill(null).map((_, index) => (
-                        <div
-                            key={`empty-${index}`}
-                            className="aspect-square bg-accent/5 rounded-lg border-2 border-dashed border-accent/20"
-                        />
-                    ))}
-                </div>
-            </div>
-
-            {/* Versión Mobile */}
-            <div className="md:hidden">
-                {/* Botón para abrir drawer */}
-                <button
-                    onClick={() => setIsDrawerOpen(true)}
-                    className="fixed right-4 bottom-4 
-                        bg-card/95 backdrop-blur-sm rounded-full p-2 shadow-lg
-                        border border-accent/20 z-40"
-                >
-                    <img
-                        src={editingTeam.pokemon[0]?.sprites.front_default}
-                        alt="Team preview"
-                        className="w-10 h-10"
-                    />
-                </button>
-
-                {/* Drawer */}
-                <div className={`
-                    fixed inset-x-0 bottom-0 
-                    bg-card/95 backdrop-blur-sm 
-                    border-t border-accent/20 
-                    p-4 shadow-lg 
-                    transform transition-transform duration-300 ease-in-out
-                    z-50
-                    ${isDrawerOpen ? 'translate-y-0' : 'translate-y-full'}
-                `}>
-                    {/* Header */}
-                    <div className="flex justify-between items-center mb-4">
-                        <h3 className="font-medium">
-                            {editingTeam.name}
+                <div className="p-4 flex flex-col h-full">
+                    <div className="flex justify-between items-center mb-2">
+                        <h3 className="font-medium text-sm truncate flex-1 pr-2">
+                            {t('team.editing.name', { name: editingTeam.name })}
                         </h3>
-                        <button
-                            onClick={() => setIsDrawerOpen(false)}
-                            className="text-muted-foreground hover:text-foreground"
-                        >
-                            <XMarkIcon className="w-5 h-5" />
-                        </button>
+                        <span className="text-sm text-muted-foreground flex-shrink-0">
+                            ({currentPokemon.length}/6)
+                        </span>
                     </div>
 
-                    {/* Pokemon Grid */}
-                    <div className="grid grid-cols-3 gap-2">
+                    <div className="grid grid-cols-3 gap-1.5">
                         {currentPokemon.map((pokemon, index) => (
-                            <div key={index} className="relative aspect-square bg-accent/5 rounded-lg p-1">
+                            <div key={`pokemon-${pokemon.id}-${index}`}
+                                className="relative aspect-square bg-accent/5 rounded-md p-1"
+                            >
                                 <img
                                     src={pokemon.sprites.front_default}
                                     alt={pokemon.name}
@@ -104,16 +52,80 @@ export function FloatingEditTeamPreview() {
                         {Array(6 - currentPokemon.length).fill(null).map((_, index) => (
                             <div
                                 key={`empty-${index}`}
-                                className="aspect-square bg-accent/5 rounded-lg border-2 border-dashed border-accent/20"
+                                className="aspect-square bg-accent/5 rounded-md
+                                    border border-dashed border-accent/20"
                             />
                         ))}
                     </div>
                 </div>
+            </div>
 
-                {/* Overlay para cerrar el drawer */}
+            {/* Versión Mobile */}
+            <div className="md:hidden">
+                <button
+                    onClick={() => setIsDrawerOpen(true)}
+                    className="fixed right-4 bottom-20 
+                        bg-card/95 backdrop-blur-sm rounded-full p-2 shadow-lg
+                        border border-accent/20 z-30"
+                >
+                    <img
+                        src={currentPokemon[0]?.sprites.front_default}
+                        alt="Team preview"
+                        className="w-10 h-10"
+                    />
+                </button>
+
+                {/* Drawer */}
+                <div className={`
+                    fixed inset-x-0 bottom-0 
+                    bg-card/95 backdrop-blur-sm 
+                    border-t border-accent/20 
+                    transform transition-transform duration-300 ease-in-out
+                    z-40 overflow-hidden
+                    ${isDrawerOpen ? 'translate-y-0' : 'translate-y-full'}
+                `}>
+                    <div className="p-4 pb-20">
+                        <div className="flex justify-between items-center mb-2">
+                            <h3 className="font-medium text-sm truncate flex-1 pr-2">
+                                {editingTeam.name}
+                            </h3>
+                            <span className="text-sm text-muted-foreground flex-shrink-0 mr-4">
+                                ({currentPokemon.length}/6)
+                            </span>
+                            <button
+                                onClick={() => setIsDrawerOpen(false)}
+                                className="text-muted-foreground hover:text-foreground flex-shrink-0"
+                            >
+                                <XMarkIcon className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <div className="grid grid-cols-3 gap-1.5">
+                            {currentPokemon.map((pokemon, index) => (
+                                <div key={`pokemon-${pokemon.id}-${index}`}
+                                    className="relative aspect-square bg-accent/5 rounded-md p-1"
+                                >
+                                    <img
+                                        src={pokemon.sprites.front_default}
+                                        alt={pokemon.name}
+                                        className="w-full h-full object-contain"
+                                    />
+                                </div>
+                            ))}
+                            {Array(6 - currentPokemon.length).fill(null).map((_, index) => (
+                                <div
+                                    key={`empty-${index}`}
+                                    className="aspect-square bg-accent/5 rounded-md
+                                        border border-dashed border-accent/20"
+                                />
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
                 {isDrawerOpen && (
                     <div
-                        className="fixed inset-0 bg-black/50 z-40"
+                        className="fixed inset-0 bg-black/50 z-30"
                         onClick={() => setIsDrawerOpen(false)}
                     />
                 )}

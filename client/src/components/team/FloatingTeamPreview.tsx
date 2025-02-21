@@ -60,13 +60,13 @@ function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) 
         <button
             onClick={startEditing}
             className={`
-                group flex items-center gap-9 
+                group flex items-center justify-between
                 px-3 py-1.5 rounded-lg transition-all duration-200
                 ${isDefaultName
                     ? 'bg-blue-500/10 hover:bg-blue-500/15 border border-blue-500/20'
                     : 'hover:bg-accent/10'
                 }
-                min-w-[200px]
+                w-[180px] min-w-0
             `}
         >
             <span className={`
@@ -79,7 +79,7 @@ function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) 
                 {name}
             </span>
             <PencilIcon className={`
-                w-4 h-4 flex-shrink-0
+                w-4 h-4 flex-shrink-0 ml-2
                 ${isDefaultName
                     ? 'text-blue-500 animate-bounce'
                     : 'text-muted-foreground group-hover:text-foreground'
@@ -105,12 +105,6 @@ function TeamActions({ onView, onSave }: { onView: () => void; onSave: () => voi
 
     return (
         <div className="space-y-2">
-            <Button
-                onClick={onView}
-                className="w-full bg-gradient-to-r from-blue-500 to-purple-500"
-            >
-                {t('pages.myTeam.viewTeam')}
-            </Button>
             <Button
                 onClick={handleSave}
                 disabled={isSaving}
@@ -165,15 +159,14 @@ export function FloatingTeamPreview() {
                 bg-card border border-accent/20 rounded-lg shadow-lg p-4
                 transform translate-y-[-80px]"
             >
-                <div className="flex justify-between items-center mb-4 gap-4">
+                <div className="flex justify-between items-center mb-4 gap-4 ">
                     <TeamNameInput name={teamName} onSave={updateTeamName} />
                     <span className="text-sm text-muted-foreground">
                         ({validTeam.length}/6)
                     </span>
                 </div>
 
-                {/* Pokemon Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                <div className="grid grid-cols-3 gap-2 mb-4">
                     {validTeam.map((pokemon, index) => (
                         <PokemonPreview
                             key={pokemon.id}
@@ -188,7 +181,6 @@ export function FloatingTeamPreview() {
 
             {/* Versión Mobile */}
             <div className="block md:hidden">
-                {/* Botón flotante */}
                 <button
                     onClick={() => setIsDrawerOpen(true)}
                     className="fixed right-4 bottom-20 
@@ -222,7 +214,7 @@ export function FloatingTeamPreview() {
                         </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                    <div className="grid grid-cols-3 gap-2 mb-4">
                         {validTeam.map((pokemon, index) => (
                             <PokemonPreview
                                 key={pokemon.id}
