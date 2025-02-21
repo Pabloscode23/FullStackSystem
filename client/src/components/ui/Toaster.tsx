@@ -46,7 +46,7 @@ export function Toaster({ toasts, setToasts }: ToasterProps) {
         if (toasts.length > 0) {
             const timer = setTimeout(() => {
                 setToasts((prev) => prev.slice(1));
-            }, 2000);
+            }, 1000);
 
             return () => clearTimeout(timer);
         }
