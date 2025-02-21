@@ -7,7 +7,7 @@ import { RootLayout } from '@/components/layout/RootLayout';
 import { PokemonPage } from '@/pages/PokemonPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { MyTeamPage } from '@/pages/my-team/MyTeamPage';
-import { FavoritesPage } from '@/pages/FavoritesPage';
+import { FavoritesPage } from '@/pages/favorites/FavoritesPage';
 import { EditTeamPage } from '@/pages/EditTeamPage';
 
 /**
