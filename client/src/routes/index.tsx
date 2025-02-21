@@ -6,7 +6,7 @@ import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { RootLayout } from '@/components/layout/RootLayout';
 import { PokemonPage } from '@/pages/PokemonPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
-import { MyTeamPage } from '@/pages/MyTeamPage';
+import { MyTeamPage } from '@/pages/my-team/MyTeamPage';
 import { FavoritesPage } from '@/pages/FavoritesPage';
 import { EditTeamPage } from '@/pages/EditTeamPage';
 
