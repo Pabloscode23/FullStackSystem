@@ -8,7 +8,6 @@ import {
     query, 
     where, 
     getDocs,
-    Timestamp,
     serverTimestamp 
 } from 'firebase/firestore';
 import type { Team, TeamPokemon } from '@/types/team';

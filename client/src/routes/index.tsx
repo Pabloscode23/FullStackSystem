@@ -7,30 +7,29 @@ import { RootLayout } from '@/components/layout/RootLayout';
 import { PokemonPage } from '@/pages/PokemonPage';
 import { NotFoundPage } from '@/pages/NotFoundPage';
 import { MyTeamPage } from '@/pages/MyTeamPage';
-import { FavoritesPage } from '@/pages/FavoritesPage';;
-import { ResetPasswordPage } from '@/pages/auth/ResetPasswordPage';
+import { FavoritesPage } from '@/pages/FavoritesPage';
 import { EditTeamPage } from '@/pages/EditTeamPage';
 
+/**
+ * Application router configuration using createBrowserRouter
+ * Defines all available routes and their corresponding components
+ */
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <RootLayout />,
+        element: <RootLayout />, // Root layout wrapper for all routes
         children: [
             {
-                index: true,
+                index: true, // Default route
                 element: <HomePage />,
             },
             {
                 path: 'login',
-                element: <LoginPage />,
+                element: <LoginPage />, // Authentication route
             },
             {
                 path: 'register',
-                element: <RegisterPage />,
-            },
-            {
-                path: 'reset-password',
-                element: <ResetPasswordPage />,
+                element: <RegisterPage />, // User registration route
             },
             {
                 path: 'pokemon',
@@ -49,7 +48,7 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: 'teams/edit/:teamId',
+                path: 'teams/edit/:teamId', // Dynamic route with team ID parameter
                 element: (
                     <ProtectedRoute>
                         <EditTeamPage />
@@ -65,13 +64,18 @@ const router = createBrowserRouter([
                 ),
             },
             {
-                path: '*',
+                path: '*', // Catch-all route for 404 errors
                 element: <NotFoundPage />,
             },
         ],
     },
 ]);
 
+/**
+ * AppRouter component
+ * Provides routing functionality to the application using RouterProvider
+ * @returns RouterProvider component with configured routes
+ */
 export function AppRouter() {
     return <RouterProvider router={router} />;
 }
