@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { teamService } from '@/services/teamService';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/ui/Button';
-import { TrashIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { TrashIcon, PlusIcon, PencilIcon } from '@heroicons/react/24/outline';
 import { Input } from '@/components/ui/Input';
 import type { Team } from '@/types/team';
 import { useTeam } from '@/context/TeamContext';
@@ -165,8 +165,8 @@ export function EditTeamPage() {
     }
 
     return (
-        <div className="min-h-screen space-y-4 pt-4">
-            {/* Hero Section con gradiente mejorado */}
+        <div className="min-h-screen space-y-4 pt-4 pb-20">
+            {/* Hero Section */}
             <section className="relative py-8">
                 <div className="container mx-auto px-4">
                     <h1 className="text-4xl md:text-5xl font-bold text-center">
@@ -180,41 +180,58 @@ export function EditTeamPage() {
                 </div>
             </section>
 
-            {/* Main Content con mejor espaciado y diseño */}
+            {/* Main Content */}
             <div className="container mx-auto px-4 space-y-8">
-                <div className="max-w-4xl mx-auto space-y-8">
-                    {/* Team Name con mejor diseño */}
-                    <div className="space-y-2 max-w-md mx-auto">
-                        <Input
-                            value={teamName}
-                            onChange={(e) => handleUpdateName(e.target.value)}
-                            placeholder={t('team.edit.namePlaceholder')}
-                            className="text-center text-lg font-medium bg-accent/5 focus:bg-accent/10 border-accent/20"
-                        />
+                <div className="max-w-3xl mx-auto space-y-8">
+                    {/* Team Name Section */}
+                    <div className="flex justify-center">
+                        <div className="relative max-w-md w-full group">
+                            <Input
+                                value={teamName}
+                                onChange={(e) => handleUpdateName(e.target.value)}
+                                placeholder={t('team.edit.namePlaceholder')}
+                                className="text-center text-xl font-medium bg-card/50 
+                                    w-full py-6 rounded-xl
+                                    border-accent/20 focus:border-accent/40
+                                    shadow-sm hover:shadow transition-all
+                                    pr-12"
+                            />
+                            <div className="absolute right-4 top-1/2 -translate-y-1/2
+                                text-muted-foreground group-hover:text-foreground
+                                transition-colors">
+                                <PencilIcon className="w-5 h-5" />
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Pokemon Grid con mejor diseño */}
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    {/* Pokemon Grid */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 
+                        bg-accent/5 p-4 rounded-xl">
                         {currentTeam.pokemon.map((pokemon, index) => (
                             <div
                                 key={index}
-                                className="relative group aspect-square rounded-xl overflow-hidden bg-accent/5 p-2
-                                    hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+                                className="relative group aspect-square rounded-lg overflow-hidden 
+                                    bg-card border border-accent/10"
                             >
-                                <div className="absolute top-2 left-2 z-10 px-2 py-1 bg-black/40 backdrop-blur-sm 
-                                    rounded-full text-xs text-white font-medium">
+                                <div className="absolute top-2 left-2 z-10 px-2 py-1 
+                                    bg-black/40 backdrop-blur-sm 
+                                    rounded-full text-xs text-white font-medium"
+                                >
                                     #{pokemon.id}
                                 </div>
                                 <img
                                     src={pokemon.sprites.other['official-artwork'].front_default}
                                     alt={pokemon.name}
-                                    className="w-full h-full object-contain transform group-hover:scale-110 
-                                        transition-transform duration-300"
+                                    className="w-full h-full object-contain transform 
+                                        group-hover:scale-110 transition-transform duration-300"
                                 />
-                                {/* Pokemon Info Overlay mejorado */}
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 
-                                    to-transparent opacity-0 group-hover:opacity-100 transition-opacity 
-                                    duration-200 flex flex-col justify-end p-4">
+                                {/* Pokemon Info Overlay */}
+                                <div className="absolute inset-0 bg-gradient-to-t 
+                                    from-black/80 via-black/40 to-transparent 
+                                    opacity-0 group-hover:opacity-100 
+                                    transition-opacity duration-200 
+                                    flex flex-col justify-end p-4"
+                                >
                                     <p className="text-white text-sm font-medium capitalize mb-2">
                                         {pokemon.name}
                                     </p>
@@ -222,20 +239,19 @@ export function EditTeamPage() {
                                         {pokemon.types?.map((type, i) => (
                                             <span
                                                 key={i}
-                                                className="text-xs px-2 py-1 rounded-full bg-white/20 
-                                                    text-white backdrop-blur-sm font-medium"
+                                                className="text-xs px-2 py-1 rounded-full 
+                                                    bg-white/20 text-white backdrop-blur-sm font-medium"
                                             >
                                                 {type.type.name}
                                             </span>
                                         ))}
                                     </div>
                                     <Button
-                                        variant="destructive"
-                                        size="sm"
-                                        className="mt-3 w-full opacity-0 group-hover:opacity-100 
-                                            transition-opacity bg-red-500/80 hover:bg-red-600/80 
-                                            backdrop-blur-sm"
                                         onClick={() => handleRemovePokemon(index)}
+                                        className="mt-3 w-full opacity-0 group-hover:opacity-100 
+                                            transition-opacity bg-red-500 hover:bg-red-600
+                                            text-white"
+                                        size="sm"
                                     >
                                         <TrashIcon className="h-4 w-4 mr-1" />
                                         {t('team.edit.removePokemon')}
@@ -249,7 +265,7 @@ export function EditTeamPage() {
                                 className="h-full aspect-square border-2 border-dashed 
                                     flex flex-col items-center justify-center gap-3
                                     bg-accent/5 hover:bg-accent/10 transition-colors
-                                    group"
+                                    group rounded-lg"
                                 onClick={() => handleNavigate('/pokemon')}
                             >
                                 <PlusIcon className="h-8 w-8 text-muted-foreground 

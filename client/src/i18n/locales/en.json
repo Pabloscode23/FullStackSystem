@@ -234,7 +234,7 @@
     },
     "edit": {
       "title": "Edit Team",
-      "name": "Team Name",
+      "name": "Team's Name",
       "namePlaceholder": "Enter team name",
       "addPokemon": "Add Pokémon",
       "removePokemon": "Remove from team",

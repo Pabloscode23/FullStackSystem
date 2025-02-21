@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/form/Input';
 import { PokemonPreview } from './PokemonPreview';
 import { PlusIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon } from '@heroicons/react/24/outline';
 
 // Component for editable team name
 function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) => void }) {
@@ -135,21 +136,11 @@ export function FloatingTeamPreview() {
     const { team, teamName, updateTeamName, saveTeam, isEditing } = useTeam();
     const navigate = useNavigate();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-    const [isDesktopVisible, setIsDesktopVisible] = useState(true);
 
-    // Filter out null Pokemon and verify if there are any
     const validTeam = team.filter((pokemon): pokemon is NonNullable<typeof pokemon> => pokemon !== null);
 
-    // Mostrar el componente cuando se agregue un Pokémon
-    useEffect(() => {
-        if (validTeam.length > 0) {
-            setIsDesktopVisible(true);
-        }
-    }, [validTeam.length]);
+    if (validTeam.length === 0 || isEditing) return null;
 
-    if (validTeam.length === 0) return null;
-
-    // Handle navigation to team page
     const handleViewTeam = () => {
         setIsDrawerOpen(false);
         navigate('/my-team');
@@ -160,89 +151,20 @@ export function FloatingTeamPreview() {
             const success = await saveTeam();
             if (success) {
                 setIsDrawerOpen(false);
-                setIsDesktopVisible(false);
             }
         } catch (error) {
             console.error('Error saving team:', error);
         }
     };
 
-    // Si estamos en modo edición, no mostramos el preview
-    if (isEditing) {
-        return null;
-    }
-
     return (
         <>
-            {/* Mobile Toggle Button */}
-            <Button
-                onClick={() => setIsDrawerOpen(!isDrawerOpen)}
-                className={`
-                    fixed bottom-4 right-4 
-                    md:hidden 
-                    z-50 
-                    bg-gradient-to-r from-blue-500 to-purple-500
-                    transition-all duration-300
-                    ${isDrawerOpen ? 'translate-y-20 opacity-0' : 'translate-y-0 opacity-100'}
-                `}
-                size="sm"
+            {/* Versión Desktop */}
+            <div className="fixed right-4 bottom-4 w-64 
+                hidden md:block 
+                bg-card border border-accent/20 rounded-lg shadow-lg p-4
+                transform translate-y-[-80px]"
             >
-                {teamName}
-            </Button>
-
-            {/* Mobile Drawer */}
-            <div className={`
-                fixed inset-x-0 bottom-0 
-                bg-card/95 backdrop-blur-sm 
-                border-t border-accent/20 
-                p-4 shadow-lg 
-                transform transition-transform duration-300 ease-in-out
-                md:hidden
-                z-40
-                ${isDrawerOpen ? 'translate-y-0' : 'translate-y-full'}
-            `}>
-                {/* Header with team name and counter */}
-                <div className="flex flex-col gap-2 mb-4">
-                    <div className="flex flex-col gap-3">
-                        <div className="flex items-center justify-between gap-4">
-                            <TeamNameInput name={teamName} onSave={updateTeamName} />
-                            <span className="text-sm font-medium text-muted-foreground px-3 py-1.5 bg-accent/10 rounded-full flex-shrink-0">
-                                {validTeam.length}/6
-                            </span>
-                        </div>
-
-                        <div className="h-[1px] bg-gradient-to-r from-transparent via-accent/20 to-transparent" />
-                    </div>
-
-                    {/* Grid de Pokémon */}
-                    <div className="grid grid-cols-3 gap-2">
-                        {validTeam.map((pokemon, index) => (
-                            <PokemonPreview
-                                key={pokemon.id}
-                                pokemon={pokemon}
-                                index={index}
-                            />
-                        ))}
-                    </div>
-                </div>
-
-                <TeamActions onView={handleViewTeam} onSave={handleSaveTeam} />
-            </div>
-
-            {/* Desktop Floating Preview */}
-            <div className={`
-                fixed right-4 bottom-4
-                hidden md:block
-                bg-card/95 backdrop-blur-sm 
-                border border-accent/20
-                rounded-lg shadow-lg
-                p-4
-                max-w-xs
-                w-full
-                z-40
-                transition-all duration-300
-                ${isDesktopVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8 pointer-events-none'}
-            `}>
                 <div className="flex justify-between items-center mb-4 gap-4">
                     <TeamNameInput name={teamName} onSave={updateTeamName} />
                     <span className="text-sm text-muted-foreground">
@@ -250,8 +172,8 @@ export function FloatingTeamPreview() {
                     </span>
                 </div>
 
-                {/* Pokemon grid for desktop */}
-                <div className="grid grid-cols-3 gap-2 mb-4">
+                {/* Pokemon Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
                     {validTeam.map((pokemon, index) => (
                         <PokemonPreview
                             key={pokemon.id}
@@ -262,6 +184,64 @@ export function FloatingTeamPreview() {
                 </div>
 
                 <TeamActions onView={handleViewTeam} onSave={handleSaveTeam} />
+            </div>
+
+            {/* Versión Mobile */}
+            <div className="block md:hidden">
+                {/* Botón flotante */}
+                <button
+                    onClick={() => setIsDrawerOpen(true)}
+                    className="fixed right-4 bottom-20 
+                        bg-card/95 backdrop-blur-sm rounded-full p-2 shadow-lg
+                        border border-accent/20 z-30"
+                >
+                    <img
+                        src={validTeam[0]?.sprites.front_default}
+                        alt="Team preview"
+                        className="w-10 h-10"
+                    />
+                </button>
+
+                {/* Drawer */}
+                <div className={`
+                    fixed inset-x-0 bottom-0 
+                    bg-card/95 backdrop-blur-sm 
+                    border-t border-accent/20 
+                    p-4 pb-20 shadow-lg 
+                    transform transition-transform duration-300 ease-in-out
+                    z-40
+                    ${isDrawerOpen ? 'translate-y-0' : 'translate-y-full'}
+                `}>
+                    <div className="flex justify-between items-center mb-4">
+                        <TeamNameInput name={teamName} onSave={updateTeamName} />
+                        <button
+                            onClick={() => setIsDrawerOpen(false)}
+                            className="text-muted-foreground hover:text-foreground"
+                        >
+                            <XMarkIcon className="w-5 h-5" />
+                        </button>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
+                        {validTeam.map((pokemon, index) => (
+                            <PokemonPreview
+                                key={pokemon.id}
+                                pokemon={pokemon}
+                                index={index}
+                            />
+                        ))}
+                    </div>
+
+                    <TeamActions onView={handleViewTeam} onSave={handleSaveTeam} />
+                </div>
+
+                {/* Overlay */}
+                {isDrawerOpen && (
+                    <div
+                        className="fixed inset-0 bg-black/50 z-30"
+                        onClick={() => setIsDrawerOpen(false)}
+                    />
+                )}
             </div>
         </>
     );
