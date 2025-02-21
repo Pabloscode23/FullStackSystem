@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { RegisterPage } from '@/pages/auth/RegisterPage';
-import { HomePage } from '@/pages/HomePage';
+import { HomePage } from '@/pages/home/HomePage';
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { RootLayout } from '@/components/layout/RootLayout';
 import { PokemonPage } from '@/pages/PokemonPage';
