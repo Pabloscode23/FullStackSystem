@@ -5,7 +5,7 @@ import { teamService } from '@/services/teamService';
 import { useAuth } from '@/context/auth/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { TrashIcon, PlusIcon, PencilIcon } from '@heroicons/react/24/outline';
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/form/Input';
 import type { Team } from '@/types/team';
 import { useTeam } from '@/context/team/TeamContext';
 
