@@ -1,3 +1,5 @@
+import { Pokemon } from "@/types/pokemon";
+
 /**
  * Maps Pokemon types to their corresponding colors
  */
