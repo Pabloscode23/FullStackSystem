@@ -20,6 +20,7 @@ A modern web application for creating and managing Pokemon teams. Showcasing mod
 - **Frontend Framework**: React 18 with TypeScript
 - **State Management**: Context API with custom hooks
 - **Styling**: TailwindCSS with custom components
+- **Validation**: Zod for runtime type checking and validation
 - **Authentication**: Firebase Auth
 - **Database**: Firebase Firestore
 - **API Integration**: PokeAPI

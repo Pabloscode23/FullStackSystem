@@ -1,3 +1,8 @@
+/**
+ * TeamContext provides state management and operations for Pokemon teams
+ * Handles team creation, editing, persistence and synchronization with storage
+ */
+
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/context/auth/AuthContext';
@@ -9,7 +14,9 @@ import { collection } from 'firebase/firestore';
 import { db } from '@/config/firebase';
 import { Team, TeamPokemon } from '@/types/team';
 
-
+/**
+ * Interface defining all operations and state available in the team context
+ */
 export interface TeamContextType {
     team: (Pokemon | null)[];
     teamName: string;
@@ -41,20 +48,30 @@ export interface TeamContextType {
 
 const TeamContext = createContext<TeamContextType | undefined>(undefined);
 
+/**
+ * Provider component that manages Pokemon team state and operations
+ * Handles team creation, editing, and persistence with session storage
+ */
 export function TeamProvider({ children }: { children: ReactNode }) {
     const { t } = useTranslation();
     const { user } = useAuth();
     const { showToast } = useToast();
 
+    // Core team state
     const [teamState, setTeamState] = useState<(Pokemon | null)[]>(Array(6).fill(null));
     const [teamName, setTeamName] = useState(t('team.defaultName'));
     const isTeamFull = teamState.every(slot => slot !== null);
+
+    // Team editing state
     const [mode, setMode] = useState<'creating' | 'editing' | 'idle'>('idle');
     const [isEditing, setIsEditing] = useState(false);
     const [currentTeamId, setCurrentTeamId] = useState<string | null>(null);
     const [editingTeam, setEditingTeam] = useState<Team | null>(null);
 
-    // Actualizar nombre por defecto al cambiar idioma
+    /**
+     * Updates team name when language changes
+     * Ensures default name stays in sync with current language
+     */
     useEffect(() => {
         const isDefaultName = [
             t('team.defaultName', { lng: 'en' }),
@@ -64,7 +81,10 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         if (isDefaultName) setTeamName(t('team.defaultName'));
     }, [t, teamName]);
 
-    // Modificar el useEffect para manejar la navegación
+    /**
+     * Handles navigation state persistence
+     * Restores editing state from session storage when routes change
+     */
     useEffect(() => {
         const restoreEditState = () => {
             const savedEditState = sessionStorage.getItem('teamEditState');
@@ -87,23 +107,25 @@ export function TeamProvider({ children }: { children: ReactNode }) {
             }
         };
 
-        // Restaurar estado cuando cambia la ruta
         const handleRouteChange = () => {
             console.log('Route changed, checking state...');
-            // Solo restaurar si no estamos en modo edición
             if (!isEditing) {
                 restoreEditState();
             }
         };
 
         window.addEventListener('popstate', handleRouteChange);
-        restoreEditState(); // Restaurar estado inicial
+        restoreEditState();
 
         return () => {
             window.removeEventListener('popstate', handleRouteChange);
         };
     }, [user]);
 
+    /**
+     * Adds a Pokemon to the team
+     * Validates team size and prevents duplicates
+     */
     const addToTeam = (pokemon: Pokemon) => {
         if (isInTeam(pokemon.id)) {
             return { success: false, message: t('team.errors.alreadyInTeam') };
@@ -123,6 +145,10 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         return { success: true, message: t('team.success.added') };
     };
 
+    /**
+     * Removes a Pokemon from the team at the specified index
+     * Handles team state cleanup if team becomes empty
+     */
     const removeFromTeam = (index: number) => {
         try {
             if (index < 0 || index >= 6) {
@@ -130,14 +156,10 @@ export function TeamProvider({ children }: { children: ReactNode }) {
                 return { success: false, message: t('team.errors.invalidSlot') };
             }
 
-            // Crear una nueva copia del array y establecer la posición como null
             const newTeam = [...teamState];
             newTeam[index] = null;
-
-            // Actualizar el estado
             setTeamState(newTeam);
 
-            // Verificar si todos son null después de la actualización
             if (newTeam.every(pokemon => pokemon === null)) {
                 setTeamState(Array(6).fill(null));
                 setTeamName(t('team.defaultName'));
@@ -151,19 +173,28 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    /**
+     * Checks if a Pokemon is already in the team
+     */
     const isInTeam = (pokemonId: number) => teamState.some(pokemon => pokemon?.id === pokemonId);
 
+    /**
+     * Resets team state to initial values
+     */
     const resetTeam = () => {
         setTeamState(Array(6).fill(null));
         setTeamName(t('team.defaultName'));
-        setMode('creating'); // Asegurarnos de que el modo se resetea también
+        setMode('creating');
     };
 
+    /**
+     * Saves current team to database
+     * Validates team name and completeness before saving
+     */
     const saveTeam = async () => {
         if (!user) return false;
 
         try {
-            // Validar que tenga nombre y no sea el nombre por defecto
             const isDefaultName = [
                 t('team.defaultName', { lng: 'en' }),
                 t('team.defaultName', { lng: 'es' })
@@ -211,12 +242,19 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    /**
+     * Gets total count of teams from database
+     */
     const getTeamsCount = async () => {
         const teamsRef = collection(db, 'teams');
         const snapshot = await getCountFromServer(teamsRef);
         return snapshot.data().count;
     };
 
+    /**
+     * Starts team editing mode
+     * Loads team data and updates editing state
+     */
     const startEditing = async (teamId: string) => {
         if (!user) return false;
 
@@ -232,10 +270,7 @@ export function TeamProvider({ children }: { children: ReactNode }) {
                     isEditing: true
                 };
 
-                // Guardar en storage primero
                 sessionStorage.setItem('teamEditState', JSON.stringify(editState));
-
-                // Luego actualizar el estado
                 setMode('editing');
                 setIsEditing(true);
                 setCurrentTeamId(teamId);
@@ -250,8 +285,10 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         return false;
     };
 
+    /**
+     * Starts team creation mode if no active editing
+     */
     const startCreating = () => {
-        // Si no hay un equipo en edición activo, iniciar modo creación
         if (!editingTeam) {
             sessionStorage.removeItem('teamEditState');
             setMode('creating');
@@ -262,10 +299,13 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    /**
+     * Stops editing mode and cleans up state
+     * Behavior varies based on current route
+     */
     const stopEditing = () => {
         const currentPath = window.location.pathname;
 
-        // Si estamos en la página principal o en teams, limpiar todo
         if (currentPath === '/' || currentPath === '/teams') {
             setMode('idle');
             setIsEditing(false);
@@ -276,9 +316,7 @@ export function TeamProvider({ children }: { children: ReactNode }) {
             return;
         }
 
-        // Si estamos en la página de Pokémon
         if (currentPath === '/pokemon') {
-            // Solo limpiar si no estamos editando activamente
             if (!isEditing || !editingTeam) {
                 setMode('creating');
                 setIsEditing(false);
@@ -290,11 +328,12 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         }
     };
 
+    /**
+     * Updates Pokemon team state while maintaining positions
+     */
     const updateTeamPokemon = (pokemon: TeamPokemon[]) => {
-        // Crear un array de 6 posiciones con null
         const fullTeam = Array(6).fill(null);
 
-        // Mantener los Pokémon en sus posiciones originales
         pokemon.forEach((p, i) => {
             if (p) {
                 fullTeam[i] = {
@@ -312,10 +351,13 @@ export function TeamProvider({ children }: { children: ReactNode }) {
             }
         });
 
-        // Actualizar el estado manteniendo las posiciones
         setTeamState(fullTeam);
     };
 
+    /**
+     * Handles adding Pokemon in both creation and editing modes
+     * Updates database and local state accordingly
+     */
     const handleAddPokemon = async (pokemon: Pokemon) => {
         console.log('handleAddPokemon called with mode:', mode);
         console.log('currentTeamId:', currentTeamId);
@@ -323,7 +365,6 @@ export function TeamProvider({ children }: { children: ReactNode }) {
 
         if (mode === 'editing' && currentTeamId && editingTeam && user) {
             try {
-                // Verificar usando teamState en lugar de editingTeam.pokemon
                 const currentPokemonCount = teamState.filter(p => p !== null).length;
                 if (currentPokemonCount >= 6) {
                     showToast(t('team.errors.teamFull'), 'error');
@@ -337,21 +378,19 @@ export function TeamProvider({ children }: { children: ReactNode }) {
                     sprites: pokemon.sprites
                 };
 
-                // Encontrar el primer slot vacío
                 const emptySlotIndex = teamState.findIndex(p => p === null);
                 const updatedPokemon = [...editingTeam.pokemon];
                 updatedPokemon[emptySlotIndex] = teamPokemon;
 
                 const updatedTeam = {
                     ...editingTeam,
-                    pokemon: updatedPokemon.filter(p => p !== null) // Filtrar nulls
+                    pokemon: updatedPokemon.filter(p => p !== null)
                 };
 
                 await teamService.updateTeam(currentTeamId, updatedTeam);
                 setEditingTeam(updatedTeam);
                 updateTeamPokemon(updatedTeam.pokemon);
 
-                // Actualizar sessionStorage
                 sessionStorage.setItem('teamEditState', JSON.stringify({
                     teamId: currentTeamId,
                     team: updatedTeam,
@@ -374,7 +413,9 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         }
     };
 
-    // Agregar un nuevo método para forzar la limpieza del estado
+    /**
+     * Forces a complete reset of team state
+     */
     const forceResetState = () => {
         setMode('creating');
         setIsEditing(false);
@@ -418,6 +459,10 @@ export function TeamProvider({ children }: { children: ReactNode }) {
     );
 }
 
+/**
+ * Custom hook to access team context
+ * @throws Error if used outside TeamProvider
+ */
 export function useTeam() {
     const context = useContext(TeamContext);
     const { t } = useTranslation();
