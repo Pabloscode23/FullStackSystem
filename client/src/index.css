@@ -1,84 +1,117 @@
+/* Import Tailwind CSS base styles, components and utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Base theme configuration using CSS variables */
 @layer base {
   :root {
-    /* Light theme - más limpio y con mejor contraste */
+    /* Light Theme Variables
+     * Uses a clean design with better contrast ratios
+     * Color format: Hue Saturation Lightness */
+
     --background: 0 0% 100%;
+    /* Pure white background */
     --foreground: 222.2 84% 4.9%;
+    /* Near-black text */
 
     --card: 0 0% 98%;
+    /* Slightly off-white for cards */
     --card-foreground: 222.2 84% 4.9%;
 
     --popover: 0 0% 100%;
+    /* White popover background */
     --popover-foreground: 222.2 84% 4.9%;
 
     --primary: 221.2 83.2% 53.3%;
+    /* Blue primary color */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
+    /* Light blue secondary */
     --secondary-foreground: 222.2 47.4% 11.2%;
 
     --muted: 210 40% 96.1%;
+    /* Muted background */
     --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 210 40% 96.1%;
+    /* Accent color */
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
+    /* Red for destructive actions */
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
+    /* Border colors */
     --input: 214.3 31.8% 91.4%;
+    /* Input field colors */
     --ring: 221.2 83.2% 53.3%;
+    /* Focus ring color */
 
     --radius: 0.5rem;
+    /* Border radius */
   }
 
+  /* Dark Theme Variables
+   * Uses deeper colors without brown tones */
   .dark {
-    /* Dark theme - más profundo y sin tonos café */
     --background: 222 47% 11%;
+    /* Dark blue-gray background */
     --foreground: 213 31% 91%;
+    /* Light text */
 
     --card: 222 47% 9%;
+    /* Slightly darker cards */
     --card-foreground: 213 31% 91%;
 
     --popover: 222 47% 11%;
+    /* Dark popover background */
     --popover-foreground: 213 31% 91%;
 
     --primary: 217.2 91.2% 59.8%;
+    /* Bright blue primary */
     --primary-foreground: 222.2 47.4% 11.2%;
 
     --secondary: 217.2 32.6% 17.5%;
+    /* Dark blue secondary */
     --secondary-foreground: 210 40% 98%;
 
     --muted: 217.2 32.6% 17.5%;
+    /* Muted dark background */
     --muted-foreground: 215 20.2% 65.1%;
 
     --accent: 217.2 32.6% 17.5%;
+    /* Dark accent */
     --accent-foreground: 210 40% 98%;
 
     --destructive: 0 62.8% 30.6%;
+    /* Darker red for destructive */
     --destructive-foreground: 210 40% 98%;
 
     --border: 217.2 32.6% 17.5%;
+    /* Dark borders */
     --input: 217.2 32.6% 17.5%;
+    /* Dark input fields */
     --ring: 224.3 76.3% 48%;
+    /* Focus ring color */
   }
 }
 
+/* Apply border color to all elements */
 @layer base {
   * {
     @apply border-border;
   }
 
+  /* Set default background and text colors */
   body {
     @apply bg-background text-foreground;
   }
 }
 
-/* Gradientes más sutiles */
+/* Subtle gradient backgrounds for different themes */
 .dark body {
   background-image:
     radial-gradient(at 27% 37%, hsla(217, 91%, 60%, 0.08) 0px, transparent 50%),
@@ -91,26 +124,34 @@
     radial-gradient(at 97% 21%, hsla(221, 83%, 53%, 0.05) 0px, transparent 50%);
 }
 
-/* Navbar con fondo más distintivo */
+/* Navbar background styling */
 .dark .bg-background\/95 {
   background-color: hsl(222 47% 8% / 0.95);
+  /* Semi-transparent dark */
 }
 
 .light .bg-background\/95 {
   background-color: hsl(0 0% 100% / 0.98);
+  /* Nearly opaque light */
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  /* Subtle shadow */
 }
 
+/* Custom component classes */
 @layer components {
+
+  /* Primary button styling */
   .btn-primary {
     @apply px-4 py-2 bg-pokemon-red text-white rounded-lg hover:opacity-90 transition-opacity;
   }
 
+  /* Card component base styling */
   .card {
     @apply bg-white rounded-lg shadow-md p-4;
   }
 }
 
+/* Animation keyframes */
 @keyframes float {
   0% {
     transform: translateY(0px);
@@ -139,6 +180,7 @@
   }
 }
 
+/* Animation utility classes */
 .animate-float {
   animation: float 3s ease-in-out infinite;
 }
@@ -147,7 +189,10 @@
   animation: glow 2s ease-in-out infinite;
 }
 
+/* Custom utility classes */
 @layer utilities {
+
+  /* Fade-up animation utilities */
   .animate-fade-up {
     opacity: 0;
     transform: translateY(20px);

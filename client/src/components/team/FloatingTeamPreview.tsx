@@ -1,15 +1,16 @@
-import { useTeam } from '@/context/TeamContext';
+import { useTeam } from '@/context/team/TeamContext';
 import { Button } from '@/components/ui/Button';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { PencilIcon } from '@heroicons/react/24/outline';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Input } from '@/components/ui/form/Input';
 import { PokemonPreview } from './PokemonPreview';
-import { PlusIcon } from '@heroicons/react/24/outline';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
-// Component for editable team name
+/**
+ * TeamNameInput Component
+ * Provides inline editing for team names with validation and keyboard support
+ */
 function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) => void }) {
     const [isEditing, setIsEditing] = useState(false);
     const [value, setValue] = useState(name);
@@ -89,8 +90,11 @@ function TeamNameInput({ name, onSave }: { name: string; onSave: (name: string) 
     );
 }
 
-// Component for action buttons
-function TeamActions({ onView, onSave }: { onView: () => void; onSave: () => void }) {
+/**
+ * TeamActions Component
+ * Displays save button with loading state and success feedback
+ */
+function TeamActions({ onSave }: { onSave: () => Promise<void> }) {
     const { t } = useTranslation();
     const [isSaving, setIsSaving] = useState(false);
 
@@ -108,10 +112,7 @@ function TeamActions({ onView, onSave }: { onView: () => void; onSave: () => voi
             <Button
                 onClick={handleSave}
                 disabled={isSaving}
-                className={`
-                    w-full bg-gradient-to-r from-green-500 to-emerald-500
-                    disabled:opacity-70
-                `}
+                className="w-full bg-gradient-to-r from-green-500 to-emerald-500 disabled:opacity-70"
             >
                 {isSaving ? (
                     <div className="flex items-center justify-center gap-2">
@@ -126,19 +127,27 @@ function TeamActions({ onView, onSave }: { onView: () => void; onSave: () => voi
     );
 }
 
+/**
+ * FloatingTeamPreview Component
+ * Displays a floating preview of the current team being built
+ * Supports both desktop and mobile layouts
+ */
 export function FloatingTeamPreview() {
     const { team, teamName, updateTeamName, saveTeam, isEditing } = useTeam();
-    const navigate = useNavigate();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-    // Si está en modo edición, no mostramos este componente
+    // Don't show if editing
     if (isEditing) return null;
 
+    // Filter out null slots for valid team display
     const validTeam = team.filter((pokemon): pokemon is NonNullable<typeof pokemon> => pokemon !== null);
 
-    // Si no hay equipo o está en modo edición, no mostramos nada
+    // Don't show if no team or editing
     if (validTeam.length === 0 || isEditing) return null;
 
+    /**
+     * Handles saving the team and updates drawer state
+     */
     const handleSaveTeam = async () => {
         try {
             const success = await saveTeam();
@@ -150,15 +159,11 @@ export function FloatingTeamPreview() {
         }
     };
 
-    // Si no hay equipo, mostramos solo el contenedor con los slots vacíos
     return (
         <>
-            {/* Versión Desktop */}
-            <div className="fixed right-4 bottom-4 w-64 
-                hidden md:block 
-                bg-card border border-accent/20 rounded-lg shadow-lg p-4
-                transform translate-y-[-80px]"
-            >
+            {/* Desktop version */}
+            <div className="fixed right-4 bottom-4 w-64 hidden md:block bg-card border border-accent/20 rounded-lg shadow-lg p-4">
+                {/* Team name and count */}
                 <div className="flex justify-between items-center mb-4 gap-4">
                     <TeamNameInput name={teamName} onSave={updateTeamName} />
                     <span className="text-sm text-muted-foreground">
@@ -166,6 +171,7 @@ export function FloatingTeamPreview() {
                     </span>
                 </div>
 
+                {/* Pokemon grid with empty slots */}
                 <div className="grid grid-cols-3 gap-2 mb-4">
                     {validTeam.map((pokemon, index) => (
                         <PokemonPreview
@@ -177,25 +183,24 @@ export function FloatingTeamPreview() {
                     {Array(6 - validTeam.length).fill(null).map((_, index) => (
                         <div
                             key={`empty-${index}`}
-                            className="aspect-square bg-accent/5 rounded-lg
-                                border-2 border-dashed border-accent/20"
+                            className="aspect-square bg-accent/5 rounded-lg border-2 border-dashed border-accent/20"
                         />
                     ))}
                 </div>
 
+                {/* Save button */}
                 {validTeam.length > 0 && (
                     <TeamActions onSave={handleSaveTeam} />
                 )}
             </div>
 
-            {/* Versión Mobile */}
+            {/* Mobile version */}
             <div className="block md:hidden">
+                {/* Mobile trigger button */}
                 {validTeam.length > 0 && (
                     <button
                         onClick={() => setIsDrawerOpen(true)}
-                        className="fixed right-4 bottom-20 
-                            bg-card/95 backdrop-blur-sm rounded-full p-2 shadow-lg
-                            border border-accent/20 z-30"
+                        className="fixed right-4 bottom-20 bg-card/95 backdrop-blur-sm rounded-full p-2 shadow-lg border border-accent/20 z-30"
                     >
                         <img
                             src={validTeam[0]?.sprites.front_default}
@@ -205,7 +210,7 @@ export function FloatingTeamPreview() {
                     </button>
                 )}
 
-                {/* Drawer */}
+                {/* Mobile drawer */}
                 <div className={`
                     fixed inset-x-0 bottom-0 
                     bg-card/95 backdrop-blur-sm 

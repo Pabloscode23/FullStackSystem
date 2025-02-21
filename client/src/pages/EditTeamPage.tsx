@@ -2,13 +2,25 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { teamService } from '@/services/teamService';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/auth/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { TrashIcon, PlusIcon, PencilIcon } from '@heroicons/react/24/outline';
-import { Input } from '@/components/ui/Input';
+import { Input } from '@/components/ui/form/Input';
 import type { Team } from '@/types/team';
-import { useTeam } from '@/context/TeamContext';
+import { useTeam } from '@/context/team/TeamContext';
 
+/**
+ * EditTeamPage Component
+ * 
+ * Provides functionality for editing an existing Pokemon team.
+ * Features:
+ * - Team name editing
+ * - Pokemon management (add/remove)
+ * - Real-time updates
+ * - State persistence
+ * 
+ * @component
+ */
 export function EditTeamPage() {
     const { teamId } = useParams();
     const navigate = useNavigate();
@@ -25,6 +37,10 @@ export function EditTeamPage() {
     const [teamName, setTeamName] = useState('');
     const [isSaving, setIsSaving] = useState(false);
 
+    /**
+     * Fetches team data on component mount
+     * Updates local state and team context
+     */
     useEffect(() => {
         const fetchTeam = async () => {
             if (!teamId || !user) return;
@@ -48,6 +64,10 @@ export function EditTeamPage() {
         fetchTeam();
     }, [teamId, user, startEditing, updateTeamPokemon]);
 
+    /**
+     * Cleanup effect for team editing state
+     * Resets state when component unmounts if team hasn't changed
+     */
     useEffect(() => {
         const originalState = sessionStorage.getItem('teamEditState');
 
@@ -62,11 +82,19 @@ export function EditTeamPage() {
         };
     }, [currentTeam, forceResetState]);
 
+    /**
+     * Handles navigation with proper cleanup
+     * @param path - Destination path
+     */
     const handleNavigate = (path: string) => {
         stopEditing();
         navigate(path);
     };
 
+    /**
+     * Updates team data in the database
+     * @param updatedTeam - New team data to save
+     */
     const updateTeamInDB = async (updatedTeam: Team) => {
         try {
             await teamService.updateTeam(updatedTeam.id, updatedTeam);
@@ -76,16 +104,21 @@ export function EditTeamPage() {
         }
     };
 
+    /**
+     * Handles Pokemon removal from team
+     * Maintains array indices for proper state management
+     * @param index - Index of Pokemon to remove
+     */
     const handleRemovePokemon = async (index: number) => {
         if (!currentTeam) return;
 
         try {
-            // Crear una copia del array actual preservando los índices
+            // Create a copy of the current array preserving indices
             const pokemonArray = [...currentTeam.pokemon];
 
-            // Crear un array con las posiciones correctas
+            // Create array with correct positions
             const updatedPokemon = pokemonArray.map((p, i) => i === index ? null : p)
-                .filter(p => p !== null); // Filtrar nulls para la base de datos
+                .filter(p => p !== null); // Filter nulls for database
 
             const updatedTeam = {
                 ...currentTeam,
@@ -95,7 +128,7 @@ export function EditTeamPage() {
             await updateTeamInDB(updatedTeam);
             setCurrentTeam(updatedTeam);
 
-            // Mantener las posiciones originales al actualizar el estado
+            // Maintain original positions when updating state
             const teamStateArray = [...pokemonArray];
             teamStateArray[index] = null;
             updateTeamPokemon(teamStateArray);
@@ -105,6 +138,11 @@ export function EditTeamPage() {
         }
     };
 
+    /**
+     * Handles team name updates
+     * Updates both local state and database
+     * @param newName - New team name
+     */
     const handleUpdateName = async (newName: string) => {
         if (!currentTeam) return;
         setTeamName(newName);
@@ -116,13 +154,16 @@ export function EditTeamPage() {
             };
 
             await updateTeamInDB(updatedTeam);
-
             setCurrentTeam(updatedTeam);
         } catch (error) {
             console.error('Error updating team name:', error);
         }
     };
 
+    /**
+     * Saves current team state to database
+     * @returns Updated team data if successful
+     */
     const handleSave = async () => {
         if (!currentTeam) return;
         setIsSaving(true);
@@ -142,6 +183,7 @@ export function EditTeamPage() {
         }
     };
 
+    // Loading state
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen">
@@ -150,6 +192,7 @@ export function EditTeamPage() {
         );
     }
 
+    // Team not found state
     if (!currentTeam) {
         return (
             <div className="container mx-auto px-4 py-16 text-center">

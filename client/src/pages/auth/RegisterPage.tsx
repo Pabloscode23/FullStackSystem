@@ -8,7 +8,7 @@ import { FirebaseError } from 'firebase/app';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/form/Input';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/auth/AuthContext';
 import { useToast } from '@/components/ui/Toaster';
 import { formStyles } from '@/constants/styles';
 import { AuthLayout } from '@/components/layout/AuthLayout';

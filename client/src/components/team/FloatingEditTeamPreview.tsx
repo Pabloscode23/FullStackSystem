@@ -1,8 +1,21 @@
-import { useTeam } from '@/context/TeamContext';
+import { useTeam } from '@/context/team/TeamContext';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
+/**
+ * FloatingEditTeamPreview Component
+ * 
+ * A floating UI element that displays the team currently being edited.
+ * Provides both desktop and mobile views with different layouts.
+ * 
+ * Features:
+ * - Responsive design (desktop/mobile)
+ * - Team name display
+ * - Pokemon grid with empty slots
+ * - Mobile drawer with slide animation
+ * - Team size counter
+ */
 export function FloatingEditTeamPreview() {
     const { t } = useTranslation();
     const { mode, editingTeam, teamState } = useTeam();
@@ -12,15 +25,17 @@ export function FloatingEditTeamPreview() {
     console.log('FloatingEditTeamPreview - editingTeam:', editingTeam);
     console.log('FloatingEditTeamPreview - teamState:', teamState);
 
+    // Only show when in editing mode and have a team
     if (mode !== 'editing' || !editingTeam) {
         return null;
     }
 
+    // Filter out null slots for valid Pokemon display
     const currentPokemon = teamState.filter((p): p is NonNullable<typeof p> => p !== null);
 
     return (
         <>
-            {/* Versión Desktop */}
+            {/* Desktop version */}
             <div className="fixed right-4 bottom-4 w-64 
                 hidden md:block 
                 bg-card border border-accent/20 rounded-lg shadow-lg
@@ -28,6 +43,7 @@ export function FloatingEditTeamPreview() {
                 overflow-hidden"
             >
                 <div className="p-4 flex flex-col h-full">
+                    {/* Team name and count header */}
                     <div className="flex justify-between items-center mb-2">
                         <h3 className="font-medium text-sm truncate flex-1 pr-2">
                             {t('team.editing.name', { name: editingTeam.name })}
@@ -37,6 +53,7 @@ export function FloatingEditTeamPreview() {
                         </span>
                     </div>
 
+                    {/* Pokemon grid with empty slots */}
                     <div className="grid grid-cols-3 gap-1.5">
                         {currentPokemon.map((pokemon, index) => (
                             <div key={`pokemon-${pokemon.id}-${index}`}
@@ -49,6 +66,7 @@ export function FloatingEditTeamPreview() {
                                 />
                             </div>
                         ))}
+                        {/* Empty slot placeholders */}
                         {Array(6 - currentPokemon.length).fill(null).map((_, index) => (
                             <div
                                 key={`empty-${index}`}
@@ -60,8 +78,9 @@ export function FloatingEditTeamPreview() {
                 </div>
             </div>
 
-            {/* Versión Mobile */}
+            {/* Mobile version */}
             <div className="md:hidden">
+                {/* Mobile trigger button */}
                 <button
                     onClick={() => setIsDrawerOpen(true)}
                     className="fixed right-4 bottom-20 
@@ -75,7 +94,7 @@ export function FloatingEditTeamPreview() {
                     />
                 </button>
 
-                {/* Drawer */}
+                {/* Mobile drawer with slide animation */}
                 <div className={`
                     fixed inset-x-0 bottom-0 
                     bg-card/95 backdrop-blur-sm 
@@ -85,6 +104,7 @@ export function FloatingEditTeamPreview() {
                     ${isDrawerOpen ? 'translate-y-0' : 'translate-y-full'}
                 `}>
                     <div className="p-4 pb-20">
+                        {/* Drawer header with team info */}
                         <div className="flex justify-between items-center mb-2">
                             <h3 className="font-medium text-sm truncate flex-1 pr-2">
                                 {editingTeam.name}
@@ -100,6 +120,7 @@ export function FloatingEditTeamPreview() {
                             </button>
                         </div>
 
+                        {/* Pokemon grid in drawer */}
                         <div className="grid grid-cols-3 gap-1.5">
                             {currentPokemon.map((pokemon, index) => (
                                 <div key={`pokemon-${pokemon.id}-${index}`}
@@ -112,6 +133,7 @@ export function FloatingEditTeamPreview() {
                                     />
                                 </div>
                             ))}
+                            {/* Empty slot placeholders */}
                             {Array(6 - currentPokemon.length).fill(null).map((_, index) => (
                                 <div
                                     key={`empty-${index}`}
@@ -123,6 +145,7 @@ export function FloatingEditTeamPreview() {
                     </div>
                 </div>
 
+                {/* Backdrop overlay for mobile */}
                 {isDrawerOpen && (
                     <div
                         className="fixed inset-0 bg-black/50 z-30"

@@ -1,94 +1,126 @@
-# Modern Authentication System
+# Pokemon Team Builder
 
-A modern, secure, and user-friendly authentication system built with React, TypeScript, and TailwindCSS. Features a beautiful UI with dark mode support, internationalization, and form validation.
+A modern web application for creating and managing Pokemon teams. Built as a technical assessment showcasing modern web development practices and clean architecture.
+
+![Pokemon Team Builder Screenshot](./docs/screenshot.png)
 
 ## Features
 
-### Authentication
-- 🔐 Complete Auth Flow
-  - Login with email/password
-  - User registration
-  - Password reset functionality
-  - Protected routes
-
-### User Interface
-- 🎨 Modern Design
-  - Responsive layouts
-  - Glassmorphism effects
-  - Smooth transitions
-  - Loading states
-- 🌓 Theme Support
-  - Dark/Light mode
-  - Auto theme detection
-- 🌍 Internationalization
-  - Language switching
-  - Localized error messages
-  - Extensible translation system
-
-### Form Handling
-- ✅ Advanced Validation
-  - Real-time validation
-  - Custom error messages
-  - Password strength requirements
-- 🛡️ Security Features
-  - Type-safe forms with Zod
-  - Protected against common attacks
-  - Secure password requirements
+- 🔐 **User Authentication**: Secure login and registration with Firebase
+- 🌐 **Internationalization**: Full support for multiple languages (English/Spanish)
+- 📱 **Responsive Design**: Seamless experience across all devices
+- ⚡ **Real-time Updates**: Instant team updates and collaboration
+- 🎨 **Modern UI**: Clean and intuitive interface with smooth animations
+- 🔍 **Advanced Search**: Find Pokemon by name, type, and stats
+- 💾 **Persistent Storage**: Teams are saved and synced across devices
+- 🌙 **Dark Mode**: Full theme support for better user experience
 
 ## Tech Stack
 
-- **Frontend:**
-  - React 18
-  - TypeScript
-  - TailwindCSS
-  - React Router v6
-  - React Hook Form + Zod
-  - i18next
+- **Frontend Framework**: React 18 with TypeScript
+- **State Management**: Context API with custom hooks
+- **Styling**: TailwindCSS with custom components
+- **Authentication**: Firebase Auth
+- **Database**: Firebase Firestore
+- **API Integration**: PokeAPI
+- **Routing**: React Router v6
+- **Internationalization**: i18next
+- **Icons**: Heroicons
+- **Testing**: Jest and React Testing Library
+- **Build Tool**: Vite
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js (v16+)
-- npm/yarn
+
+- Node.js 16.x or later
+- npm 7.x or later
+- Git
 
 ### Installation
 
+1. Clone the repository
 ```bash
-# Clone the repository
-git clone [repository-url]
+git clone https://github.com/yourusername/pokemon-team-builder.git
+cd pokemon-team-builder
+```
 
-# Navigate to project directory
-cd client
-
-# Install dependencies
+2. Install dependencies
+```bash
 npm install
+```
 
-# Start development server
+3. Create a `.env` file in the root directory with your Firebase configuration:
+```env
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+4. Start the development server
+```bash
 npm run dev
 ```
 
-The app will be available at `http://localhost:5173`
+The application will be available at `http://localhost:5173`
+
+### Building for Production
+
+```bash
+npm run build
+```
 
 ## Project Structure
 
-## Available Scripts
+```
+src/
+├── components/     # Reusable UI components
+├── context/       # React Context providers
+├── hooks/         # Custom React hooks
+├── services/      # API and external service integrations
+├── types/         # TypeScript type definitions
+├── utils/         # Helper functions and utilities
+├── pages/         # Route components
+└── i18n/          # Internationalization files
+```
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run test` - Run tests
+## Key Features in Detail
 
-## Next Steps
+### Team Building
+- Create and manage multiple Pokemon teams
+- Real-time validation of team composition
+- Detailed Pokemon statistics and information
+- Type effectiveness calculations
 
-- [ ] Integration with backend API
-- [ ] OAuth providers (Google, GitHub)
-- [ ] Email verification
-- [ ] Session management
-- [ ] User profile management
-- [ ] Implement ResetPasswordPage
-- [ ] Add more language options
-- [ ] Enhance form validation feedback
+### User Experience
+- Smooth animations and transitions
+- Intuitive drag-and-drop interface
+- Responsive design for all screen sizes
+- Accessibility compliance
+
+### Performance
+- Optimized image loading
+- Efficient state management
+- Minimal bundle size
+- Lazy loading of components
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [PokeAPI](https://pokeapi.co/) for the Pokemon data
+- [Firebase](https://firebase.google.com/) for authentication and database services
+- [TailwindCSS](https://tailwindcss.com/) for the styling system

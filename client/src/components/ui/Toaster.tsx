@@ -1,29 +1,52 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 
+/**
+ * Toast notification interface
+ * @property id - Unique identifier for the toast
+ * @property message - Content to display in the toast
+ * @property type - Visual style of the toast ('success' | 'error' | 'info')
+ */
 interface Toast {
     id: number;
     message: string;
     type: 'success' | 'error' | 'info';
 }
 
-// Create Toast Context
+/**
+ * Context for managing toast notifications
+ * Provides a showToast method to display notifications
+ */
 const ToastContext = createContext<{
     showToast: (message: string, type: Toast['type']) => void;
 }>({
     showToast: () => { },
 });
 
+/**
+ * Props for the Toaster component
+ */
 interface ToasterProps {
     toasts: Toast[];
     setToasts: React.Dispatch<React.SetStateAction<Toast[]>>;
 }
 
+/**
+ * Toaster Component
+ * 
+ * Displays toast notifications in a fixed position
+ * Features:
+ * - Auto-dismissal after 2 seconds
+ * - Different styles for success/error/info
+ * - Slide-up animation
+ * - Queue management
+ */
 export function Toaster({ toasts, setToasts }: ToasterProps) {
+    // Auto-dismiss effect
     useEffect(() => {
         if (toasts.length > 0) {
             const timer = setTimeout(() => {
                 setToasts((prev) => prev.slice(1));
-            }, 2000);
+            }, 1000);
 
             return () => clearTimeout(timer);
         }
@@ -58,8 +81,18 @@ export function Toaster({ toasts, setToasts }: ToasterProps) {
     );
 }
 
-// Toast Provider
+// Counter for generating unique toast IDs
 let toastId = 0;
+
+/**
+ * Toast Provider Component
+ * 
+ * Provides toast functionality to child components
+ * Features:
+ * - Global toast state management
+ * - Toast creation with unique IDs
+ * - Default 'info' type
+ */
 export function ToastProvider({ children }: { children: React.ReactNode }) {
     const [toasts, setToasts] = useState<Toast[]>([]);
 
@@ -75,7 +108,17 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     );
 }
 
-// Hook to use toast
+/**
+ * Custom hook for using toast notifications
+ * 
+ * @returns Object containing showToast function
+ * 
+ * @example
+ * ```tsx
+ * const { showToast } = useToast();
+ * showToast('Operation successful!', 'success');
+ * ```
+ */
 export function useToast() {
     return useContext(ToastContext);
 } 
