@@ -23,27 +23,35 @@ export function Toaster({ toasts, setToasts }: ToasterProps) {
         if (toasts.length > 0) {
             const timer = setTimeout(() => {
                 setToasts((prev) => prev.slice(1));
-            }, 3000);
+            }, 2000);
 
             return () => clearTimeout(timer);
         }
     }, [toasts, setToasts]);
 
     return (
-        <div className="fixed bottom-4 right-4 z-50 flex flex-col gap-2">
+        <div className="fixed top-4 right-4 z-50 flex flex-col gap-1">
             {toasts.map((toast) => (
                 <div
                     key={toast.id}
                     className={`
-                        px-4 py-2 rounded-lg shadow-lg
+                        px-3 py-1.5 rounded-md shadow-md text-sm
                         animate-slide-up
-                        ${toast.type === 'success' ? 'bg-green-500' : ''}
-                        ${toast.type === 'error' ? 'bg-red-500' : ''}
-                        ${toast.type === 'info' ? 'bg-blue-500' : ''}
+                        ${toast.type === 'success' ? 'bg-green-500/90' : ''}
+                        ${toast.type === 'error' ? 'bg-red-500/90' : ''}
+                        ${toast.type === 'info' ? 'bg-blue-500/90' : ''}
                         text-white
+                        flex items-center gap-2
+                        max-w-[200px]
                     `}
                 >
-                    {toast.message}
+                    <div className={`
+                        w-1.5 h-1.5 rounded-full flex-shrink-0
+                        ${toast.type === 'success' ? 'bg-green-200' : ''}
+                        ${toast.type === 'error' ? 'bg-red-200' : ''}
+                        ${toast.type === 'info' ? 'bg-blue-200' : ''}
+                    `} />
+                    <span className="truncate">{toast.message}</span>
                 </div>
             ))}
         </div>

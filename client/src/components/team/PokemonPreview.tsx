@@ -11,10 +11,11 @@ export function PokemonPreview({ pokemon, index }: PokemonPreviewProps) {
     const { removeFromTeam } = useTeam();
 
     return (
-        <div className="relative aspect-square bg-accent/5 rounded-lg p-1.5
+        <div className="relative aspect-square rounded-lg p-1.5
             hover:bg-accent/10 transition-all duration-200
             border border-accent/10 hover:border-accent/20
-            group"
+            group
+            bg-gray-100/80 dark:bg-accent/5"
         >
             <img
                 src={pokemon.sprites.front_default}

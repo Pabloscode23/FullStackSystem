@@ -36,6 +36,7 @@ export interface TeamContextType {
     setIsEditing: (isEditing: boolean) => void;
     setCurrentTeamId: (id: string | null) => void;
     setEditingTeam: (team: Team | null) => void;
+    forceResetState: () => void;
 }
 
 const TeamContext = createContext<TeamContextType | undefined>(undefined);
@@ -123,38 +124,31 @@ export function TeamProvider({ children }: { children: ReactNode }) {
     };
 
     const removeFromTeam = (index: number) => {
-        if (index < 0 || index >= teamState.length) {
-            return { success: false, message: t('team.errors.invalidSlot') };
-        }
+        try {
+            if (index < 0 || index >= 6) {
+                showToast(t('team.errors.invalidSlot'), 'error');
+                return { success: false, message: t('team.errors.invalidSlot') };
+            }
 
-        if (mode === 'editing' && editingTeam) {
-            // Actualizar el equipo que se está editando
-            const updatedPokemon = editingTeam.pokemon.filter((_, i) => i !== index);
-            const updatedTeam = {
-                ...editingTeam,
-                pokemon: updatedPokemon
-            };
-
-            // Actualizar todos los estados
-            setEditingTeam(updatedTeam);
-            updateTeamPokemon(updatedPokemon);
-
-            // Actualizar sessionStorage con el estado más reciente
-            sessionStorage.setItem('teamEditState', JSON.stringify({
-                teamId: currentTeamId,
-                team: updatedTeam,
-                mode: 'editing',
-                isEditing: true
-            }));
-        }
-
-        setTeamState(prev => {
-            const newTeam = [...prev];
+            // Crear una nueva copia del array y establecer la posición como null
+            const newTeam = [...teamState];
             newTeam[index] = null;
-            return newTeam;
-        });
 
-        return { success: true, message: t('team.success.removed') };
+            // Actualizar el estado
+            setTeamState(newTeam);
+
+            // Verificar si todos son null después de la actualización
+            if (newTeam.every(pokemon => pokemon === null)) {
+                setTeamState(Array(6).fill(null));
+                setTeamName(t('team.defaultName'));
+            }
+
+            showToast(t('team.success.removed'), 'success');
+            return { success: true, message: t('team.success.removed') };
+        } catch (error) {
+            console.error('Error removing from team:', error);
+            return { success: false, message: t('team.errors.default') };
+        }
     };
 
     const isInTeam = (pokemonId: number) => teamState.some(pokemon => pokemon?.id === pokemonId);
@@ -162,6 +156,7 @@ export function TeamProvider({ children }: { children: ReactNode }) {
     const resetTeam = () => {
         setTeamState(Array(6).fill(null));
         setTeamName(t('team.defaultName'));
+        setMode('creating'); // Asegurarnos de que el modo se resetea también
     };
 
     const saveTeam = async () => {

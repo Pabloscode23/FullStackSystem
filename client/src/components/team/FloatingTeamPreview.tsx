@@ -131,14 +131,13 @@ export function FloatingTeamPreview() {
     const navigate = useNavigate();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
+    // Si está en modo edición, no mostramos este componente
+    if (isEditing) return null;
+
     const validTeam = team.filter((pokemon): pokemon is NonNullable<typeof pokemon> => pokemon !== null);
 
+    // Si no hay equipo o está en modo edición, no mostramos nada
     if (validTeam.length === 0 || isEditing) return null;
-
-    const handleViewTeam = () => {
-        setIsDrawerOpen(false);
-        navigate('/my-team');
-    };
 
     const handleSaveTeam = async () => {
         try {
@@ -151,6 +150,7 @@ export function FloatingTeamPreview() {
         }
     };
 
+    // Si no hay equipo, mostramos solo el contenedor con los slots vacíos
     return (
         <>
             {/* Versión Desktop */}
@@ -159,7 +159,7 @@ export function FloatingTeamPreview() {
                 bg-card border border-accent/20 rounded-lg shadow-lg p-4
                 transform translate-y-[-80px]"
             >
-                <div className="flex justify-between items-center mb-4 gap-4 ">
+                <div className="flex justify-between items-center mb-4 gap-4">
                     <TeamNameInput name={teamName} onSave={updateTeamName} />
                     <span className="text-sm text-muted-foreground">
                         ({validTeam.length}/6)
@@ -174,25 +174,36 @@ export function FloatingTeamPreview() {
                             index={index}
                         />
                     ))}
+                    {Array(6 - validTeam.length).fill(null).map((_, index) => (
+                        <div
+                            key={`empty-${index}`}
+                            className="aspect-square bg-accent/5 rounded-lg
+                                border-2 border-dashed border-accent/20"
+                        />
+                    ))}
                 </div>
 
-                <TeamActions onView={handleViewTeam} onSave={handleSaveTeam} />
+                {validTeam.length > 0 && (
+                    <TeamActions onSave={handleSaveTeam} />
+                )}
             </div>
 
             {/* Versión Mobile */}
             <div className="block md:hidden">
-                <button
-                    onClick={() => setIsDrawerOpen(true)}
-                    className="fixed right-4 bottom-20 
-                        bg-card/95 backdrop-blur-sm rounded-full p-2 shadow-lg
-                        border border-accent/20 z-30"
-                >
-                    <img
-                        src={validTeam[0]?.sprites.front_default}
-                        alt="Team preview"
-                        className="w-10 h-10"
-                    />
-                </button>
+                {validTeam.length > 0 && (
+                    <button
+                        onClick={() => setIsDrawerOpen(true)}
+                        className="fixed right-4 bottom-20 
+                            bg-card/95 backdrop-blur-sm rounded-full p-2 shadow-lg
+                            border border-accent/20 z-30"
+                    >
+                        <img
+                            src={validTeam[0]?.sprites.front_default}
+                            alt="Team preview"
+                            className="w-10 h-10"
+                        />
+                    </button>
+                )}
 
                 {/* Drawer */}
                 <div className={`
@@ -224,16 +235,8 @@ export function FloatingTeamPreview() {
                         ))}
                     </div>
 
-                    <TeamActions onView={handleViewTeam} onSave={handleSaveTeam} />
+                    <TeamActions onSave={handleSaveTeam} />
                 </div>
-
-                {/* Overlay */}
-                {isDrawerOpen && (
-                    <div
-                        className="fixed inset-0 bg-black/50 z-30"
-                        onClick={() => setIsDrawerOpen(false)}
-                    />
-                )}
             </div>
         </>
     );
