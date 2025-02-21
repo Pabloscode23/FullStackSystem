@@ -5,7 +5,7 @@ import { StarIcon as StarOutline } from '@heroicons/react/24/outline';
 import { StarIcon as StarSolid } from '@heroicons/react/24/solid';
 import type { Team, TeamPokemon } from '@/types/team';
 import { useNavigate } from 'react-router-dom';
-import { useTeam } from '@/context/TeamContext';
+import { useTeam } from '@/context/team/TeamContext';
 
 interface TeamCardProps {
     team: Team;

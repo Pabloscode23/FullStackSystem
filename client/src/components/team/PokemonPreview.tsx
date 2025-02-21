@@ -1,4 +1,4 @@
-import { useTeam } from '@/context/TeamContext';
+import { useTeam } from '@/context/team/TeamContext';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { type Pokemon } from '@/services/pokemonService';
 

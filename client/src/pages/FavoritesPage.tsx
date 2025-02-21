@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/auth/AuthContext';
 import type { Team } from '@/types/team';
 import { teamService } from '@/services/teamService';
 import { TeamCard } from '@/components/team/TeamCard';

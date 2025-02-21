@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PokemonListContainer } from '@/components/pokemon/PokemonListContainer';
 import { FloatingTeamPreview } from '@/components/team/FloatingTeamPreview';
-import { useTeam } from '@/context/TeamContext';
+import { useTeam } from '@/context/team/TeamContext';
 import { FloatingEditTeamPreview } from '@/components/team/FloatingEditTeamPreview';
 import { Button } from '@/components/ui/Button';
 import { ArrowPathIcon } from '@heroicons/react/24/outline';

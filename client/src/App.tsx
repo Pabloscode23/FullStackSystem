@@ -1,10 +1,9 @@
-import { AuthProvider } from '@/context/AuthContext';
-import { TeamProvider } from '@/context/TeamContext';
-import { ThemeProvider } from '@/context/ThemeContext';
+import { AuthProvider } from '@/context/auth/AuthContext';
+import { TeamProvider } from '@/context/team/TeamContext';
+import { ThemeProvider } from '@/context/theme/ThemeContext';
 import { ToastProvider } from '@/components/ui/Toaster';
 import { AppRouter } from '@/routes';
 import '@/i18n';
-import { EditTeamPage } from '@/pages/EditTeamPage';
 
 function App() {
   return (

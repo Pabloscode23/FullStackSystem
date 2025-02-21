@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { layoutStyles } from '@/constants/styles';
 import { Button } from '@/components/ui/Button';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/auth/AuthContext';
 import { features } from '@/features/home/config/features';
 import { FeatureCard } from '@/features/home/components/FeatureCard';
 import { StatCard } from '@/features/home/components/StatCard';

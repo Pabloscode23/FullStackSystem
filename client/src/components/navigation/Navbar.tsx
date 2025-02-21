@@ -13,7 +13,7 @@ import {
     HeartIcon,
     BookOpenIcon,
 } from '@heroicons/react/24/outline';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/auth/AuthContext';
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);

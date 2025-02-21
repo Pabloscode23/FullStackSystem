@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from './AuthContext';
+import { useAuth } from '@/context/auth/AuthContext';
 import { teamService } from '@/services/teamService';
 import { useToast } from '@/components/ui/Toaster';
 import type { Pokemon } from '@/types/pokemon';

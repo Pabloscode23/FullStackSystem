@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { teamService } from '@/services/teamService';
-import { useAuth } from '@/context/AuthContext';
+import { useAuth } from '@/context/auth/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import type { Team } from '@/types/team';
 import { TeamCard } from '@/components/team/TeamCard';
 import { useNavigate } from 'react-router-dom';
+import { useTeam } from '@/context/team/TeamContext';
 
 export function MyTeamPage() {
     const { t } = useTranslation();

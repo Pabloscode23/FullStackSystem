@@ -1,4 +1,4 @@
-import { useTeam } from '@/context/TeamContext';
+import { useTeam } from '@/context/team/TeamContext';
 import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';

@@ -9,8 +9,8 @@ import {
     ChevronDoubleRightIcon
 } from '@heroicons/react/24/outline';
 import { AnimatedPokemonCard } from '@/components/pokemon/AnimatedPokemonCard';
-import { useTeam } from '@/context/TeamContext';
-import { useAuth } from '@/context/AuthContext';
+import { useTeam } from '@/context/team/TeamContext';
+import { useAuth } from '@/context/auth/AuthContext';
 import { teamService } from '@/services/teamService';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/Toaster';

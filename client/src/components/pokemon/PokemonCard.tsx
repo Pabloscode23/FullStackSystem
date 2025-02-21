@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useTeam } from '../../context/TeamContext';
+import { useTeam } from '@/context/team/TeamContext';
 import {
     PlusCircleIcon,
     HeartIcon,
