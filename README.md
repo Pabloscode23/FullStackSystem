@@ -1,8 +1,8 @@
 # Pokemon Team Builder
 
-A modern web application for creating and managing Pokemon teams. Built as a technical assessment showcasing modern web development practices and clean architecture.
+A modern web application for creating and managing Pokemon teams. Showcasing modern web development practices and clean architecture.
 
-![Pokemon Team Builder Screenshot](./docs/screenshot.png)
+//GIF here
 
 ## Features
 
@@ -13,7 +13,7 @@ A modern web application for creating and managing Pokemon teams. Built as a tec
 - 🎨 **Modern UI**: Clean and intuitive interface with smooth animations
 - 🔍 **Advanced Search**: Find Pokemon by name, type, and stats
 - 💾 **Persistent Storage**: Teams are saved and synced across devices
-- 🌙 **Dark Mode**: Full theme support for better user experience
+- 🌙 **Dark/Light Mode**: Full theme support for better user experience
 
 ## Tech Stack
 
@@ -41,8 +41,8 @@ A modern web application for creating and managing Pokemon teams. Built as a tec
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/pokemon-team-builder.git
-cd pokemon-team-builder
+git clone https://github.com/Pabloscode23/FullStackSystem.git
+cd client
 ```
 
 2. Install dependencies
@@ -114,10 +114,6 @@ src/
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
