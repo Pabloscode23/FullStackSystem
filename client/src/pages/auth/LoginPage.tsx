@@ -57,12 +57,11 @@ export function LoginPage() {
             setIsLoading(true);
             await login(data.email, data.password);
             showToast(t('auth.success.login'), 'success');
-            // Redirigir a home después del login
+            // Redirect to home after login
             window.location.href = '/';
         } catch (error) {
             if (error instanceof FirebaseError) {
                 const errorKey = getFirebaseErrorKey(error.code);
-                console.log('Mapped error key:', errorKey);
                 showToast(t(errorKey), 'error');
             } else {
                 showToast(t('auth.errors.default'), 'error');
@@ -84,8 +83,6 @@ export function LoginPage() {
             'auth/network-request-failed': 'auth.errors.networkError',
             'auth/internal-error': 'auth.errors.default'
         };
-
-        console.log('Firebase error code:', errorCode);
         return errorMap[errorCode] || 'auth.errors.default';
     }
 
