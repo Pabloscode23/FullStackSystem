@@ -17,8 +17,10 @@ export function FloatingEditTeamPreview() {
 
     return (
         <div className="fixed bottom-4 right-4 w-64 bg-card border border-accent/20 rounded-lg shadow-lg p-4">
-            <div className="flex justify-between items-center mb-4">
-                <h3 className="font-medium">{t('team.editing')}: {editingTeam.name}</h3>
+            <div className="flex justify-center items-center mb-4">
+                <h3 className="font-medium text-center">
+                    {t('team.editing.name', { name: editingTeam.name })}
+                </h3>
             </div>
 
             <div className="grid grid-cols-3 gap-2 mb-4">

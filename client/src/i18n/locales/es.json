@@ -232,7 +232,8 @@
     "actions": {
       "save": "Guardar Equipo",
       "view": "Ver Equipo",
-      "create": "Crear Equipo"
+      "create": "Crear Equipo",
+      "createNew": "Habilitar crear equipos"
     },
     "pokemon": {
       "count": "{{count}} Pokémon"
@@ -244,6 +245,9 @@
       "addPokemon": "Agregar Pokémon",
       "removePokemon": "Quitar del equipo",
       "notFound": "Equipo no encontrado"
+    },
+    "editing": {
+      "name": "Equipo: {{name}}"
     }
   }
 } 

@@ -226,7 +226,8 @@
     "actions": {
       "save": "Save Team",
       "view": "View Team",
-      "create": "Create Team"
+      "create": "Create Team",
+      "createNew": "Enable team creation"
     },
     "pokemon": {
       "count": "{{count}} Pokémon"
@@ -238,6 +239,9 @@
       "addPokemon": "Add Pokémon",
       "removePokemon": "Remove from team",
       "reorder": "Drag to reorder"
+    },
+    "editing": {
+      "name": "Team: {{name}}"
     }
   }
 } 
