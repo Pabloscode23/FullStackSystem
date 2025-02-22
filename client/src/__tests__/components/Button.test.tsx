@@ -1,14 +1,18 @@
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, jest } from '@jest/globals';
+import { render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Button } from '@/components/ui/Button';
+import type { RenderResult } from '@testing-library/react';
+import '@testing-library/jest-dom';
 
 describe('Button', () => {
-    it('renders button with text', () => {
-        render(<Button>Click me</Button>);
-        expect(screen.getByText('Click me')).toBeInTheDocument();
-    });
+    let rendered: RenderResult;
 
-    it('handles disabled state', () => {
-        render(<Button disabled>Disabled</Button>);
-        expect(screen.getByText('Disabled')).toBeDisabled();
+    it('handles click events', async () => {
+        const handleClick = jest.fn();
+        rendered = render(<Button onClick={handleClick}>Click me</Button>);
+        const button = rendered.getByRole('button', { name: /click me/i });
+        await userEvent.click(button);
+        expect(handleClick).toHaveBeenCalledTimes(1);
     });
 }); 

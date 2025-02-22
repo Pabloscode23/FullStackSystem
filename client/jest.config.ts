@@ -5,16 +5,32 @@ const config: Config = {
     testEnvironment: 'jest-environment-jsdom',
     transform: {
         '^.+\\.tsx?$': ['ts-jest', {
-            useESM: true,
-        }],
+            tsconfig: 'tsconfig.json'
+        }]
     },
     moduleNameMapper: {
         '^@/(.*)$': '<rootDir>/src/$1',
         '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
     },
-    setupFilesAfterEnv: ['<rootDir>/jest.setup.ts'],
-    extensionsToTreatAsEsm: ['.ts', '.tsx'],
+    setupFilesAfterEnv: ['<rootDir>/src/__tests__/setup.ts'],
+    testPathIgnorePatterns: [
+        '/node_modules/',
+        '/__helpers__/',
+        '/__mocks__/',
+        '/setup.ts'
+    ],
+    moduleDirectories: ['node_modules', 'src'],
+    transformIgnorePatterns: [
+        'node_modules/(?!(firebase|@firebase)/)'
+    ],
+    testMatch: ['**/__tests__/**/*.test.{ts,tsx}'],
     moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+    verbose: true,
+    globals: {
+        'ts-jest': {
+            tsconfig: 'tsconfig.json'
+        }
+    }
 };
 
 export default config; 
