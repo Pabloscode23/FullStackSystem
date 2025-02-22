@@ -5,6 +5,7 @@ import type { Team } from '@/types/team';
 import { teamService } from '@/services/teamService';
 import { PageHeader } from './components/PageHeader';
 import { MainContent } from './components/MainContent';
+import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 
 /**
  * FavoritesPage Component
@@ -16,6 +17,7 @@ export function FavoritesPage() {
     const { user } = useAuth();
     const [teams, setTeams] = useState<Team[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [teamToDelete, setTeamToDelete] = useState<string | null>(null);
 
     useEffect(() => {
         fetchFavoriteTeams();
@@ -39,11 +41,19 @@ export function FavoritesPage() {
     };
 
     const handleDeleteTeam = async (teamId: string) => {
+        setTeamToDelete(teamId);
+    };
+
+    const confirmDelete = async () => {
+        if (!teamToDelete) return;
+
         try {
-            await teamService.deleteTeam(teamId);
-            setTeams(teams.filter(team => team.id !== teamId));
+            await teamService.deleteTeam(teamToDelete);
+            setTeams(teams.filter(team => team.id !== teamToDelete));
         } catch (error) {
             console.error('Error deleting team:', error);
+        } finally {
+            setTeamToDelete(null);
         }
     };
 
@@ -70,6 +80,13 @@ export function FavoritesPage() {
                 onDeleteTeam={handleDeleteTeam}
                 onToggleFavorite={handleToggleFavorite}
                 t={t}
+            />
+            <ConfirmationModal
+                isOpen={!!teamToDelete}
+                onClose={() => setTeamToDelete(null)}
+                onConfirm={confirmDelete}
+                title={t('common.confirmDelete')}
+                message={t('common.deleteTeamConfirmation')}
             />
         </div>
     );

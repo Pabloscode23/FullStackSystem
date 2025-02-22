@@ -201,7 +201,10 @@
     "previous": "Previous",
     "saving": "Saving...",
     "details": "Team Details",
-    "hide": "Hide Details"
+    "hide": "Hide Details",
+    "confirm": "Confirm",
+    "confirmDelete": "Confirm Deletion",
+    "deleteTeamConfirmation": "Are you sure you want to delete this team? This action cannot be undone."
   },
   "team": {
     "viewTeam": "View Team",

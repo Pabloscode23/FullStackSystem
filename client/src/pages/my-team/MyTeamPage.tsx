@@ -6,6 +6,7 @@ import { teamService } from '@/services/teamService';
 import type { Team } from '@/types/team';
 import { PageHeader } from './components/PageHeader';
 import { MainContent } from './components/MainContent';
+import { ConfirmationModal } from '@/components/ui/ConfirmationModal';
 
 /**
  * MyTeamPage Component
@@ -27,6 +28,7 @@ export function MyTeamPage() {
     const [teams, setTeams] = useState<Team[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [expandedTeamId, setExpandedTeamId] = useState<string | null>(null);
+    const [teamToDelete, setTeamToDelete] = useState<string | null>(null);
 
     /**
      * Fetches user's teams from the database
@@ -56,11 +58,19 @@ export function MyTeamPage() {
      * @param teamId - ID of the team to delete
      */
     const handleDeleteTeam = async (teamId: string) => {
+        setTeamToDelete(teamId);
+    };
+
+    const confirmDelete = async () => {
+        if (!teamToDelete) return;
+
         try {
-            await teamService.deleteTeam(teamId);
-            setTeams(teams.filter(team => team.id !== teamId));
+            await teamService.deleteTeam(teamToDelete);
+            setTeams(teams.filter(team => team.id !== teamToDelete));
         } catch (error) {
             console.error('Error deleting team:', error);
+        } finally {
+            setTeamToDelete(null);
         }
     };
 
@@ -115,6 +125,13 @@ export function MyTeamPage() {
                 onDeleteTeam={handleDeleteTeam}
                 onToggleFavorite={handleToggleFavorite}
                 t={t}
+            />
+            <ConfirmationModal
+                isOpen={!!teamToDelete}
+                onClose={() => setTeamToDelete(null)}
+                onConfirm={confirmDelete}
+                title={t('common.confirmDelete')}
+                message={t('common.deleteTeamConfirmation')}
             />
         </div>
     );

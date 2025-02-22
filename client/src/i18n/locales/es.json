@@ -207,7 +207,10 @@
     "previous": "Anterior",
     "saving": "Guardando...",
     "details": "Detalles del Equipo",
-    "hide": "Ocultar Detalles"
+    "hide": "Ocultar Detalles",
+    "confirm": "Confirmar",
+    "confirmDelete": "Confirmar Eliminación",
+    "deleteTeamConfirmation": "¿Estás seguro(a) de que quieres eliminar este equipo? Esta acción no se puede deshacer."
   },
   "team": {
     "viewTeam": "Ver Equipo",
