@@ -88,13 +88,11 @@ export function TeamProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         const restoreEditState = () => {
             const savedEditState = sessionStorage.getItem('teamEditState');
-            console.log('Attempting to restore state:', savedEditState);
 
             if (savedEditState && user) {
                 try {
                     const state = JSON.parse(savedEditState);
                     if (state.teamId && state.team) {
-                        console.log('Restoring edit state:', state);
                         setMode('editing');
                         setIsEditing(true);
                         setCurrentTeamId(state.teamId);
@@ -108,7 +106,6 @@ export function TeamProvider({ children }: { children: ReactNode }) {
         };
 
         const handleRouteChange = () => {
-            console.log('Route changed, checking state...');
             if (!isEditing) {
                 restoreEditState();
             }
@@ -359,10 +356,6 @@ export function TeamProvider({ children }: { children: ReactNode }) {
      * Updates database and local state accordingly
      */
     const handleAddPokemon = async (pokemon: Pokemon) => {
-        console.log('handleAddPokemon called with mode:', mode);
-        console.log('currentTeamId:', currentTeamId);
-        console.log('editingTeam:', editingTeam);
-
         if (mode === 'editing' && currentTeamId && editingTeam && user) {
             try {
                 const currentPokemonCount = teamState.filter(p => p !== null).length;
@@ -406,7 +399,6 @@ export function TeamProvider({ children }: { children: ReactNode }) {
                 return false;
             }
         } else {
-            console.log('Creating new team instead of editing');
             const result = addToTeam(pokemon);
             showToast(result.message, result.success ? 'success' : 'error');
             return result.success;

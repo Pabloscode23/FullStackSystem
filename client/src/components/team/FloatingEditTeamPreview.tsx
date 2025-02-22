@@ -21,10 +21,6 @@ export function FloatingEditTeamPreview() {
     const { mode, editingTeam, teamState } = useTeam();
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-    console.log('FloatingEditTeamPreview - mode:', mode);
-    console.log('FloatingEditTeamPreview - editingTeam:', editingTeam);
-    console.log('FloatingEditTeamPreview - teamState:', teamState);
-
     // Only show when in editing mode and have a team
     if (mode !== 'editing' || !editingTeam) {
         return null;
