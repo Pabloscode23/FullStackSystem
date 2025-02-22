@@ -150,8 +150,19 @@ npm run build:types # (ensure this script exists in package.json)
 npm install --save-dev @types/[package-name]
 ```
 
+## Development Notes
+
+This project served as a learning experience for implementing several modern web development tools and practices. While the core architecture and business logic were developed traditionally, AI tools were leveraged as learning aids to:
+
+- Accelerate the learning curve for Firebase implementation
+- Improve test coverage by understanding Jest best practices
+- Enhance code quality through static analysis suggestions
+
+This approach allowed for faster skill acquisition while maintaining code quality and architectural integrity.
+
 ## Acknowledgments
 
 - [PokeAPI](https://pokeapi.co/) for the Pokemon data
 - [Firebase](https://firebase.google.com/) for authentication and database services
 - [TailwindCSS](https://tailwindcss.com/) for the styling system
+- The developer community for their invaluable resources and documentation
